@@ -1,0 +1,138 @@
+.pagina-pedidos {
+  padding: 20px;
+  background: linear-gradient(180deg, #f5f7fb, #eef2ff);
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* TOPO */
+.topo-pedidos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.topo-pedidos h1 {
+  font-size: 24px;
+  color: #1f2937;
+}
+
+/* LISTA */
+.lista-pedidos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 15px;
+}
+
+/* CARD */
+.card-pedido {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border-left: 5px solid #4f46e5;
+  position: relative;
+}
+
+.card-pedido:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+}
+
+/* HEADER */
+.pedido-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pedido-header h3 {
+  font-size: 16px;
+  color: #111827;
+}
+
+/* TOTAL */
+.pedido-total {
+  font-weight: bold;
+  color: #16a34a;
+  background: #ecfdf5;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+/* STATUS */
+.status {
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+/* STATUS COLORS */
+.status.aceito { color: #2563eb; }
+.status.separacao { color: #f59e0b; }
+.status.rota { color: #8b5cf6; }
+.status.finalizado { color: #16a34a; }
+.status.recusado { color: #ef4444; }
+
+/* DATA */
+.data-pedido {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 10px;
+  line-height: 1.4;
+}
+
+/* BOTÃO VOLTAR */
+.btn-voltar {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-voltar:hover {
+  background: #3730a3;
+}
+
+.status-badge {
+  display: inline-block;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 13px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #f3f4f6;
+}
+
+/* cores por status */
+.status-badge.aceito {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.status-badge.separacao {
+  background: #fef3c7;
+  color: #f59e0b;
+}
+
+.status-badge.rota {
+  background: #ede9fe;
+  color: #8b5cf6;
+}
+
+.status-badge.finalizado {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.status-badge.recusado {
+  background: #fee2e2;
+  color: #ef4444;
+}

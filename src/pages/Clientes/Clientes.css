@@ -1,0 +1,122 @@
+.clientes-container{
+  min-height:100vh;
+  padding:25px;
+  background:#f5f7fb;
+}
+
+/* =====================
+   BOTÃO
+===================== */
+
+.btn-voltar{
+  padding:10px 18px;
+  border:none;
+  border-radius:10px;
+  background:#111827;
+  color:#fff;
+  cursor:pointer;
+  margin-bottom:20px;
+  font-weight:600;
+  transition:.3s;
+}
+
+.btn-voltar:hover{
+  transform:translateY(-2px);
+}
+
+/* =====================
+   TOPO
+===================== */
+
+.clientes-topo{
+  margin-bottom:30px;
+}
+
+.clientes-topo h1{
+  color:#111827;
+  margin-bottom:8px;
+  font-size:2rem;
+}
+
+.clientes-topo p{
+  color:#6b7280;
+}
+
+/* =====================
+   EMPTY STATE
+===================== */
+
+.sem-clientes{
+  background:#fff;
+  border-radius:20px;
+  padding:50px 30px;
+  text-align:center;
+  box-shadow:0 4px 20px rgba(0,0,0,.05);
+}
+
+.icone-vazio{
+  font-size:80px;
+  margin-bottom:20px;
+}
+
+.sem-clientes h2{
+  color:#111827;
+  margin-bottom:10px;
+}
+
+.sem-clientes p{
+  color:#6b7280;
+  max-width:500px;
+  margin:0 auto 30px;
+  line-height:1.6;
+}
+
+.info-box{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  max-width:600px;
+  margin:auto;
+}
+
+.info-item{
+  background:#f8fafc;
+  padding:15px;
+  border-radius:12px;
+  border:1px solid #e5e7eb;
+  text-align:left;
+  color:#374151;
+  font-weight:500;
+}
+
+/* =====================
+   RESPONSIVO
+===================== */
+
+@media (max-width:768px){
+
+  .clientes-container{
+    padding:15px;
+  }
+
+  .btn-voltar{
+    width:100%;
+  }
+
+  .clientes-topo h1{
+    font-size:1.6rem;
+  }
+
+  .sem-clientes{
+    padding:35px 20px;
+  }
+
+  .icone-vazio{
+    font-size:60px;
+  }
+
+  .sem-clientes h2{
+    font-size:1.3rem;
+  }
+
+}

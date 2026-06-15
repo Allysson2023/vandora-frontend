@@ -1,0 +1,279 @@
+.storeReviewsPage {
+    min-height: 100vh;
+    background: #f5f7fb;
+    padding: 30px 15px;
+}
+
+.storeReviewsHeader {
+    max-width: 900px;
+    margin: 0 auto 25px auto;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.storeReviewsBackBtn {
+    border: none;
+    background: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 18px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.08);
+    transition: .2s;
+}
+
+.storeReviewsBackBtn:hover {
+    transform: translateY(-2px);
+}
+
+.storeReviewsTitle {
+    margin: 0;
+    font-size: 28px;
+    color: #1f2937;
+}
+
+.storeReviewsSubtitle {
+    margin-top: 4px;
+    color: #6b7280;
+}
+
+.storeReviewsList {
+    max-width: 900px;
+    margin: auto;
+}
+
+.storeReviewCard {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.06);
+    transition: .2s;
+}
+
+.storeReviewCard:hover {
+    transform: translateY(-3px);
+}
+
+.storeReviewTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.storeReviewUser {
+    margin: 0;
+    color: #111827;
+    font-size: 17px;
+}
+
+.storeReviewDate {
+    color: #9ca3af;
+    font-size: 13px;
+}
+
+.storeReviewStars {
+    font-size: 18px;
+}
+
+.storeReviewComment {
+    color: #374151;
+    line-height: 1.7;
+    font-size: 15px;
+}
+
+.storeReviewsEmpty {
+    background: white;
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 50px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,.06);
+}
+
+.storeReviewsEmptyIcon {
+    font-size: 55px;
+    margin-bottom: 15px;
+}
+
+.storeReviewsEmpty h2 {
+    margin-bottom: 10px;
+    color: #111827;
+}
+
+.storeReviewsEmpty p {
+    color: #6b7280;
+}
+
+
+.storeReviewsSummary {
+    max-width: 900px;
+    margin: 0 auto 25px auto;
+
+    background: white;
+    border-radius: 18px;
+
+    padding: 25px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    box-shadow: 0 4px 16px rgba(0,0,0,.06);
+}
+
+.storeReviewsScore {
+    font-size: 42px;
+    font-weight: 700;
+    color: #f59e0b;
+}
+
+.storeReviewsTotal {
+    margin-top: 8px;
+    color: #6b7280;
+    font-size: 16px;
+}
+
+/* ==========================
+   RESPOSTA DA LOJA
+========================== */
+
+.storeReplyBox {
+    margin-top: 18px;
+    padding: 15px;
+    background: linear-gradient(
+        135deg,
+        #f8fff8,
+        #eefcf0
+    );
+    border-left: 4px solid #28a745;
+    border-radius: 12px;
+}
+
+.storeReplyBox strong {
+    display: block;
+    color: #198754;
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.storeReplyBox p {
+    margin: 0;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* ==========================
+   FORMULÁRIO DE RESPOSTA
+========================== */
+
+.storeReplyForm {
+    margin-top: 18px;
+    padding: 15px;
+    background: #f8fafc;
+    border: 1px solid #e4e7ec;
+    border-radius: 14px;
+}
+
+.storeReplyForm textarea {
+    width: 100%;
+    min-height: 90px;
+    resize: vertical;
+
+    border: 1px solid #d0d5dd;
+    border-radius: 10px;
+
+    padding: 12px;
+    font-size: 14px;
+    font-family: inherit;
+
+    outline: none;
+
+    transition: all .25s ease;
+    box-sizing: border-box;
+}
+
+.storeReplyForm textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(
+        37,
+        99,
+        235,
+        0.12
+    );
+}
+
+.storeReplyForm textarea::placeholder {
+    color: #98a2b3;
+}
+
+.storeReplyForm button {
+    margin-top: 12px;
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #1d4ed8
+    );
+
+    color: white;
+    border: none;
+
+    padding: 12px 22px;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all .25s ease;
+}
+
+.storeReplyForm button:hover {
+    transform: translateY(-2px);
+
+    box-shadow: 0 8px 20px rgba(
+        37,
+        99,
+        235,
+        0.25
+    );
+}
+
+.storeReplyForm button:active {
+    transform: scale(0.98);
+}
+
+/* ==========================
+   RESPONSIVO
+========================== */
+
+@media (max-width: 768px) {
+
+    .storeReplyForm button {
+        width: 100%;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .storeReviewTop {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .storeReviewsTitle {
+        font-size: 22px;
+    }
+
+}

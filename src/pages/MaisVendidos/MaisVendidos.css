@@ -1,0 +1,320 @@
+/* =========================
+   CONTAINER
+========================= */
+
+.mv-container{
+    min-height:100vh;
+    padding:25px;
+    background:linear-gradient(
+        180deg,
+        #f8fafc,
+        #eef2ff
+    );
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.mv-header{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin-bottom:25px;
+    flex-wrap:wrap;
+}
+
+.mv-header h1{
+    margin:0;
+    font-size:2rem;
+    color:#111827;
+    font-weight:700;
+}
+
+.mv-header p{
+    margin-top:5px;
+    color:#6b7280;
+    font-size:15px;
+}
+
+/* =========================
+   BOTÃO VOLTAR
+========================= */
+
+.btn-voltar{
+    border:none;
+
+    background:#111827;
+
+    color:white;
+
+    padding:12px 18px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    transition:0.3s;
+}
+
+.btn-voltar:hover{
+    transform:translateY(-2px);
+    background:#1f2937;
+}
+
+/* =========================
+   LISTA
+========================= */
+
+.mv-list{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.mv-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:18px;
+
+    background:white;
+
+    border-radius:18px;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,0.06);
+
+    transition:0.3s;
+
+    border:1px solid rgba(0,0,0,0.04);
+}
+
+.mv-item:hover{
+    transform:translateY(-3px);
+}
+
+/* =========================
+   TOP 3
+========================= */
+
+.mv-item:nth-child(1){
+    border-left:6px solid #facc15;
+}
+
+.mv-item:nth-child(2){
+    border-left:6px solid #9ca3af;
+}
+
+.mv-item:nth-child(3){
+    border-left:6px solid #d97706;
+}
+
+/* =========================
+   LADO ESQUERDO
+========================= */
+
+.mv-left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    flex:1;
+    min-width:0;
+}
+
+/* =========================
+   RANK
+========================= */
+
+.mv-rank{
+    width:42px;
+    height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:linear-gradient(
+        135deg,
+        #4f46e5,
+        #6366f1
+    );
+
+    color:white;
+
+    border-radius:12px;
+
+    font-weight:bold;
+    font-size:14px;
+
+    flex-shrink:0;
+}
+
+/* =========================
+   INFO
+========================= */
+
+.mv-name{
+    margin:0;
+
+    color:#111827;
+
+    font-size:16px;
+    font-weight:700;
+
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.mv-left small{
+    color:#6b7280;
+    font-size:13px;
+}
+
+/* =========================
+   BADGE
+========================= */
+
+.mv-badge{
+    background:linear-gradient(
+        135deg,
+        #10b981,
+        #059669
+    );
+
+    color:white;
+
+    min-width:45px;
+
+    text-align:center;
+
+    padding:8px 12px;
+
+    border-radius:12px;
+
+    font-weight:700;
+
+    font-size:14px;
+
+    flex-shrink:0;
+}
+
+/* =========================
+   EMPTY
+========================= */
+
+.mv-empty{
+    background:white;
+
+    padding:50px 20px;
+
+    border-radius:18px;
+
+    text-align:center;
+
+    color:#6b7280;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,0.05);
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width:768px){
+
+    .mv-container{
+        padding:18px;
+    }
+
+    .mv-header h1{
+        font-size:1.8rem;
+    }
+
+}
+
+/* =========================
+   CELULAR
+========================= */
+
+@media (max-width:480px){
+
+    .mv-container{
+        padding:12px;
+    }
+
+    .mv-header{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .btn-voltar{
+        width:100%;
+    }
+
+    .mv-header h1{
+        font-size:1.5rem;
+    }
+
+    .mv-header p{
+        font-size:13px;
+    }
+
+    .mv-item{
+        padding:15px;
+    }
+
+    .mv-rank{
+        width:36px;
+        height:36px;
+        font-size:12px;
+    }
+
+    .mv-name{
+        font-size:14px;
+    }
+
+    .mv-left small{
+        font-size:12px;
+    }
+
+    .mv-badge{
+        padding:7px 10px;
+        font-size:13px;
+    }
+
+}
+
+/* =========================
+   CELULAR PEQUENO
+========================= */
+
+@media (max-width:360px){
+
+    .mv-header h1{
+        font-size:1.3rem;
+    }
+
+    .mv-item{
+        padding:12px;
+    }
+
+    .mv-rank{
+        width:32px;
+        height:32px;
+    }
+
+    .mv-name{
+        font-size:13px;
+    }
+
+}

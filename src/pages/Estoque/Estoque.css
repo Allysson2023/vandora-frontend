@@ -1,0 +1,186 @@
+/* ==========================
+   CONTAINER
+========================== */
+
+.estoque-container {
+  padding: 25px;
+  background: #f5f7fb;
+  min-height: 100vh;
+}
+
+/* ==========================
+   TOPO
+========================== */
+
+.btn-voltar {
+  padding: 10px 18px;
+  border: none;
+  background: #111827;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 20px;
+  transition: 0.3s;
+}
+
+.btn-voltar:hover {
+  transform: translateY(-2px);
+  background: #000;
+}
+
+.estoque-container h1 {
+  font-size: 2rem;
+  color: #111827;
+  margin-bottom: 20px;
+}
+
+/* ==========================
+   TABELA
+========================== */
+
+.estoque-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.estoque-table thead {
+  background: #111827;
+  color: white;
+}
+
+.estoque-table th {
+  padding: 18px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.estoque-table td {
+  padding: 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.estoque-table tbody tr {
+  transition: 0.3s;
+}
+
+.estoque-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* ==========================
+   STATUS
+========================== */
+
+.baixo {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.ok {
+  background: #dcfce7;
+  color: #16a34a;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+/* ==========================
+   RESPONSIVO TABLET
+========================== */
+
+@media (max-width: 768px) {
+
+  .estoque-container {
+    padding: 15px;
+  }
+
+  .estoque-container h1 {
+    font-size: 1.5rem;
+  }
+
+  .estoque-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
+/* ==========================
+   RESPONSIVO CELULAR
+========================== */
+
+@media (max-width: 480px) {
+
+  .estoque-container h1 {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  .btn-voltar {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .estoque-table,
+  .estoque-table thead,
+  .estoque-table tbody,
+  .estoque-table th,
+  .estoque-table td,
+  .estoque-table tr {
+    display: block;
+  }
+
+  .estoque-table thead {
+    display: none;
+  }
+
+  .estoque-table {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .estoque-table tr {
+    background: white;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+  }
+
+  .estoque-table td {
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    white-space: normal;
+  }
+
+  .estoque-table td:nth-child(1)::before {
+    content: "Produto";
+    font-weight: bold;
+    color: #555;
+  }
+
+  .estoque-table td:nth-child(2)::before {
+    content: "Estoque";
+    font-weight: bold;
+    color: #555;
+  }
+
+  .estoque-table td:nth-child(3)::before {
+    content: "Status";
+    font-weight: bold;
+    color: #555;
+  }
+}

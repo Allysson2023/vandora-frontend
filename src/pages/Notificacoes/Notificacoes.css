@@ -1,0 +1,44 @@
+.pagina-notificacoes{
+    width: 100%;
+    min-height: 100vh;
+    background: #f5f6fa;
+    padding: 20px;
+}
+
+.topo-notificacoes{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.btn-voltar{
+    border: none;
+    background: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.lista-notificacoes{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.card-notificacao{
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.card-notificacao h3{
+    margin-bottom: 8px;
+    color: #222;
+}
+
+.card-notificacao p{
+    color: #555;
+}

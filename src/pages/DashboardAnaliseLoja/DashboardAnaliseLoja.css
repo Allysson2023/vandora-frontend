@@ -1,0 +1,107 @@
+.adl-wrapper{
+    min-height:100vh;
+    padding:30px;
+    background:linear-gradient(135deg,#0f172a,#1e293b);
+    color:white;
+    font-family:"Segoe UI",sans-serif;
+}
+
+.adl-topBar{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    margin-bottom:30px;
+    flex-wrap:wrap;
+}
+
+.adl-topBar h1{
+    margin:0;
+    font-size:32px;
+}
+
+.adl-topBar p{
+    margin-top:5px;
+    color:#94a3b8;
+}
+
+.adl-returnBtn{
+    border:none;
+    background:#334155;
+    color:white;
+    padding:12px 18px;
+    border-radius:12px;
+    cursor:pointer;
+}
+
+.adl-returnBtn:hover{
+    background:#475569;
+}
+
+.adl-kpiGrid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.adl-kpiCard{
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
+    backdrop-filter:blur(10px);
+    border-radius:18px;
+    padding:25px;
+}
+
+.adl-kpiCard span{
+    display:block;
+    color:#94a3b8;
+    margin-bottom:10px;
+}
+
+.adl-kpiCard strong{
+    font-size:28px;
+}
+
+.adl-analysisSection{
+    margin-top:30px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.adl-analysisCard{
+    background:rgba(255,255,255,0.05);
+    border-radius:18px;
+    padding:25px;
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.adl-good{
+    color:#22c55e;
+    font-weight:bold;
+}
+
+.adl-medium{
+    color:#facc15;
+    font-weight:bold;
+}
+
+.adl-bad{
+    color:#ef4444;
+    font-weight:bold;
+}
+
+.adl-summaryList{
+    padding-left:18px;
+}
+
+.adl-summaryList li{
+    margin-bottom:10px;
+}
+
+.adl-loadingScreen{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:22px;
+}

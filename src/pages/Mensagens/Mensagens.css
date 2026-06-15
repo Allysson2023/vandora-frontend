@@ -1,0 +1,169 @@
+/* =========================
+   CONTAINER
+========================= */
+
+.mensagens-container {
+    min-height: 100vh;
+    background: #0f172a;
+    padding: 20px;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* =========================
+   TITULO
+========================= */
+
+.mensagens-container h2 {
+    margin-bottom: 25px;
+    font-size: 28px;
+}
+
+/* =========================
+   CARD CHAT
+========================= */
+
+.chat-card {
+
+    background: #1e293b;
+
+    border-radius: 14px;
+
+    padding: 18px;
+
+    margin-bottom: 15px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+    border: 1px solid transparent;
+}
+
+.chat-card:hover {
+
+    background: #334155;
+
+    border-color: #2563eb;
+
+    transform: translateY(-2px);
+}
+
+/* =========================
+   NOME LOJA
+========================= */
+
+.chat-card h3 {
+
+    margin: 0;
+
+    margin-bottom: 8px;
+
+    font-size: 18px;
+
+    color: white;
+}
+
+/* =========================
+   ULTIMA MSG
+========================= */
+
+.chat-card p {
+
+    margin: 0;
+
+    color: #cbd5e1;
+
+    font-size: 14px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* =========================
+   SEM CONVERSA
+========================= */
+
+.mensagens-container p {
+
+    color: #94a3b8;
+}
+
+
+/* =========================
+   TOPO
+========================= */
+
+.topo-mensagens {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 25px;
+
+    flex-wrap: wrap;
+}
+
+/* =========================
+   BOTÃO VOLTAR
+========================= */
+
+.btn-voltar {
+
+    background: #2563eb;
+
+    border: none;
+
+    color: white;
+
+    padding: 10px 16px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    transition: 0.3s;
+}
+
+.btn-voltar:hover {
+
+    background: #1d4ed8;
+
+    transform: translateY(-2px);
+}
+
+
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media (max-width: 768px) {
+
+    .mensagens-container {
+        padding: 15px;
+    }
+
+    .mensagens-container h2 {
+        font-size: 24px;
+    }
+
+    .chat-card {
+        padding: 15px;
+    }
+
+    .chat-card h3 {
+        font-size: 16px;
+    }
+
+    .chat-card p {
+        font-size: 13px;
+    }
+
+}

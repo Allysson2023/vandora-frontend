@@ -1,0 +1,449 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.admin-page{
+  min-height: 100vh;
+
+  padding: 100px 30px 40px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0f172a,
+      #111827,
+      #1e293b
+    );
+}
+
+/* =========================
+   TÍTULO
+========================= */
+
+.admin-page h1{
+  color: white;
+
+  font-size: 38px;
+
+  margin-bottom: 30px;
+
+  text-align: center;
+
+  text-shadow:
+    0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* =========================
+   CARD
+========================= */
+
+.admin-card{
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  backdrop-filter: blur(10px);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  padding: 18px;
+
+  margin-bottom: 18px;
+
+  border-radius: 22px;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.25);
+
+  transition: 0.25s;
+}
+
+.admin-card:hover{
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 15px 35px rgba(0,0,0,0.35);
+}
+
+/* =========================
+   ESQUERDA
+========================= */
+
+.admin-card img{
+  width: 90px;
+  height: 90px;
+
+  object-fit: cover;
+
+  border-radius: 18px;
+
+  border: 2px solid rgba(255,255,255,0.1);
+}
+
+.admin-card h3{
+  color: white;
+
+  font-size: 22px;
+
+  margin-bottom: 8px;
+}
+
+.admin-card p{
+  color: #22c55e;
+
+  font-size: 20px;
+
+  font-weight: bold;
+}
+
+/* =========================
+   BOTÕES
+========================= */
+
+.admin-buttons{
+  display: flex;
+
+  gap: 12px;
+}
+
+.admin-buttons button{
+  border: none;
+
+  padding: 12px 18px;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  font-weight: bold;
+
+  transition: 0.25s;
+}
+
+/* editar */
+
+.admin-buttons button:first-child{
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #1d4ed8
+    );
+
+  color: white;
+}
+
+.admin-buttons button:first-child:hover{
+  transform: translateY(-2px);
+}
+
+/* excluir */
+
+.admin-buttons button:last-child{
+  background:
+    linear-gradient(
+      135deg,
+      #ef4444,
+      #dc2626
+    );
+
+  color: white;
+}
+
+.admin-buttons button:last-child:hover{
+  transform: translateY(-2px);
+}
+
+/* =========================
+   BOTÃO VOLTAR
+========================= */
+
+.btn-back{
+  position: fixed;
+
+  top: 20px;
+  left: 20px;
+
+  border: none;
+
+  padding: 14px 20px;
+
+  border-radius: 16px;
+
+  background:
+    rgba(255,255,255,0.12);
+
+  backdrop-filter: blur(10px);
+
+  color: white;
+
+  cursor: pointer;
+
+  font-weight: bold;
+
+  z-index: 999;
+
+  border:
+    1px solid rgba(255,255,255,0.1);
+
+  transition: 0.25s;
+}
+
+.btn-back:hover{
+  transform: translateY(-2px);
+
+  background:
+    rgba(255,255,255,0.18);
+}
+
+.paginacao{
+  display: flex;
+
+  justify-content: center;
+
+  gap: 15px;
+
+  margin-top: 40px;
+}
+
+.btn-page{
+  border: none;
+
+  padding: 14px 22px;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #1d4ed8
+    );
+
+  color: white;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: 0.25s;
+}
+
+.btn-page:hover{
+  transform: translateY(-2px);
+}
+
+.search-box{
+  width: 100%;
+
+  margin-bottom: 30px;
+
+  display: flex;
+
+  justify-content: center;
+}
+
+.search-box input{
+  width: 100%;
+
+  max-width: 500px;
+
+  padding: 16px 20px;
+
+  border-radius: 16px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  outline: none;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  backdrop-filter: blur(10px);
+
+  color: white;
+
+  font-size: 15px;
+
+  transition: 0.25s;
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.2);
+}
+
+.search-box input::placeholder{
+  color: rgba(255,255,255,0.6);
+}
+
+.search-box input:focus{
+  border-color: #3b82f6;
+
+  transform: translateY(-2px);
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal-overlay{
+  position: fixed;
+
+  inset: 0;
+
+  background:
+    rgba(0,0,0,0.6);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  z-index: 9999;
+
+  backdrop-filter: blur(5px);
+}
+
+.modal-delete{
+  width: 90%;
+  max-width: 420px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #111827,
+      #1f2937
+    );
+
+  border-radius: 24px;
+
+  padding: 30px;
+
+  color: white;
+
+  text-align: center;
+
+  box-shadow:
+    0 20px 40px rgba(0,0,0,0.4);
+
+  animation: modalShow 0.25s ease;
+}
+
+.modal-delete h2{
+  margin-bottom: 15px;
+
+  font-size: 28px;
+}
+
+.modal-delete p{
+  opacity: 0.8;
+
+  margin-bottom: 10px;
+}
+
+.modal-delete strong{
+  display: block;
+
+  margin-bottom: 25px;
+
+  font-size: 20px;
+
+  color: #f87171;
+}
+
+.modal-actions{
+  display: flex;
+
+  gap: 15px;
+}
+
+.modal-actions button{
+  flex: 1;
+
+  border: none;
+
+  padding: 14px;
+
+  border-radius: 14px;
+
+  cursor: pointer;
+
+  font-weight: bold;
+
+  transition: 0.25s;
+}
+
+/* cancelar */
+
+.btn-cancelar{
+  background: #374151;
+
+  color: white;
+}
+
+/* excluir */
+
+.btn-confirmar{
+  background:
+    linear-gradient(
+      135deg,
+      #ef4444,
+      #dc2626
+    );
+
+  color: white;
+}
+
+.modal-actions button:hover{
+  transform: translateY(-2px);
+}
+
+@keyframes modalShow{
+
+  from{
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to{
+    opacity: 1;
+    transform: scale(1);
+  }
+
+}
+
+@media(max-width: 700px){
+
+  .admin-card{
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+  .admin-buttons{
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .admin-buttons button{
+    width: 100%;
+  }
+
+}

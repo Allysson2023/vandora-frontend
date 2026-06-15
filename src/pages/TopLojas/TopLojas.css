@@ -1,0 +1,62 @@
+.tl-wrapper{
+    max-width:1200px;
+    margin:auto;
+    padding:30px;
+}
+
+.tl-header{
+    display:flex;
+    gap:20px;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.tl-backBtn{
+    border:none;
+    padding:10px 18px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.tl-ranking{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.tl-card{
+    background:#fff;
+    border-radius:18px;
+    padding:20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+.tl-position{
+    font-size:30px;
+    width:70px;
+    text-align:center;
+}
+
+.tl-info h3{
+    margin:0;
+}
+
+.tl-info span{
+    color:#777;
+}
+
+.tl-metrics{
+    text-align:right;
+}
+
+.tl-metrics strong{
+    display:block;
+    font-size:22px;
+}
+
+.tl-metrics small{
+    color:#666;
+}

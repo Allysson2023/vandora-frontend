@@ -1,0 +1,61 @@
+.about-wrapper {
+  padding: 60px 20px;
+  min-height: 100vh;
+  background: #0b1220;
+  color: white;
+  text-align: center;
+}
+
+.about-hero { margin-bottom: 60px; }
+.about-hero h1 { font-size: 3rem; margin-bottom: 15px; }
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.about-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 30px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: 0.3s;
+}
+
+.about-card:hover { transform: translateY(-10px); background: rgba(79, 70, 229, 0.1); }
+.icon { font-size: 3rem; margin-bottom: 15px; }
+
+.about-cta { margin-top: 60px; }
+.about-cta button {
+  padding: 15px 40px;
+  background: #4f46e5;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.about-back-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 14px;
+}
+
+.about-back-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(-5px);
+}

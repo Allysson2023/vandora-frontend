@@ -1,0 +1,183 @@
+*{
+    box-sizing:border-box;
+}
+
+.perfil-container{
+    min-height:100vh;
+    background:#f5f7fb;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.perfil-card{
+    width:100%;
+    max-width:650px;
+}
+
+.perfil-header{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.perfil-header h1{
+    font-size:2rem;
+    color:#111827;
+    margin-bottom:8px;
+}
+
+.perfil-header p{
+    color:#6b7280;
+    font-size:15px;
+}
+
+.perfil-form{
+    background:#fff;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 8px 30px rgba(0,0,0,.08);
+
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.foto-container{
+    display:flex;
+    justify-content:center;
+    margin-bottom:10px;
+}
+
+.preview-perfil{
+    width:140px;
+    height:140px;
+    object-fit:cover;
+    border-radius:50%;
+    border:5px solid #fff;
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+}
+
+.label-upload{
+    font-weight:600;
+    color:#374151;
+}
+
+.perfil-form input,
+.perfil-form select{
+    width:100%;
+    padding:14px;
+    border:1px solid #d1d5db;
+    border-radius:12px;
+    font-size:15px;
+    transition:.3s;
+    background:#fff;
+}
+
+.perfil-form input:focus,
+.perfil-form select:focus{
+    outline:none;
+    border-color:#2563eb;
+    box-shadow:0 0 0 4px rgba(37,99,235,.15);
+}
+
+.mensagem{
+    background:#fef3c7;
+    color:#92400e;
+    padding:12px;
+    border-radius:10px;
+    text-align:center;
+    font-weight:600;
+}
+
+.botoes{
+    display:flex;
+    gap:12px;
+    margin-top:10px;
+}
+
+.botoes button{
+    flex:1;
+    border:none;
+    border-radius:12px;
+    padding:14px;
+    cursor:pointer;
+    font-weight:700;
+    transition:.3s;
+}
+
+.btn-voltar{
+    background:#374151;
+    color:white;
+}
+
+.btn-voltar:hover{
+    background:#1f2937;
+    transform:translateY(-2px);
+}
+
+.btn-salvar{
+    background:#2563eb;
+    color:white;
+}
+
+.btn-salvar:hover{
+    background:#1d4ed8;
+    transform:translateY(-2px);
+}
+
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media(max-width:768px){
+
+    .perfil-header h1{
+        font-size:1.8rem;
+    }
+
+    .perfil-form{
+        padding:25px;
+    }
+
+}
+
+/* =========================
+   CELULAR
+========================= */
+
+@media(max-width:480px){
+
+    .perfil-container{
+        padding:12px;
+    }
+
+    .perfil-header h1{
+        font-size:1.5rem;
+    }
+ 
+    .perfil-header p{
+        font-size:14px;
+    }
+
+    .perfil-form{
+        padding:20px;
+        border-radius:16px;
+    }
+
+    .preview-perfil{
+        width:110px;
+        height:110px;
+    }
+
+    .botoes{
+        flex-direction:column;
+    }
+
+    .botoes button{
+        width:100%;
+    }
+
+}

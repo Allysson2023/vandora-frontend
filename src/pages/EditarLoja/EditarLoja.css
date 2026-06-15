@@ -1,0 +1,359 @@
+/* =========================
+   PAGE
+========================= */
+
+.edit-loja-page {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #f8fafc, #eef2ff);
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.edit-loja-card {
+    width: 100%;
+    max-width: 700px;
+
+    background: white;
+
+    border-radius: 22px;
+
+    padding: 35px;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.08),
+        0 2px 10px rgba(0,0,0,0.05);
+
+    transition: 0.3s;
+}
+
+.edit-loja-card:hover {
+    transform: translateY(-2px);
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.edit-loja-card h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #111827;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 22px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+
+    padding: 14px 16px;
+
+    border-radius: 12px;
+
+    border: 1px solid #d1d5db;
+
+    background: #fff;
+
+    font-size: 15px;
+
+    transition: all 0.3s ease;
+
+    outline: none;
+}
+
+.form-group textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 4px rgba(37,99,235,0.12);
+}
+
+/* =========================
+   BOTÃO SALVAR
+========================= */
+
+.edit-loja-card button {
+    width: 100%;
+
+    border: none;
+
+    padding: 15px;
+
+    border-radius: 14px;
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #1d4ed8
+    );
+
+    color: white;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.edit-loja-card button:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+}
+
+.edit-loja-card button:active {
+    transform: scale(0.98);
+}
+
+/* =========================
+   BOTÃO VOLTAR
+========================= */
+
+.btn-back {
+    position: fixed;
+
+    top: 20px;
+    left: 20px;
+
+    border: none;
+
+    background: #111827;
+
+    color: white;
+
+    padding: 12px 18px;
+
+    border-radius: 12px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    z-index: 999;
+
+    transition: 0.3s;
+}
+
+.btn-back:hover {
+    background: #1f2937;
+    transform: translateY(-2px);
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0,0,0,0.6);
+
+    backdrop-filter: blur(4px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999;
+}
+
+.modal-box {
+    width: 90%;
+    max-width: 430px;
+
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 28px;
+
+    text-align: center;
+
+    animation: modalShow 0.25s ease;
+}
+
+@keyframes modalShow {
+
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+}
+
+.modal-box h2 {
+    color: #111827;
+    margin-bottom: 12px;
+}
+
+.modal-box p {
+    color: #6b7280;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-cancel,
+.btn-confirm {
+    flex: 1;
+
+    border: none;
+
+    padding: 12px;
+
+    border-radius: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.btn-cancel {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+.btn-cancel:hover {
+    background: #d1d5db;
+}
+
+.btn-confirm {
+    background: #2563eb;
+    color: white;
+}
+
+.btn-confirm:hover {
+    background: #1d4ed8;
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 768px) {
+
+    .edit-loja-page {
+        padding: 25px 15px;
+    }
+
+    .edit-loja-card {
+        padding: 25px;
+    }
+
+    .edit-loja-card h1 {
+        font-size: 1.8rem;
+    }
+
+}
+
+/* =========================
+   CELULARES
+========================= */
+
+@media (max-width: 480px) {
+
+    .edit-loja-page {
+        padding: 15px 10px;
+    }
+
+    .edit-loja-card {
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+    .edit-loja-card h1 {
+        font-size: 1.5rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: 13px;
+        font-size: 14px;
+    }
+
+    .btn-back {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    width: auto;
+}
+
+    .modal-actions {
+        flex-direction: column;
+    }
+
+    .btn-cancel,
+    .btn-confirm {
+        width: 100%;
+    }
+
+}
+
+/* =========================
+   CELULARES PEQUENOS
+========================= */
+
+@media (max-width: 360px) {
+
+    .edit-loja-card {
+        padding: 15px;
+    }
+
+    .edit-loja-card h1 {
+        font-size: 1.3rem;
+    }
+
+    .form-group label {
+        font-size: 13px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        font-size: 13px;
+        padding: 12px;
+    }
+
+}

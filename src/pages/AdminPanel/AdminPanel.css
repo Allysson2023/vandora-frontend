@@ -1,0 +1,69 @@
+.ux-page-wrapper {
+  background: #f8fafc;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.ux-glass-card {
+  background: white;
+  width: 100%;
+  max-width: 450px;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08);
+}
+
+.ux-text-header h1 { color: #1e293b; margin: 0 0 8px; }
+.ux-text-header p { color: #64748b; font-size: 14px; margin-bottom: 24px; }
+
+.ux-form-grid { display: flex; flex-direction: column; gap: 16px; }
+
+.ux-form-grid input {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.ux-password-wrapper { position: relative; }
+.ux-password-wrapper button {
+  position: absolute; right: 12px; top: 12px;
+  background: none; border: none; cursor: pointer;
+}
+
+.ux-btn-primary {
+  background: #4f46e5;
+  color: white;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Estilo do Modal */
+.ux-modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  display: flex; align-items: center; justify-content: center;
+}
+
+.ux-modal-box {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 350px;
+}
+
+.ux-modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+.ux-btn-confirm { flex: 1; padding: 10px; background: #22c55e; color: white; border: none; border-radius: 8px; }
+.ux-btn-cancel { flex: 1; padding: 10px; background: #e2e8f0; border: none; border-radius: 8px; }
+.ux-toast { padding: 12px; border-radius: 8px; font-size: 13px; text-align: center; margin-top: 10px; }
+.ux-toast-success { background: #dcfce7; color: #166534; }
+.ux-toast-error { background: #fee2e2; color: #991b1b; }
+.ux-back-link { background: none; border: none; color: #64748b; cursor: pointer; margin-bottom: 10px; font-size: 13px; }

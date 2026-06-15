@@ -1,0 +1,195 @@
+.funcionario-container {
+    max-width: 1300px;
+    margin: auto;
+    padding: 30px;
+}
+
+/* =======================
+   TOPO
+======================= */
+
+.topo-dashboard {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.btn-voltarr {
+    background: #111827;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-voltarr:hover {
+    background: #000;
+    transform: translateY(-2px);
+}
+
+.topo-dashboard h1 {
+    margin: 0;
+    font-size: 2rem;
+    color: #111827;
+}
+
+.topo-dashboard p {
+    margin-top: 6px;
+    color: #6b7280;
+}
+
+/* =======================
+   RESUMO
+======================= */
+
+.resumo-dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 35px;
+}
+
+.resumo-card {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(37, 99, 235, .25);
+    transition: .3s;
+}
+
+.resumo-card:hover {
+    transform: translateY(-5px);
+}
+
+.resumo-card h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.resumo-card span {
+    display: block;
+    margin-top: 15px;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* =======================
+   CARDS
+======================= */
+
+.cards-dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.card-funcionario {
+    background: white;
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 8px 25px rgba(0,0,0,.08);
+    transition: .3s;
+    border: 1px solid #f1f5f9;
+}
+
+.card-funcionario:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0,0,0,.12);
+}
+
+.icone-card {
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    background: #eff6ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    margin-bottom: 18px;
+}
+
+.card-funcionario h2 {
+    margin-bottom: 12px;
+    color: #111827;
+    font-size: 1.2rem;
+}
+
+.card-funcionario p {
+    color: #6b7280;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.card-funcionario button {
+    width: 100%;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.card-funcionario button:hover {
+    background: #1d4ed8;
+}
+
+/* =======================
+   RESPONSIVO
+======================= */
+
+@media (max-width: 768px) {
+
+    .funcionario-container {
+        padding: 15px;
+    }
+
+    .topo-dashboard {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .topo-dashboard h1 {
+        font-size: 1.6rem;
+    }
+
+    .resumo-card span {
+        font-size: 1.6rem;
+    }
+
+    .cards-dashboard {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .btn-voltarr {
+        width: 100%;
+    }
+
+    .card-funcionario {
+        padding: 20px;
+    }
+
+    .icone-card {
+        width: 55px;
+        height: 55px;
+        font-size: 24px;
+    }
+
+    .card-funcionario h2 {
+        font-size: 1.1rem;
+    }
+}

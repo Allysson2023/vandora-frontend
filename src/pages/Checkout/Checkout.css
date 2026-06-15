@@ -1,0 +1,150 @@
+.pagina-checkout {
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.checkout-container {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.sessao-checkout {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn-group-tipo {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-group-tipo button {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+  cursor: pointer;
+}
+
+.btn-group-tipo button.active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.checkout-col-dados input, 
+.checkout-col-dados select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.cep-row {
+  display: flex;
+  gap: 10px;
+}
+
+/* Estilo do Resumo (Lado Direito) */
+.card-resumo {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 20px;
+}
+
+.item-resumo {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}
+
+.linha-total {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+.total-destaque {
+  font-size: 1.2rem;
+  color: #2c3e50;
+  border-top: 2px solid #eee;
+  padding-top: 10px;
+}
+
+.btn-confirmar-final {
+  width: 100%;
+  padding: 15px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 20px;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-confirmacao {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 300px;
+}
+
+.btn-modal-group {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.btn-sim {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-modal-group button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Cor para o botão de cancelar */
+.btn-modal-group button:first-child {
+  background-color: #6c757d;
+  color: white;
+}
+
+/* Responsividade: para telas menores */
+@media (max-width: 768px) {
+  .checkout-container {
+    grid-template-columns: 1fr;
+  }
+  .modal-confirmacao {
+    width: 90%;
+  }
+}
