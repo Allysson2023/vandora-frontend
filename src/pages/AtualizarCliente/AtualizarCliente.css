@@ -78,6 +78,7 @@
     color: white;
 
     outline: none;
+    box-sizing: border-box;
 }
 
 .atualizar-form input:focus{
@@ -232,6 +233,45 @@ button:disabled {
     object-fit:cover;
     margin:10px auto;
     display:block;
+}
+
+/* 2. Container do campo de senha (tem que ser relativo!) */
+.input-senha-container {
+    position: relative !important;
+    width: 100% !important;
+    display: flex;
+    align-items: center;
+}
+
+/* O input ocupa 100% mas reservamos espaço para o ícone */
+.input-estilizado {
+    width: 100%;
+    padding-right: 50px !important; /* IMPORTANTE: Deixa o texto livre à esquerda */
+}
+
+/* Posicionamento do botão na lateral */
+.btn-olho {
+    position: absolute !important;
+    right: 0px !important;        /* Gruda na direita do container */
+    top: 50% !important;
+    transform: translateY(-50%) !important; /* Centraliza verticalmente no meio do campo */
+    
+    width: 50px !important;      /* Largura fixa do botão */
+    height: 100% !important;     /* Altura preenche todo o campo */
+    
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer;
+    z-index: 10;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.btn-olho:hover {
+    transform: scale(1.1); /* Um efeito leve ao passar o mouse */
 }
 
 /* Mobile */

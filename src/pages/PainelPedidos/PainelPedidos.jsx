@@ -216,7 +216,7 @@ const bloqueado = status !== "aguardando_confirmacao";
                                 <div className="pedido-info">
 
                                     <p>Tipo: <strong>{pedido.tipo_pedido}</strong></p>
-                                    <p>Total: <strong>R$ {pedido.total}</strong></p>
+                                    <p>Total: <strong>R$ {pedido.total_final}</strong></p>
 
                                 </div>
 

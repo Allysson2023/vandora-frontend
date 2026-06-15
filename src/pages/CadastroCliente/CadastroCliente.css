@@ -335,6 +335,9 @@
 .toggle-password-btn:hover {
     transform: scale(1.1);
 }
+.cadastro-subtitulo {
+    color: white;
+}
 
 /* =========================
    TABLET

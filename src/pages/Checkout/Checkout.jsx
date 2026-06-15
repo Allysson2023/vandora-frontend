@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { obterItensCarrinho, calcularFrete } from './CartService';
-import "./Checkout.css"; // Crie este CSS baseado no seu estilo
+import { obterItensCarrinho } from './CartService';
+import "./Checkout.css";
 
 function Checkout() {
   const navigate = useNavigate();
@@ -10,34 +10,28 @@ function Checkout() {
   const [carrinho, setCarrinho] = useState([]);
   const [tipoPedido, setTipoPedido] = useState("entrega");
   const [lojaId, setLojaId] = useState(null);
-  const [kmDistancia, setKmDistancia] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [lojaConfig, setLojaConfig] = useState({ aceitaEntrega: true, aceitaRetirada: true, taxaEntrega: 0 });
-  
+  const [lojaConfig, setLojaConfig] = useState({ aceitaEntrega: true, aceitaRetirada: true });
   const [form, setForm] = useState({
-    nome: "",  endereco: "", numero: "", bairro: "", pagamento: "", cpf: "", observacao: ""
+    nome: "", endereco: "", numero: "", bairro: "", pagamento: "", cpf: "", observacao: ""
   });
-
   const [modalConfirmacao, setModalConfirmacao] = useState(false);
 
-// Altere sua função de finalizar para ser chamada apenas pelo modal
-const confirmarEnvioDoPedido = () => {
-    setModalConfirmacao(true); // Abre o modal em vez de enviar direto
-};
+  // --- CÁLCULOS (Apenas uma declaração) ---
+  const TAXA_SERVICO_PERCENTUAL = 0.03;
+  const totalProdutos = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
+  const taxaServico = totalProdutos * TAXA_SERVICO_PERCENTUAL;
+  const valorFrete = 0; // Se o frete for fixo
+  const totalFinal = totalProdutos + taxaServico + valorFrete;
+
+  const confirmarEnvioDoPedido = () => setModalConfirmacao(true);
 
   const isFormValid = () => {
-  if (!form.nome || !form.pagamento) return false;
-  
-  if (tipoPedido === "entrega") {
-    return form.endereco && form.numero && form.bairro;
-  }
-  
-  if (tipoPedido === "retirada") {
-    return form.cpf; // Exige CPF se for retirada
-  }
-  
-  return true;
-};
+    if (!form.nome || !form.pagamento) return false;
+    if (tipoPedido === "entrega") return form.endereco && form.numero && form.bairro;
+    if (tipoPedido === "retirada") return form.cpf;
+    return true;
+  };
 
   useEffect(() => {
     const carregarDados = async () => {
@@ -49,13 +43,11 @@ const confirmarEnvioDoPedido = () => {
       setLojaId(loja.store_id || loja.loja_id || loja.id);
       setLojaConfig({
         aceitaEntrega: !!loja.aceita_entrega,
-        aceitaRetirada: !!loja.aceita_retirada,
-        taxaEntrega: 0 // Começa em 0 até calcular
+        aceitaRetirada: !!loja.aceita_retirada
       });
     };
     carregarDados();
   }, [token]);
-
 
   const finalizarCompra = async () => {
     setLoading(true);
@@ -64,7 +56,6 @@ const confirmarEnvioDoPedido = () => {
         produtos: carrinho.map(item => ({ produto_id: item.product_id, quantidade: item.quantidade, preco: item.preco })),
         tipoPedido,
         dadosEntrega: form
-        
     };
 
     try {
@@ -86,9 +77,6 @@ const confirmarEnvioDoPedido = () => {
       setLoading(false);
     }
   };
-
-  const totalProdutos = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
-  const totalFinal = totalProdutos + (tipoPedido === "entrega" ? lojaConfig.taxaEntrega : 0);
 
   return (
     <div className="pagina-checkout">
@@ -139,7 +127,7 @@ const confirmarEnvioDoPedido = () => {
             <select value={form.pagamento} onChange={e => setForm({...form, pagamento: e.target.value})}>
               <option value="">Selecione...</option>
               <option value="pix">Pix</option>
-              <option value="cartao">Cartão na Entrega</option>
+              <option value="cartao">Cartão Debito/Credito</option>
               <option value="dinheiro">Dinheiro</option>
             </select>
           </section>
@@ -147,33 +135,45 @@ const confirmarEnvioDoPedido = () => {
 
         {/* Lado Direito: Resumo */}
         <div className="checkout-col-resumo">
-          <div className="card-resumo">
-            <h3>Resumo do Pedido</h3>
-            {carrinho.map(item => (
-              <div key={item.product_id} className="item-resumo">
-                <span>{item.quantidade}x {item.nome}</span>
-                <span>R$ {(item.preco * item.quantidade).toFixed(2)}</span>
-              </div>
-            ))}
-            <hr />
-            <div className="linha-total">
-              <span>Produtos:</span>
-              <span>R$ {totalProdutos.toFixed(2)}</span>
-            </div>
-            
-            <div className="linha-total total-destaque">
-              <span>Total:</span>
-              <span>R$ {totalFinal.toFixed(2)}</span>
-            </div>
-           {/* O BOTÃO AGORA CHAMA O MODAL */}
-<button 
-  className="btn-confirmar-final" 
-  disabled={loading || !isFormValid()} 
-  onClick={confirmarEnvioDoPedido}
->
-  {loading ? "Processando..." : "Confirmar e Enviar Pedido"}
-</button>
-          </div>
+
+ <div className="card-resumo">
+    <h3>Resumo do Pedido</h3>
+    
+    {carrinho.map(item => (
+        <div key={item.product_id} className="item-resumo">
+            <span>{item.quantidade}x {item.nome}</span>
+            <span>R$ {(item.preco * item.quantidade).toFixed(2)}</span>
+        </div>
+    ))}
+
+    <hr />
+
+    <div className="linha-total">
+        <span>Subtotal:</span>
+        <span>R$ {totalProdutos.toFixed(2)}</span>
+    </div>
+    <div className="linha-total">
+        <span>Taxa de Serviço (3%):</span>
+        <span>R$ {taxaServico.toFixed(2)}</span>
+    </div>
+    <div className="linha-total">
+        <span>Frete:</span>
+        <span>Grátis</span>
+    </div>
+
+    <div className="linha-total total-destaque">
+        <span>Total a Pagar:</span>
+        <span>R$ {totalFinal.toFixed(2)}</span>
+    </div>
+
+    <button 
+        className="btn-confirmar-final" 
+        disabled={loading || !isFormValid()} 
+        onClick={confirmarEnvioDoPedido}
+    >
+        {loading ? "Processando..." : "Confirmar Pedido"}
+    </button>
+</div>
         </div>
       </div>
 

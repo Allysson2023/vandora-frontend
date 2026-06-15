@@ -92,10 +92,8 @@ function MeusPedidos() {
       <h3>Pedido #{pedido.id}</h3>
 
       <span className="pedido-total">
-        R$ {Number(pedido.total).toLocaleString("pt-BR", {
-          style: "currency",
-          currency: "BRL"
-        })}
+      <div>Total: R$ {parseFloat(pedido.total_final).toFixed(2)}</div>
+    
       </span>
     </div>
 

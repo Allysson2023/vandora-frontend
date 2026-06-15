@@ -259,7 +259,8 @@ const podeAbrirChat = ["aceito", "separação", "em Rota"].includes(pedido?.stat
 
             <div className="footer-pedido">
 
-                <h2>Total: R$ {pedido.total}</h2>
+    <small>(Subtotal: R$ {pedido.total} + Taxa: R$ {pedido.taxa_servico})</small>
+                <h2>Total: R$ {parseFloat(pedido.total_final).toFixed(2)}</h2>
 
             </div>
 

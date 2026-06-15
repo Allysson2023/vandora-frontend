@@ -24,6 +24,7 @@ function AtualizarCliente() {
     const [mostrarModal, setMostrarModal] = useState(false);
 
     const [imagem, setImagem] = useState(null);
+    const [mostrarSenha, setMostrarSenha] = useState(false);
 
     const abrirConfirmacao = (e) => {
     e.preventDefault();
@@ -203,17 +204,27 @@ const houveAlteracao =
                     }
                 />
 
-                <input
-                    type="password"
-                    placeholder="Nova senha (opcional)"
-                    value={password}
-                    onChange={(e) => {
-    setPassword(e.target.value);
-    setSenhaAlterada(
-        e.target.value.trim().length > 0
-    );
-}}
-                />
+ <div className="input-senha-container">
+    <input
+        type={mostrarSenha ? "text" : "password"}
+        placeholder="Nova senha (opcional)"
+        value={password}
+        className="input-estilizado"
+        onChange={(e) => {
+            setPassword(e.target.value);
+            setSenhaAlterada(e.target.value.trim().length > 0);
+        }}
+    />
+    <button
+        type="button"
+        className="btn-olho"
+        onClick={() => setMostrarSenha(!mostrarSenha)}
+    >
+        {mostrarSenha ? "👁️‍🗨️" : "👁️"}
+    </button>
+</div>
+
+
                 <small className="senha-info">
     A senha deve ter pelo menos 6 caracteres,
     uma letra maiúscula e um número.

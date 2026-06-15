@@ -51,8 +51,8 @@ function CadastroCliente() {
             <form className="cadastro-form" onSubmit={cadastrar}> 
                 
                 <h2>Vandora - AC</h2>
-                
                 <p className="cadastro-subtitulo">Crie sua conta e aproveite as melhores ofertas.</p>
+                 
                 
                 <input
                     type="text"

@@ -254,7 +254,7 @@ console.log(data);
 
             <div className="footer-admin">
                 <h2>
-    Total: {Number(pedido.total).toLocaleString("pt-BR", {
+    Total: {Number(pedido.total_final).toLocaleString("pt-BR", {
         style: "currency",
         currency: "BRL"
     })}
