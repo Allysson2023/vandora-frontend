@@ -18,6 +18,9 @@ import socket from "../../socket";
 
 
 
+
+
+
 function StoreDashboard() {
 
   const { id } = useParams();
@@ -28,6 +31,34 @@ function StoreDashboard() {
   const [loading, setLoading] = useState(true);
   const [atividades, setAtividades] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
+
+  const [modalDescontoAberta, setModalDescontoAberta] = useState(false);
+const [config, setConfig] = useState({
+    desconto_ativo: false,
+    valor_minimo_compra: 0,
+    tipo_desconto: 'porcentagem',
+    valor_desconto: 0
+});
+
+useEffect(() => {
+    if (modalDescontoAberta) {
+        fetch(`http://localhost:5000/api/stores/${id}/desconto-config`, {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data) {
+                setConfig({
+                    desconto_ativo: Boolean(data.desconto_ativo),
+                    valor_minimo_compra: data.valor_minimo_compra || 0,
+                    tipo_desconto: data.tipo_desconto || 'porcentagem',
+                    valor_desconto: data.valor_desconto || 0
+                });
+            }
+        })
+        .catch(err => console.error("Erro ao carregar descontos:", err));
+    }
+}, [modalDescontoAberta, id]);
 
   useEffect(() => {
   if (!user) {
@@ -42,6 +73,8 @@ function StoreDashboard() {
 
   // só depois que carregar resumo você valida loja
 }, [user, id]);
+
+
 
   // =========================
   // 📦 CARREGAR DASHBOARD
@@ -225,6 +258,9 @@ useEffect(() => {
 
 
 
+
+
+
   return (
 
     <div className="dashboard-containerr">
@@ -307,6 +343,14 @@ useEffect(() => {
 
       {/* AÇÕES */}
       <div className="quick-actions">
+ 
+ <div className="quick-card" onClick={() => setModalDescontoAberta(true)}>
+    <span>🏷️</span>
+    <h3>Descontos</h3>
+</div>
+
+ 
+ 
         <div
   className="quick-card"
   onClick={() => navigate(`/loja/${id}/chats`)}
@@ -677,6 +721,82 @@ useEffect(() => {
   )}
 
 </div>
+
+{modalDescontoAberta && (
+    <div className="modal-overlay">
+        <div className="modal-content">
+            <h2 style={{ marginBottom: '20px', textAlign: 'center' }}>🏷️ Configurar Desconto</h2>
+            
+            <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+                <input 
+                    type="checkbox" 
+                    checked={config.desconto_ativo} 
+                    onChange={e => setConfig({...config, desconto_ativo: e.target.checked})} 
+                />
+                <strong>Ativar desconto automático</strong>
+            </label>
+
+            <div className="input-group">
+                <label>Valor Mínimo para liberar (R$)</label>
+                <input 
+                    type="number" 
+                    placeholder="Ex: 100.00" 
+                    value={config.valor_minimo_compra}
+                    onChange={e => setConfig({...config, valor_minimo_compra: e.target.value})} 
+                />
+            </div>
+
+            <div className="input-group">
+                <label>Tipo de Desconto</label>
+                <select 
+                    value={config.tipo_desconto} 
+                    onChange={e => setConfig({...config, tipo_desconto: e.target.value})}
+                >
+                    <option value="porcentagem">Porcentagem (%)</option>
+                    <option value="fixo">Valor Fixo (R$)</option>
+                </select>
+            </div>
+
+            <div className="input-group">
+                <label>Valor do desconto</label>
+                <input 
+                    type="number" 
+                    placeholder={config.tipo_desconto === 'porcentagem' ? "Ex: 10" : "Ex: 20.00"}
+                    value={config.valor_desconto}
+                    onChange={e => setConfig({...config, valor_desconto: e.target.value})} 
+                />
+            </div>
+            
+            <div style={{ display: 'flex', gap: '10px', marginTop: '25px' }}>
+                <button 
+                    className="btn-cancelar" 
+                    onClick={() => setModalDescontoAberta(false)}
+                >
+                    Cancelar
+                </button>
+                <button 
+                    className="btn-salvar"
+                    onClick={async () => {
+                        const res = await fetch(`http://localhost:5000/api/stores/${id}/desconto-config`, {
+                            method: 'PUT',
+                            headers: { 
+                                'Content-Type': 'application/json', 
+                                Authorization: `Bearer ${localStorage.getItem("token")}` 
+                            },
+                            body: JSON.stringify(config)
+                        });
+                        if (res.ok) {
+                            alert("✅ Configurações salvas com sucesso!");
+                            setModalDescontoAberta(false);
+                        }
+                    }}
+                >
+                    Salvar Alterações
+                </button>
+            </div>
+        </div>
+    </div>
+)}
 
       
 

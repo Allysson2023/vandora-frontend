@@ -339,6 +339,102 @@
 }
 
 
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal-content {
+    background: #1e293b; /* Mesma cor dos seus cards */
+    padding: 30px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    color: rgb(238, 0, 0);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+.modal-content h2 {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+}
+
+.modal-content input, 
+.modal-content select {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #334155;
+    background: #0f172a;
+    color: white;
+    font-size: 14px;
+}
+
+.modal-content label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.modal-content button {
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    flex: 1;
+    transition: 0.3s;
+}
+
+.modal-content button:first-child {
+    background: #475569;
+    color: white;
+}
+
+.modal-content button:last-child {
+    background: #22c55e;
+    color: white;
+}
+
+.modal-content button:hover {
+    filter: brightness(1.2);
+}
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 5px;
+}
+
+.input-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #94a3b8; /* Cor suave para leitura */
+}
+
+.btn-cancelar {
+    background: #475569 !important;
+    color: white;
+}
+
+.btn-salvar {
+    background: #22c55e !important;
+    color: white;
+    font-weight: bold;
+}
+
 
 /* =========================
    TABLET

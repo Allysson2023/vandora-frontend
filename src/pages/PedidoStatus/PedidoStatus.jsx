@@ -168,7 +168,7 @@ const podeAbrirChat = ["aceito", "separação", "em Rota"].includes(pedido?.stat
 
             <div className="topo-pedido">
 
-                <button onClick={() => navigate('/')}>
+                <button onClick={() => navigate(-1)}>
                     ← Voltar
                 </button>
 
@@ -259,11 +259,16 @@ const podeAbrirChat = ["aceito", "separação", "em Rota"].includes(pedido?.stat
 
 
             <div className="footer-pedido">
-
-    <small>(Subtotal: R$ {pedido.total} + Taxa: R$ {pedido.taxa_servico})</small>
-                <h2>Total: R$ {parseFloat(pedido.total_final).toFixed(2)}</h2>
-
-            </div>
+    <p>Subtotal: R$ {pedido.total}</p>
+    <p>Taxa de Serviço: R$ {pedido.taxa_servico}</p>
+    
+    {/* ADICIONE ESTA LINHA PARA MOSTRAR O DESCONTO */}
+    {pedido.desconto > 0 && (
+        <p style={{ color: 'green' }}>Desconto aplicado pela Loja: - R$ {parseFloat(pedido.desconto).toFixed(2)}</p>
+    )}
+    
+    <h2>Total: R$ {parseFloat(pedido.total_final).toFixed(2)}</h2>
+</div>
 
             {mostrarModal && (
   <div className="review-backdrop">

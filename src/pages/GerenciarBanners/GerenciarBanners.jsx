@@ -126,23 +126,41 @@ const limparCampos = () => {
       </header>
 
       <section className="upload-section">
+
         <div className="card-form">
-          <h3>Novo Banner / Vídeo</h3>
-          <input 
-            type="text" 
-            placeholder="Título" 
-            value={titulo} 
-            onChange={(e) => setTitulo(e.target.value)} 
-          />
+          {/* Input oculto que o useRef controla */}
+    <input 
+        type="file" 
+        ref={fileInputRef} 
+        onChange={(e) => setImagem(e.target.files[0])} 
+        style={{ display: 'none' }} 
+    />
+    
+    {/* Botão para disparar o clique */}
+    <button 
+        className="btn-selecionar-arquivo" 
+        onClick={() => fileInputRef.current.click()}
+    >
+        {imagem ? imagem.name : "Selecionar Imagem/Vídeo"}
+    </button>
 
-          {/* O SELECT VAI AQUI */}
-          <label>Tipo de mídia:</label>
-          <select value={tipo} onChange={(e) => setTipo(e.target.value)}>
-            <option value="imagem">Imagem</option>
-            <option value="video">Vídeo</option>
-          </select>
+    <input 
+        type="text" 
+        placeholder="Título" 
+        value={titulo} 
+        onChange={(e) => setTitulo(e.target.value)} 
+    />
 
-          <input type="file" ref={fileInputRef}  onChange={(e) => setImagem(e.target.files[0])} />
+    <label style={{ display: 'block', margin: '10px 0 5px' }}>Tipo de mídia:</label>
+<select 
+    value={tipo} 
+    onChange={(e) => setTipo(e.target.value)}
+    style={{ width: '100%', padding: '10px', marginBottom: '15px' }}
+>
+    <option value="imagem">Imagem</option>
+    <option value="video">Vídeo</option>
+</select>
+
 
 <button className="save-btn" onClick={() => setModalConfirmacao({ aberto: true, acao: "cadastrar" })}>
   Publicar Banner

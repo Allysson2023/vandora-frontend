@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { obterItensCarrinho } from './CartService';
 import "./Checkout.css";
@@ -16,14 +16,70 @@ function Checkout() {
     nome: "", endereco: "", numero: "", bairro: "", pagamento: "", cpf: "", observacao: ""
   });
   const [modalConfirmacao, setModalConfirmacao] = useState(false);
+  const [descontoConfig, setDescontoConfig] = useState(null);
 
-  // --- CÁLCULOS (Apenas uma declaração) ---
-  const TAXA_SERVICO_PERCENTUAL = 0.03;
-  const totalProdutos = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
-  const taxaServico = totalProdutos * TAXA_SERVICO_PERCENTUAL;
-  const valorFrete = 0; // Se o frete for fixo
-  const totalFinal = totalProdutos + taxaServico + valorFrete;
+  // --- CÁLCULOS AUTOMÁTICOS ---
+ const { totalProdutos, taxaServico, valorDesconto, totalFinal } = useMemo(() => {
+    const subtotal = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
+    const taxa = subtotal * 0.03;
+    
+    let desconto = 0;
+    
+    // VAMOS VER O QUE TEMOS AQUI (F12 > Console)
+    console.log("Calculando... Subtotal:", subtotal, "Config:", descontoConfig);
 
+    if (descontoConfig && descontoConfig.desconto_ativo) {
+        // Converte valores para número com segurança
+        const minCompra = Number(descontoConfig.valor_minimo_compra || 0);
+        const valorDesc = Number(descontoConfig.valor_desconto || 0);
+
+        if (subtotal >= minCompra) {
+            desconto = descontoConfig.tipo_desconto === 'porcentagem' 
+                ? (subtotal * valorDesc) / 100 
+                : valorDesc;
+        }
+    }
+    
+    return {
+        totalProdutos: subtotal,
+        taxaServico: taxa,
+        valorDesconto: desconto,
+        totalFinal: (subtotal - desconto) + taxa
+    };
+}, [carrinho, descontoConfig]);
+
+  useEffect(() => {
+    const carregarDados = async () => {
+      const data = await obterItensCarrinho(token);
+      if (!data || data.length === 0) return navigate("/carrinho");
+      
+      setCarrinho(data);
+      const loja = data[0];
+      const idL = loja.store_id || loja.loja_id || loja.id;
+      
+      setLojaId(idL); // Define o ID aqui
+      setLojaConfig({
+        aceitaEntrega: !!loja.aceita_entrega,
+        aceitaRetirada: !!loja.aceita_retirada
+      });
+
+      // Busca desconto usando o idL (ID local)
+      fetch(`http://localhost:5000/api/stores/${idL}/public/desconto-config`, {
+    headers: { Authorization: `Bearer ${token}` }
+})
+.then(res => res.json())
+.then(data => {
+    // Agora, como não tem mais o erro 403, o 'data' virá com o objeto corretamente
+    if (data && data.desconto_ativo !== undefined) {
+        setDescontoConfig(data);
+    }
+});
+    };
+    carregarDados();
+  }, [token]);
+useEffect(() => {
+    console.log("Configuração de desconto carregada:", descontoConfig);
+}, [descontoConfig]);
   const confirmarEnvioDoPedido = () => setModalConfirmacao(true);
 
   const isFormValid = () => {
@@ -33,29 +89,15 @@ function Checkout() {
     return true;
   };
 
-  useEffect(() => {
-    const carregarDados = async () => {
-      const data = await obterItensCarrinho(token);
-      if (!data || data.length === 0) return navigate("/carrinho");
-      
-      setCarrinho(data);
-      const loja = data[0];
-      setLojaId(loja.store_id || loja.loja_id || loja.id);
-      setLojaConfig({
-        aceitaEntrega: !!loja.aceita_entrega,
-        aceitaRetirada: !!loja.aceita_retirada
-      });
-    };
-    carregarDados();
-  }, [token]);
-
   const finalizarCompra = async () => {
     setLoading(true);
     const payload = {
         loja_id: Number(lojaId),
         produtos: carrinho.map(item => ({ produto_id: item.product_id, quantidade: item.quantidade, preco: item.preco })),
         tipoPedido,
-        dadosEntrega: form
+        dadosEntrega: form,
+        valor_desconto: valorDesconto,
+        total_final: totalFinal
     };
 
     try {
@@ -169,6 +211,13 @@ function Checkout() {
         <span>Frete:</span>
         <span>Grátis</span>
     </div>
+
+<div className="linha-total">
+    <span>Desconto da Loja:</span>
+    <span style={{ color: '#22c55e', fontWeight: 'bold' }}>
+        - R$ {valorDesconto.toFixed(2)}
+    </span>
+</div>
 
     <div className="linha-total total-destaque">
         <span>Total a Pagar:</span>

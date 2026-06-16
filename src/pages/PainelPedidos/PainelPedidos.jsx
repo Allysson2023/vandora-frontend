@@ -17,6 +17,7 @@ function PainelPedidos() {
     const [modalAberto, setModalAberto] = useState(false);
     const [pedidoSelecionado, setPedidoSelecionado] = useState(null);
     const [acao, setAcao] = useState(null);
+    const [faturamentoHoje, setFaturamentoHoje] = useState(0);
 
     // 👇 AQUI ENTRA A FUNÇÃO
 function abrirPedido(id) {
@@ -24,6 +25,16 @@ function abrirPedido(id) {
 }
 
     const audioRef = useRef(null);
+
+    // Adicione este useEffect para buscar o valor
+useEffect(() => {
+    fetch(`http://localhost:5000/api/loja/faturamento-hoje`, {
+        headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(res => res.json())
+    .then(data => setFaturamentoHoje(data.total_hoje))
+    .catch(err => console.error("Erro ao buscar faturamento"));
+}, [token]);
 
     useEffect(() => {
 
@@ -156,26 +167,17 @@ function abrirPedido(id) {
 
             {/* CARDS INFO (NÃO MEXIDO) */}
             <div className="cards-info">
+    <div className="info-card">
+        <h2>{pedidos.length}</h2>
+        <span>Pedidos Totais</span>
+    </div>
 
-                <div className="info-card">
-                    <h2>{pedidos.length}</h2>
-                    <span>Pedidos</span>
-                </div>
-
-                <div className="info-card">
-                    <h2>
-                        R$ {
-                            pedidos
-                                .filter(p => p.status === "finalizado")
-                                .reduce((acc, item) => acc + Number(item.total_final || 0), 0)
-                                .toFixed(2)
-                        }
-                    </h2>
-                    <span>Faturamento</span>
-                </div>
-
-            </div>
-            
+    {/* Aqui usamos o novo estilo */}
+    <div className="faturamento-card">
+        <span>Faturamento de Hoje</span>
+        <h2>R$ {Number(faturamentoHoje).toFixed(2)}</h2>
+    </div>
+</div>
 
             {/* LISTA */}
             <div className="lista-pedidos">

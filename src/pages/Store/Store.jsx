@@ -49,7 +49,7 @@ const [copiado, setCopiado] = useState(false);
     setTimeout(() => setCopiado(false), 2000);
         
         // Feedback visual rápido
-        alert("Link copiado! É só colar no WhatsApp.");
+        alert("Link da loja copiado com sucesso!");
     } catch (err) {
         console.error("Erro ao copiar:", err);
     }

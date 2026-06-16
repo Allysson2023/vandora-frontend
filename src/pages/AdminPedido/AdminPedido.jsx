@@ -150,7 +150,6 @@ console.log(data);
                     {pedido.tipo_pedido === "entrega" && pedido.dadosEntrega && (
                         <>
                             <p><strong>Endereço:</strong> {pedido.dadosEntrega.endereco}</p>
-                            <p><strong>Endereço:</strong> {pedido.dadosEntrega.cep}</p>
 
                             <p><strong>Número:</strong> {pedido.dadosEntrega.numero}</p>
 
