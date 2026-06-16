@@ -653,15 +653,12 @@ useEffect(() => {
       </p>
 
       <p>
-        <strong>Total:</strong>{" "}
-        {Number(resumo.ultimoPedido.total).toLocaleString(
-          "pt-BR",
-          {
-            style: "currency",
-            currency: "BRL"
-          }
-        )}
-      </p>
+  <strong>Total (com taxa):</strong>{" "}
+  {Number(resumo.ultimoPedido.total_final).toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+  })}
+</p>
 
       <p>
         <strong>Status:</strong> {resumo.ultimoPedido.status}
@@ -673,13 +670,7 @@ useEffect(() => {
   {new Date(resumo.ultimoPedido.created_at).toLocaleString("pt-BR")}
 </p>
 
-      <p>
-        <strong>Hora:</strong>{" "}
-        {new Date(resumo.ultimoPedido.created_at).toLocaleTimeString("pt-BR", {
-          hour: "2-digit",
-          minute: "2-digit"
-        })}
-      </p>
+    
 
     </div>
 

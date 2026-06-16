@@ -207,6 +207,7 @@ const podeAbrirChat = ["aceito", "separação", "em Rota"].includes(pedido?.stat
                         <p><b>Número:</b> {pedido.dadosEntrega.numero}</p>
                         <p><b>Bairro:</b> {pedido.dadosEntrega.bairro}</p>
                         <p><b>Pagamento:</b> {pedido.dadosEntrega.pagamento}</p>
+                        <p><b>Observação:</b>{pedido.dadosEntrega.observacao}</p>
 
                     </div>
                 )}

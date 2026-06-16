@@ -119,7 +119,16 @@ function Checkout() {
                 <input placeholder="Nº" value={form.numero} onChange={e => setForm({...form, numero: e.target.value})} />
                 <input placeholder="Bairro" value={form.bairro} onChange={e => setForm({...form, bairro: e.target.value})} />
               </div>
+
+<h3>Observações</h3>
+  <textarea 
+    placeholder="Ex: Sem cebola, portão verde..." 
+    value={form.observacao} 
+    onChange={e => setForm({...form, observacao: e.target.value})} 
+  />
+
             </section>
+            
           )}
 
           <section className="sessao-checkout">

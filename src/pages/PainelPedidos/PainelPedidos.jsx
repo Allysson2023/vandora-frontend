@@ -167,7 +167,7 @@ function abrirPedido(id) {
                         R$ {
                             pedidos
                                 .filter(p => p.status === "finalizado")
-                                .reduce((acc, item) => acc + Number(item.total || 0), 0)
+                                .reduce((acc, item) => acc + Number(item.total_final || 0), 0)
                                 .toFixed(2)
                         }
                     </h2>
