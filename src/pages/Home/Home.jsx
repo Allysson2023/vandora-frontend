@@ -4,6 +4,9 @@ import "./Home.css";
 
 function Home() {
 
+  const [loading, setLoading] = useState(true);
+  const [erro, setErro] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -67,37 +70,32 @@ const [videoIndex, setVideoIndex] = useState(0);
 
   }, []);
 
+  const carregarDados = async () => {
+  setLoading(true);
+  setErro(false);
+  try {
+    // Fazemos todas as requisições em paralelo
+    await Promise.all([
+      fetch("http://localhost:5000/api/banners/imagens").then(r => r.json()).then(setImagensBanner),
+      fetch("http://localhost:5000/api/banners/video").then(r => r.json()).then(setVideos),
+      fetch("http://localhost:5000/api/categories").then(r => r.json()).then(setCategorias),
+      fetch(`http://localhost:5000/api/stores`).then(r => r.json()).then(setLojas),
+      // ... adicione outras chamadas aqui
+    ]);
+  } catch (err) {
+    console.error("Erro ao carregar:", err);
+    setErro(true);
+  } finally {
+    setLoading(false);
+  }
+};
 
-// 1. Carrega apenas o Carrossel de Imagens
 useEffect(() => {
-  fetch("http://localhost:5000/api/banners/imagens")
-    .then(res => {
-      if (!res.ok) {
-        console.error("Erro na resposta do servidor:", res.status);
-        return []; 
-      }
-      return res.json();
-    })
-    .then(data => {
-      
-      setImagensBanner(data);
-    })
-    .catch(err => console.error("Erro ao conectar com o backend:", err));
+  carregarDados();
 }, []);
 
-// Carregar lista de vídeos
-// Carregar lista de vídeos
-useEffect(() => {
-  fetch("http://localhost:5000/api/banners/video")
-    .then(res => res.json())
-    .then(data => {
-       // Certifique-se de que o backend retornou um array
-       if (Array.isArray(data)) {
-         setVideos(data);
-       }
-    })
-    .catch(err => console.log("Erro ao carregar vídeos:", err));
-}, []);
+
+
 
 // Controle de tempo do vídeo (Troca a cada 5 segundos igual ao banner)
 useEffect(() => {
@@ -167,48 +165,13 @@ useEffect(() => {
 
 };
 
-  
 
-
-
-
-  // =========================
-  // CATEGORIAS
-  // =========================
-  useEffect(() => {
-
-    fetch("http://localhost:5000/api/categories")
-      .then(res => res.json())
-      .then(data => {
-        setCategorias(data);
-      })
-      .catch(err => console.log(err));
-
-  }, []);
-
-  // =========================
-  // LOJAS
-  // =========================
-  useEffect(() => {
-
-    fetch(`http://localhost:5000/api/stores?busca=${busca}`)
-      .then(res => res.json())
-      .then(data => {
-
-        if (Array.isArray(data)) {
-          setLojas(data);
-        }
-
-      })
-      .catch(err => console.log(err));
-
-  }, [busca]);
 
   // =========================
   // PRODUTOS
   // =========================
   useEffect(() => {
-
+if (loading) return;
     let url = `http://localhost:5000/api/products?pagina=${pagina}`;
 
     if (busca) {
@@ -223,7 +186,7 @@ useEffect(() => {
       .then(res => res.json())
       .then(data => {
         
-        
+
 
         if (Array.isArray(data)) {
 
@@ -244,7 +207,7 @@ useEffect(() => {
       })
       .catch(err => console.log(err));
 
-  }, [categoriaSelecionada, busca, pagina]);
+  }, [categoriaSelecionada, busca, pagina, loading]);
 
   // =========================
   // CARRINHO
@@ -347,6 +310,31 @@ if (usuarioLogado?.tipo === "admin") {
   tipoExibicao = "Administrador";
 }
 
+
+
+// --- TELA DE CARREGANDO ---
+  if (loading) {
+    return (
+      <div className="status-container">
+        <div className="spinner"></div>
+        <p>Carregando Vandora - AC...</p>
+      </div>
+    );
+  }
+
+  // --- TELA DE ERRO / MANUTENÇÃO ---
+  if (erro) {
+    return (
+      <div className="status-container">
+        <div className="error-icon">⚠️</div>
+        <h3>Ops, estamos com dificuldades técnicas!</h3>
+        <p>No momento não foi possível conectar ao servidor.</p>
+        <button className="btn-carregar" onClick={() => window.location.reload()}>
+          Tentar novamente
+        </button>
+      </div>
+    );
+  }
   return (
     <div className="home">
       

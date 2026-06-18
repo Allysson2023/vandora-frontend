@@ -4,6 +4,9 @@ import "./Store.css";
 
 function Store() {
 
+    const [loading, setLoading] = useState(true);
+const [erro, setErro] = useState(false);
+
     
     const { id } = useParams();
     const navigate = useNavigate();
@@ -39,6 +42,38 @@ const [totalFavoritos, setTotalFavoritos] = useState(0);
 const menuRef = useRef(null);
 const [copiado, setCopiado] = useState(false);
 
+
+const carregarDadosDaLoja = async () => {
+    setLoading(true);
+    setErro(false);
+    try {
+        const [lojaRes, prodRes, favRes, totalFavRes, avalRes] = await Promise.all([
+            fetch(`http://localhost:5000/api/stores/${id}/public`).then(r => r.json()),
+            fetch(`http://localhost:5000/api/stores/${id}/products?pagina=${pagina}`).then(r => r.json()),
+            fetch(`http://localhost:5000/api/stores/${id}/favorito`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+            }).then(r => r.json()).catch(() => ({ favorito: false })),
+            fetch(`http://localhost:5000/api/stores/${id}/total-favoritos`).then(r => r.json()),
+            fetch(`http://localhost:5000/api/stores/${id}/avaliacoes`).then(r => r.json())
+        ]);
+
+        setStore(lojaRes);
+        setProdutos(prodRes);
+        setTemMaisProdutos(prodRes.length >= 20);
+        setFavorito(favRes.favorito);
+        setTotalFavoritos(totalFavRes.total);
+        setAvaliacao(avalRes);
+    } catch (err) {
+        console.error("Erro ao carregar loja:", err);
+        setErro(true);
+    } finally {
+        setLoading(false);
+    }
+};
+
+useEffect(() => {
+    carregarDadosDaLoja();
+}, [id, pagina]);
 
 
    const handleCompartilhar = async () => {
@@ -269,6 +304,32 @@ const abrirChatLoja = async () => {
         console.log(err);
     }
 };
+
+
+
+// --- TELA DE CARREGAMENTO ---
+if (loading) {
+    return (
+        <div className="status-container">
+            <div className="spinner"></div>
+            <p>Carregando loja...</p>
+        </div>
+    );
+}
+
+// --- TELA DE ERRO ---
+if (erro) {
+    return (
+        <div className="status-container">
+            <div className="error-icon">⚠️</div>
+            <h3>Ops!</h3>
+            <p>Não foi possível carregar as informações desta loja.</p>
+            <button className="btn-carregar" onClick={() => window.location.reload()}>
+                Tentar novamente
+            </button>
+        </div>
+    );
+}
 
 
     return (
