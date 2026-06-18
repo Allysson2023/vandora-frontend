@@ -23,7 +23,7 @@ const [comentario, setComentario] = useState("");
 
 useEffect(() => {
     // Altere a URL para buscar apenas UM pedido (a rota /pedidos/:id que você criou)
-    fetch(`http://localhost:5000/api/pedidos/${id}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/api/pedidos/${id}`, {
         headers: {
             "Authorization": `Bearer ${token}`
         }
@@ -57,7 +57,7 @@ useEffect(() => {
     try {
 
         const res = await fetch(
-            "http://localhost:5000/api/chat/abrir",
+            `${import.meta.env.VITE_API_URL}/api/chat/abrir`,
             {
                 method: "POST",
                 headers: {
@@ -87,7 +87,7 @@ useEffect(() => {
 
 async function finalizarPedido() {
     try {
-        const res = await fetch(`http://localhost:5000/api/pedidos/${pedido.id}/status`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/pedidos/${pedido.id}/status`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -110,7 +110,7 @@ async function finalizarPedido() {
 
 async function enviarAvaliacao() {
     
-    await fetch("http://localhost:5000/api/avaliacao", {
+    await fetch(`${import.meta.env.VITE_API_URL}/api/avaliacao`, {
     method: "POST",
     headers: {
         "Content-Type": "application/json",
@@ -139,7 +139,7 @@ useEffect(() => {
   if (pedido.status !== "finalizado") return;
 
   fetch(
-    `http://localhost:5000/api/avaliacao/verificar/${pedido.id}`,
+    `${import.meta.env.VITE_API_URL}/api/avaliacao/verificar/${pedido.id}`,
     {
       headers: {
         Authorization: `Bearer ${token}`
@@ -249,7 +249,7 @@ const podeAbrirChat = ["aceito", "separação", "em Rota"].includes(pedido?.stat
                     >
 
                         <img
-                            src={`http://localhost:5000/uploads/produtos/${item.imagem}`}
+                            src={`${import.meta.env.VITE_API_URL}/uploads/produtos/${item.imagem}`}
                             alt={item.nome}
                         />
 

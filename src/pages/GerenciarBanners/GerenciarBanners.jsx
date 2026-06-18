@@ -18,7 +18,7 @@ const [modalInstrucao, setModalInstrucao] = useState(true);
 
   const carregarBanners = async () => {
   try {
-    const res = await fetch("http://localhost:5000/api/banners", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/banners`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } // IMPORTANTE: faltou o token aqui!
     });
     const data = await res.json();
@@ -38,7 +38,7 @@ const [modalInstrucao, setModalInstrucao] = useState(true);
     formData.append("imagem", imagem);
     formData.append("tipo", tipo); // ENVIANDO O TIPO PARA O BACKEND
 
-    const res = await fetch("http://localhost:5000/api/banners", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/banners`, {
       method: "POST",
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       body: formData,
@@ -61,7 +61,7 @@ const confirmarAcao = () => {
 };
 
 const deletarBanner = async (id) => {
-  await fetch(`http://localhost:5000/api/banners/${id}`, {
+  await fetch(`${import.meta.env.VITE_API_URL}/api/banners/${id}`, {
     method: "DELETE",
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
   });
@@ -174,9 +174,9 @@ const limparCampos = () => {
           <div key={b.id} className="banner-card">
             {/* RENDERIZAÇÃO CONDICIONAL */}
             {b.tipo === 'video' ? (
-              <video src={`http://localhost:5000/uploads/banners/${b.imagem}`} width="100%" />
+              <video src={`${import.meta.env.VITE_API_URL}/uploads/banners/${b.imagem}`} width="100%" />
             ) : (
-              <img src={`http://localhost:5000/uploads/banners/${b.imagem}`} alt="Banner" />
+              <img src={`${import.meta.env.VITE_API_URL}/uploads/banners/${b.imagem}`} alt="Banner" />
             )}
             
             <div className="banner-info">

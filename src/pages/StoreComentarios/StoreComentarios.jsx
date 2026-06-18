@@ -25,7 +25,7 @@ const [respostas, setRespostas] = useState({});
 
     useEffect(() => {
 
-        fetch(`http://localhost:5000/api/stores/${id}/comentarios`)
+        fetch(`${import.meta.env.VITE_API_URL}/api/stores/${id}/comentarios`)
             .then(res => res.json())
             .then(data => {
 
@@ -40,7 +40,7 @@ const [respostas, setRespostas] = useState({});
 
     useEffect(() => {
 
-    fetch(`http://localhost:5000/api/stores/${id}/avaliacoes`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/stores/${id}/avaliacoes`)
         .then(res => res.json())
         .then(data => {
             setResumoAvaliacoes(data);
@@ -54,7 +54,7 @@ useEffect(() => {
     const token = localStorage.getItem("token");
 
     fetch(
-        `http://localhost:5000/api/stores/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/stores/${id}`,
         {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -100,7 +100,7 @@ const responderComentario = async (avaliacaoId) => {
         }
 
         const res = await fetch(
-            `http://localhost:5000/api/avaliacoes/${avaliacaoId}/responder`,
+            `${import.meta.env.VITE_API_URL}/api/avaliacoes/${avaliacaoId}/responder`,
             {
                 method: "POST",
                 headers: {

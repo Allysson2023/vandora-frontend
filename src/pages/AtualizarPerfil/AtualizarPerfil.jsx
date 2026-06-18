@@ -16,7 +16,7 @@ function AtualizarPerfil(){
 
 
 useEffect(() => {
-    fetch("http://localhost:5000/api/profile", {
+    fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -32,7 +32,7 @@ useEffect(() => {
 
 useEffect(() => {
 
-    fetch("http://localhost:5000/api/categories")
+    fetch(`${import.meta.env.VITE_API_URL}/api/categories`)
     .then(res => res.json())
     .then(data => setCategorias(data));
 
@@ -64,7 +64,7 @@ useEffect(() => {
         }
 
         const resposta = await fetch(
-            "http://localhost:5000/api/update-profile",
+            `${import.meta.env.VITE_API_URL}/api/update-profile`,
             {
 
                 method: "PUT",
@@ -121,7 +121,7 @@ useEffect(() => {
           <div className="foto-container">
             <img
               className="preview-perfil"
-              src={`http://localhost:5000/uploads/lojas/${imagemAtual}`}
+              src={`${import.meta.env.VITE_API_URL}/uploads/lojas/${imagemAtual}`}
               alt="Perfil"
             />
           </div>

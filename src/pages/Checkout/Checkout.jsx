@@ -64,7 +64,7 @@ function Checkout() {
       });
 
       // Busca desconto usando o idL (ID local)
-      fetch(`http://localhost:5000/api/stores/${idL}/public/desconto-config`, {
+      fetch(`${import.meta.env.VITE_API_URL}/api/stores/${idL}/public/desconto-config`, {
     headers: { Authorization: `Bearer ${token}` }
 })
 .then(res => res.json())
@@ -101,14 +101,14 @@ useEffect(() => {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/api/pedidos", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/pedidos`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(payload)
       });
 
       if (response.ok) {
-        await fetch("http://localhost:5000/api/cart/clear", { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+        await fetch(`${import.meta.env.VITE_API_URL}/api/cart/clear`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
         navigate("/meus-pedidos", { replace: true });
       } else {
         alert("Erro ao finalizar pedido");

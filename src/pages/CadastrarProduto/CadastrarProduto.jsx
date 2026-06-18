@@ -20,7 +20,7 @@ function CadastrarProduto() {
   const [modalSucesso, setModalSucesso] = useState(false);
   useEffect(() => {
 
-    fetch("http://localhost:5000/api/categories")
+    fetch(`${import.meta.env.VITE_API_URL}/api/categories`)
     .then(res => res.json())
     .then(data => setCategorias(data));
 
@@ -54,7 +54,7 @@ async function cadastrarProduto(e) {
     }
 
     const resposta = await fetch(
-      "http://localhost:5000/api/products",
+      `${import.meta.env.VITE_API_URL}/api/products`,
       {
         method: "POST",
 

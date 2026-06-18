@@ -20,7 +20,7 @@ function MaisVendidos() {
     const token = localStorage.getItem("token");
 
     const res = await fetch(
-      `http://localhost:5000/api/stores/${id}/mais-vendidos`,
+      `${import.meta.env.VITE_API_URL}/api/stores/${id}/mais-vendidos`,
       {
         headers: {
           Authorization: `Bearer ${token}`

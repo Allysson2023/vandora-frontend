@@ -26,7 +26,7 @@ const [dadosCadastrados, setDadosCadastrados] = useState({ user: "", pass: "" })
 
     const tokenSeguranca = localStorage.getItem("token");
     try {
-      const response = await fetch("http://localhost:5000/api/admin/users", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${tokenSeguranca}` },
         body: JSON.stringify({ 

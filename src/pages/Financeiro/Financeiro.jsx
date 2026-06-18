@@ -18,7 +18,7 @@ function Financeiro() {
         const token = localStorage.getItem("token");
 
         const res = await fetch(
-          `http://localhost:5000/api/stores/${id}/financeiro`,
+          `${import.meta.env.VITE_API_URL}/api/stores/${id}/financeiro`,
           {
             headers: {
               Authorization: `Bearer ${token}`

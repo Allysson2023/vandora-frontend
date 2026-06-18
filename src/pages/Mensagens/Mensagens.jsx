@@ -12,7 +12,7 @@ function Mensagens() {
 
   const token = localStorage.getItem("token");
 
-  fetch("http://localhost:5000/api/chat/cliente", {
+  fetch(`${import.meta.env.VITE_API_URL}/api/chat/cliente`, {
     headers: {
       Authorization: `Bearer ${token}` 
     }

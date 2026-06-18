@@ -16,7 +16,7 @@ function DashboardAnaliseLoja() {
     const carregarDados = async () => {
 
         const resposta = await fetch(
-            `http://localhost:5000/api/funcionario/loja-dashboard/${id}`,
+            `${import.meta.env.VITE_API_URL}/api/funcionario/loja-dashboard/${id}`,
             {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`

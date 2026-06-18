@@ -29,7 +29,7 @@ function abrirPedido(id) {
 
     // Adicione este useEffect para buscar o valor
 useEffect(() => {
-    fetch(`http://localhost:5000/api/loja/faturamento-hoje`, {
+    fetch(`${import.meta.env.VITE_API_URL}/api/loja/faturamento-hoje`, {
         headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => res.json())
@@ -43,7 +43,7 @@ useEffect(() => {
     audioRef.current.volume = 1;
 
     const fetchPedidos = () => {
-        fetch(`http://localhost:5000/api/loja/pedidos`, {
+        fetch(`${import.meta.env.VITE_API_URL}/api/loja/pedidos`, {
             headers: { Authorization: `Bearer ${token}` }
         })
         .then(res => res.json())
@@ -77,7 +77,7 @@ useEffect(() => {
     const confirmar = async () => {
 
         try {
-            const res = await fetch(`http://localhost:5000/api/pedidos/${pedidoSelecionado.id}/status`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/pedidos/${pedidoSelecionado.id}/status`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

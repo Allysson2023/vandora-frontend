@@ -36,7 +36,7 @@ try {
 
     try {
         const res = await fetch(
-            `http://localhost:5000/api/chat/loja/${lojaId}`,
+            `${import.meta.env.VITE_API_URL}/api/chat/loja/${lojaId}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -119,7 +119,7 @@ useEffect(() => {
     try {
 
         await fetch(
-            `http://localhost:5000/api/chat/visualizar/${chatId}`,
+            `${import.meta.env.VITE_API_URL}/api/chat/visualizar/${chatId}`,
             {
                 method: "PUT",
                 headers: {

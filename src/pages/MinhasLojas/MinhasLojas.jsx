@@ -14,7 +14,7 @@ function MinhasLojas() {
     const carregarLojas = async () => {
 
         const resposta = await fetch(
-            "http://localhost:5000/api/funcionario/minhas-lojas",
+            `${import.meta.env.VITE_API_URL}/api/funcionario/minhas-lojas`,
             {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`

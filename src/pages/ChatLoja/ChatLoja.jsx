@@ -33,7 +33,7 @@ function ChatLoja() {
 
         if (!chatId || !user?.loja_id) return;
 
-        fetch(`http://localhost:5000/api/chat/${chatId}`, {
+        fetch(`${import.meta.env.VITE_API_URL}/api/chat/${chatId}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -55,7 +55,7 @@ function ChatLoja() {
 
         if (!clienteId) return;
 
-        fetch(`http://localhost:5000/api/users/${clienteId}`, {
+        fetch(`${import.meta.env.VITE_API_URL}/api/users/${clienteId}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -88,7 +88,7 @@ function ChatLoja() {
 
         if (!chatId) return;
 
-        fetch(`http://localhost:5000/api/chat/${chatId}/mensagens`, {
+        fetch(`${import.meta.env.VITE_API_URL}/api/chat/${chatId}/mensagens`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -206,7 +206,7 @@ async function enviar() {
   setEnviando(true);
 
   try {
-    await fetch("http://localhost:5000/api/chat/mensagem", {
+    await fetch(`${import.meta.env.VITE_API_URL}/api/chat/mensagem`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -13,7 +13,7 @@ function Notificacoes() {
 
     useEffect(() => {
 
-        fetch("http://localhost:5000/api/notifications", {
+        fetch(`${import.meta.env.VITE_API_URL}/api/notifications`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

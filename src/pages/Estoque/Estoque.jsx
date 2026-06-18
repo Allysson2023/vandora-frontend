@@ -21,7 +21,7 @@ function Estoque() {
     const token = localStorage.getItem("token");
 
     const res = await fetch(
-      `http://localhost:5000/api/stores/${id}/estoque`,
+      `${import.meta.env.VITE_API_URL}/api/stores/${id}/estoque`,
       {
         headers: {
           Authorization: `Bearer ${token}`

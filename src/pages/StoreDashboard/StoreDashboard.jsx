@@ -42,7 +42,7 @@ const [config, setConfig] = useState({
 
 useEffect(() => {
     if (modalDescontoAberta) {
-        fetch(`http://localhost:5000/api/stores/${id}/desconto-config`, {
+        fetch(`${import.meta.env.VITE_API_URL}/api/stores/${id}/desconto-config`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         })
         .then(res => res.json())
@@ -87,7 +87,7 @@ useEffect(() => {
       const token = localStorage.getItem("token");
 
       const response = await fetch(
-  `http://localhost:5000/api/stores/${id}/dashboard`,
+  `${import.meta.env.VITE_API_URL}/api/stores/${id}/dashboard`,
   {
     headers: {
       Authorization: `Bearer ${token}`
@@ -777,7 +777,7 @@ useEffect(() => {
                 <button 
                     className="btn-salvar"
                     onClick={async () => {
-                        const res = await fetch(`http://localhost:5000/api/stores/${id}/desconto-config`, {
+                        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/stores/${id}/desconto-config`, {
                             method: 'PUT',
                             headers: { 
                                 'Content-Type': 'application/json', 

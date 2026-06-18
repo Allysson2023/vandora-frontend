@@ -46,7 +46,7 @@ function MeusPedidos() {
 
     const fetchPedidos = () => {
 
-        fetch("http://localhost:5000/api/meus-pedidos", {
+        fetch(`${import.meta.env.VITE_API_URL}/api/meus-pedidos`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

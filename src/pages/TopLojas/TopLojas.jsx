@@ -15,7 +15,7 @@ function TopLojas() {
     const carregarRanking = async () => {
 
         const resposta = await fetch(
-            "http://localhost:5000/api/funcionario/top-lojas",
+            `${import.meta.env.VITE_API_URL}/api/funcionario/top-lojas`,
             {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`

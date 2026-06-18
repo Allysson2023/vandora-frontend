@@ -64,7 +64,7 @@ function AtualizarCliente() {
             const token = localStorage.getItem("token");
 
 const res = await fetch(
-    `http://localhost:5000/api/users/${id}`,
+    `${import.meta.env.VITE_API_URL}/api/users/${id}`,
     {
         headers: {
             Authorization: `Bearer ${token}`
@@ -113,7 +113,7 @@ if (imagem) {
 const token = localStorage.getItem("token");
 
 const res = await fetch(
-    `http://localhost:5000/api/users/${id}`,
+    `${import.meta.env.VITE_API_URL}/api/users/${id}`,
     {
         method: "PUT",
         headers: {

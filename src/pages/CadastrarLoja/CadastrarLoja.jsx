@@ -29,7 +29,7 @@ const [dadosLojista, setDadosLojista] = useState({
 
   useEffect(() => {
 
-    fetch("http://localhost:5000/api/categories")
+    fetch(`${import.meta.env.VITE_API_URL}/api/categories`)
     .then(res => res.json())
     .then(data => setCategorias(data));
 
@@ -66,7 +66,7 @@ Senha: ${dadosLojista.password}
 formData.append("username", username);
 formData.append("password", password);
 
-    fetch("http://localhost:5000/api/stores", {
+    fetch(`${import.meta.env.VITE_API_URL}/api/stores`, {
 
       method: "POST",
 

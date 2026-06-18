@@ -32,10 +32,10 @@ const mensagemInicial = location.state?.mensagemInicial;
         try {
 
             const [msgRes, chatRes] = await Promise.all([
-                fetch(`http://localhost:5000/api/chat/${chatId}/mensagens`, {
+                fetch(`${import.meta.env.VITE_API_URL}/api/chat/${chatId}/mensagens`, {
                     headers: { Authorization: `Bearer ${token}` }
                 }),
-                fetch(`http://localhost:5000/api/chat/${chatId}`, {
+                fetch(`${import.meta.env.VITE_API_URL}/api/chat/${chatId}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 })
             ]);
@@ -145,7 +145,7 @@ useEffect(() => {
   if (!mensagem.trim()) return;
 
   try {
-    const res = await fetch("http://localhost:5000/api/chat/mensagem", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat/mensagem`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -177,7 +177,7 @@ useEffect(() => {
         jaEnviouInicial.current = true;
 
         try {
-            await fetch("http://localhost:5000/api/chat/mensagem", {
+            await fetch(`${import.meta.env.VITE_API_URL}/api/chat/mensagem`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

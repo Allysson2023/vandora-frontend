@@ -22,7 +22,7 @@ function MinhaConta() {
         try {
 
             const resposta = await fetch(
-                `http://localhost:5000/api/perfil-cliente/${id}`,
+                `${import.meta.env.VITE_API_URL}/api/perfil-cliente/${id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -47,7 +47,7 @@ function MinhaConta() {
         try {
 
             const resposta = await fetch(
-                `http://localhost:5000/api/perfil-cliente/${id}/pedidos`,
+                `${import.meta.env.VITE_API_URL}/api/perfil-cliente/${id}/pedidos`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -89,7 +89,7 @@ function MinhaConta() {
             {usuario.imagem_perfil ? (
 
                 <img
-                    src={`http://localhost:5000/uploads/perfil/${usuario.imagem_perfil}`}
+                    src={`${import.meta.env.VITE_API_URL}/uploads/perfil/${usuario.imagem_perfil}`}
                     alt="Foto Perfil"
                     className="conta-foto"
                 />

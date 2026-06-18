@@ -16,7 +16,7 @@ function AdminPedido() {
 
     useEffect(() => {
 
-        fetch(`http://localhost:5000/api/pedidos/${id}`, {
+        fetch(`${import.meta.env.VITE_API_URL}/api/pedidos/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -54,7 +54,7 @@ console.log(data);
 
         try {
 
-            const res = await fetch(`http://localhost:5000/api/pedidos/${id}/status`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/pedidos/${id}/status`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
