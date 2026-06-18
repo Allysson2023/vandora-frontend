@@ -79,7 +79,7 @@ useEffect(() => {
       return res.json();
     })
     .then(data => {
-      console.log("Dados recebidos:", data);
+      
       setImagensBanner(data);
     })
     .catch(err => console.error("Erro ao conectar com o backend:", err));
@@ -222,7 +222,8 @@ useEffect(() => {
     fetch(url)
       .then(res => res.json())
       .then(data => {
-        console.log(data);
+        
+        
 
         if (Array.isArray(data)) {
 

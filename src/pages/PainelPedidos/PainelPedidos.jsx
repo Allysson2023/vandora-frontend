@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import "./PainelPedidos.css";
 import socket from "../../socket";
 import somPedido from "../../assets/sounds/notification.mp3";
+import { formatarDataBR } from "../../utils/dateUtils";
 
 function PainelPedidos() {
 
@@ -190,7 +191,7 @@ useEffect(() => {
 
                     pedidos.map((pedido) => {
 
-                        console.log("STATUS REAL:", pedido.status);
+                        
 
                         const status = (pedido.status || "").toLowerCase().trim();
 const bloqueado = status !== "aguardando_confirmacao";
@@ -207,7 +208,9 @@ const bloqueado = status !== "aguardando_confirmacao";
                                     <div>
                                         <h2>Pedido #{pedido.id}</h2>
                                         <p>Cliente: {pedido.username}</p>
+<p>📅 Criado em: {formatarDataBR(pedido.created_at)}</p>
                                     </div>
+
 
                                     <span className={`status ${status}`}>
                                         {pedido.status}

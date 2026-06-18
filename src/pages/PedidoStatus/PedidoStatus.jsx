@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./PedidoStatus.css";
+import { formatarDataBR } from "../../utils/dateUtils";
 
 function PedidoStatus() {
 
@@ -208,7 +209,13 @@ const podeAbrirChat = ["aceito", "separação", "em Rota"].includes(pedido?.stat
                         <p><b>Bairro:</b> {pedido.dadosEntrega.bairro}</p>
                         <p><b>Pagamento:</b> {pedido.dadosEntrega.pagamento}</p>
                         <p><b>Observação:</b>{pedido.dadosEntrega.observacao}</p>
-
+                        <p> Data do pedido: {formatarDataBR(pedido.created_at)}</p>
+                        {/* 🔄 ÚLTIMA ATUALIZAÇÃO */}
+{pedido.updated_at && (
+  <p className="data-pedido">
+    🔄 Atualizado em: {formatarDataBR(pedido.updated_at)}
+  </p>
+)}
                     </div>
                 )}
 
@@ -218,7 +225,13 @@ const podeAbrirChat = ["aceito", "separação", "em Rota"].includes(pedido?.stat
                         <p><b>Nome:</b> {pedido.dadosEntrega.nome}</p>
                         <p><b>CPF:</b> {pedido.dadosEntrega.cpf}</p>
                         <p><b>Tipo:</b> Retirada na loja</p>
-
+                        <p>Data do pedido: {formatarDataBR(pedido.created_at)}</p>
+{/* 🔄 ÚLTIMA ATUALIZAÇÃO */}
+{pedido.updated_at && (
+  <p className="data-pedido">
+    🔄 Atualizado em: {formatarDataBR(pedido.updated_at)}
+  </p>
+)}
                     </div>
                 )}
 

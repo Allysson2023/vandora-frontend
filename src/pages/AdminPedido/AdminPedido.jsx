@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./AdminPedido.css";
+import { formatarDataBR } from "../../utils/dateUtils";
 
 function AdminPedido() {
 
@@ -134,6 +135,18 @@ console.log(data);
                             <p><strong>Pagamento:</strong> {pedido.dadosEntrega.pagamento}</p>
                         </>
                     )}
+
+<p>Data do pedido: {formatarDataBR(pedido.created_at)}</p>
+
+{/* 🔄 ÚLTIMA ATUALIZAÇÃO */}
+{/* Verificamos se existe o campo updated_at no banco */}
+{pedido.updated_at && (
+  <p className="data-pedido">
+    🔄 Atualizado em: {formatarDataBR(pedido.updated_at)}
+  </p>
+)}
+
+
                     <button
         className="btn-ver-cliente"
         onClick={() =>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MeusPedidos.css";
 import socket from "../../socket";
+import { formatarDataBR } from "../../utils/dateUtils";
 
 function MeusPedidos() {
 
@@ -104,26 +105,14 @@ function MeusPedidos() {
 </span>
 
     {/* 📅 DATA DO PEDIDO */}
-    <p className="data-pedido">
-      📅 Criado em:{" "}
-      {new Date(pedido.created_at).toLocaleDateString("pt-BR")}
-    </p>
+<p>📅 Criado em: {formatarDataBR(pedido.created_at)}</p>
 
-    <p className="data-pedido">
-      ⏰ Hora:{" "}
-      {new Date(pedido.created_at).toLocaleTimeString("pt-BR", {
-        hour: "2-digit",
-        minute: "2-digit"
-      })}
-    </p>
-
-    {/* 🔄 ÚLTIMA ATUALIZAÇÃO */}
-    {pedido.updated_at && (
-      <p className="data-pedido">
-        🔄 Atualizado em:{" "}
-        {new Date(pedido.updated_at).toLocaleString("pt-BR")}
-      </p>
-    )}
+{/* 🔄 ÚLTIMA ATUALIZAÇÃO */}
+{pedido.updated_at && (
+  <p className="data-pedido">
+    🔄 Atualizado em: {formatarDataBR(pedido.updated_at)}
+  </p>
+)}
 
   </div>
 
