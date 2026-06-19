@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AtualizarPerfil.css";
+import { API_URL } from "../../apiConfig";
 
 function AtualizarPerfil(){
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ function AtualizarPerfil(){
 
 
 useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
+    fetch(`${API_URL}/api/profile`, {
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -32,7 +33,7 @@ useEffect(() => {
 
 useEffect(() => {
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/categories`)
+    fetch(`${API_URL}/api/categories`)
     .then(res => res.json())
     .then(data => setCategorias(data));
 
@@ -64,7 +65,7 @@ useEffect(() => {
         }
 
         const resposta = await fetch(
-            `${import.meta.env.VITE_API_URL}/api/update-profile`,
+            `${API_URL}/api/update-profile`,
             {
 
                 method: "PUT",
@@ -121,7 +122,7 @@ useEffect(() => {
           <div className="foto-container">
             <img
               className="preview-perfil"
-              src={`${import.meta.env.VITE_API_URL}/uploads/lojas/${imagemAtual}`}
+              src={`${API_URL}/uploads/lojas/${imagemAtual}`}
               alt="Perfil"
             />
           </div>

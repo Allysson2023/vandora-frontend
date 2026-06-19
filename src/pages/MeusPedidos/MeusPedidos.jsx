@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./MeusPedidos.css";
 import socket from "../../socket";
 import { formatarDataBR } from "../../utils/dateUtils";
-
+import { API_URL } from "../../apiConfig";
 function MeusPedidos() {
 
     const [pedidos, setPedidos] = useState([]);
@@ -46,7 +46,7 @@ function MeusPedidos() {
 
     const fetchPedidos = () => {
 
-        fetch(`${import.meta.env.VITE_API_URL}/api/meus-pedidos`, {
+        fetch(`${API_URL}/api/meus-pedidos`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

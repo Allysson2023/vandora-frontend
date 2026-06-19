@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import socket from "../../socket";
 import "./ChatLoja.css";
+import { API_URL } from "../../apiConfig";
  
 function ChatLoja() {
 
@@ -33,7 +34,7 @@ function ChatLoja() {
 
         if (!chatId || !user?.loja_id) return;
 
-        fetch(`${import.meta.env.VITE_API_URL}/api/chat/${chatId}`, {
+        fetch(`${API_URL}/api/chat/${chatId}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -55,7 +56,7 @@ function ChatLoja() {
 
         if (!clienteId) return;
 
-        fetch(`${import.meta.env.VITE_API_URL}/api/users/${clienteId}`, {
+        fetch(`${API_URL}/api/users/${clienteId}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -88,7 +89,7 @@ function ChatLoja() {
 
         if (!chatId) return;
 
-        fetch(`${import.meta.env.VITE_API_URL}/api/chat/${chatId}/mensagens`, {
+        fetch(`${API_URL}/api/chat/${chatId}/mensagens`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -206,7 +207,7 @@ async function enviar() {
   setEnviando(true);
 
   try {
-    await fetch(`${import.meta.env.VITE_API_URL}/api/chat/mensagem`, {
+    await fetch(`${API_URL}/api/chat/mensagem`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

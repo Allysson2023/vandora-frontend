@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Mensagens.css";
-
+import { API_URL } from "../../apiConfig";
 function Mensagens() {
 
   const [conversas, setConversas] = useState([]);
@@ -12,7 +12,7 @@ function Mensagens() {
 
   const token = localStorage.getItem("token");
 
-  fetch(`${import.meta.env.VITE_API_URL}/api/chat/cliente`, {
+  fetch(`${API_URL}/api/chat/cliente`, {
     headers: {
       Authorization: `Bearer ${token}` 
     }

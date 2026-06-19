@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./AtualizarCliente.css";
-
+import { API_URL } from "../../apiConfig";
 function AtualizarCliente() {
 
     const navigate = useNavigate();
@@ -64,7 +64,7 @@ function AtualizarCliente() {
             const token = localStorage.getItem("token");
 
 const res = await fetch(
-    `${import.meta.env.VITE_API_URL}/api/users/${id}`,
+    `${API_URL}/api/users/${id}`,
     {
         headers: {
             Authorization: `Bearer ${token}`
@@ -113,7 +113,7 @@ if (imagem) {
 const token = localStorage.getItem("token");
 
 const res = await fetch(
-    `${import.meta.env.VITE_API_URL}/api/users/${id}`,
+    `${API_URL}/api/users/${id}`,
     {
         method: "PUT",
         headers: {

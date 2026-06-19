@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./AdminProdutos.css";
+import { API_URL } from "../../apiConfig";
+
 function AdminProdutos() {
 
   const { id } = useParams();
@@ -15,7 +17,7 @@ function AdminProdutos() {
 
   useEffect(() => {
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/stores/${id}/products?pagina=${pagina}`)
+    fetch(`${API_URL}/api/stores/${id}/products?pagina=${pagina}`)
       .then(res => res.json())
       .then(data => {
 
@@ -30,7 +32,7 @@ function AdminProdutos() {
   const excluir = async () => {
   if (!produtoSelecionado) return;
 
-  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${produtoSelecionado.id}`, {
+  const res = await fetch(`${API_URL}/api/products/${produtoSelecionado.id}`, {
     method: "DELETE",
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
   });
@@ -78,7 +80,7 @@ const produtosFiltrados = produtos.filter(produto =>
         <div className="admin-card" key={produto.id}>
 
           <img
-            src={`${import.meta.env.VITE_API_URL}/uploads/produtos/${produto.imagem}`}
+            src={`${API_URL}/uploads/produtos/${produto.imagem}`}
           />
 
           <div>

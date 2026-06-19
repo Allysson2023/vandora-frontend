@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./TopLojas.css";
-
+import { API_URL } from "../../apiConfig";
 function TopLojas() {
 
     const navigate = useNavigate();
@@ -15,7 +15,7 @@ function TopLojas() {
     const carregarRanking = async () => {
 
         const resposta = await fetch(
-            `${import.meta.env.VITE_API_URL}/api/funcionario/top-lojas`,
+            `${API_URL}/api/funcionario/top-lojas`,
             {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`

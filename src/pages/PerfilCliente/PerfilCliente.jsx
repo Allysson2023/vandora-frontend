@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./PerfilCliente.css";
-
+import { API_URL } from "../../apiConfig";
 function PerfilCliente() {
   const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ function PerfilCliente() {
   const carregarPedidos = async () => {
     try {
       const resposta = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/meus-pedidos`,
+        `${API_URL}/api/meus-pedidos`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -50,7 +50,7 @@ function PerfilCliente() {
   try {
 
     const resposta = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/favoritos/quantidade`,
+      `${API_URL}/api/favoritos/quantidade`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -74,7 +74,7 @@ function PerfilCliente() {
   const carregarPerfil = async () => {
     try {
       const resposta = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/client-profile`,
+        `${API_URL}/api/client-profile`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -115,7 +115,7 @@ function PerfilCliente() {
   {usuario.imagem_perfil ? (
 
     <img
-      src={`${import.meta.env.VITE_API_URL}/uploads/perfil/${usuario.imagem_perfil}`}
+      src={`${API_URL}/uploads/perfil/${usuario.imagem_perfil}`}
       alt="Foto de Perfil"
       className="foto-perfil"
     />

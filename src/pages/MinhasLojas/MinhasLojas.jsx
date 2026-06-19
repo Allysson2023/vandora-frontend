@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MinhasLojas.css";
-
+import { API_URL } from "../../apiConfig";
 function MinhasLojas() {
 
     const navigate = useNavigate();
@@ -14,7 +14,7 @@ function MinhasLojas() {
     const carregarLojas = async () => {
 
         const resposta = await fetch(
-            `${import.meta.env.VITE_API_URL}/api/funcionario/minhas-lojas`,
+            `${API_URL}/api/funcionario/minhas-lojas`,
             {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`

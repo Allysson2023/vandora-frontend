@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./Login.css";
-
+import { API_URL } from "../../apiConfig";
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -14,7 +14,7 @@ function Login() {
 
   try {
 
-    const resposta = await fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
+    const resposta = await fetch(`${API_URL}/api/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

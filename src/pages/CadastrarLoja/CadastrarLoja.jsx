@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CadastrarLoja.css";
-
+import { API_URL } from "../../apiConfig";
 function CadastrarLoja() {
 
   const [nome, setNome] = useState("");
@@ -29,7 +29,7 @@ const [dadosLojista, setDadosLojista] = useState({
 
   useEffect(() => {
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/categories`)
+    fetch(`${API_URL}/api/categories`)
     .then(res => res.json())
     .then(data => setCategorias(data));
 
@@ -66,7 +66,7 @@ Senha: ${dadosLojista.password}
 formData.append("username", username);
 formData.append("password", password);
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/stores`, {
+    fetch(`${API_URL}/api/stores`, {
 
       method: "POST",
 

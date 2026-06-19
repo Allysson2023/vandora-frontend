@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./EditarLoja.css";
+import { API_URL } from "../../apiConfig";
 
 function EditarLoja(){
 
@@ -16,7 +17,7 @@ function EditarLoja(){
 
     const token = localStorage.getItem("token");
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/stores/${id}`, {
+    fetch(`${API_URL}/api/stores/${id}`, {
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -63,7 +64,7 @@ function EditarLoja(){
   console.log(payload);
   
 
-  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/stores/${id}`, {
+  const res = await fetch(`${API_URL}/api/stores/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

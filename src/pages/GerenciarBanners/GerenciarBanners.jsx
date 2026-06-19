@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./GerenciarBanners.css";
-
+import { API_URL } from "../../apiConfig";
 function GerenciarBanners() {
   const [titulo, setTitulo] = useState("");
   const [imagem, setImagem] = useState(null);
@@ -18,7 +18,7 @@ const [modalInstrucao, setModalInstrucao] = useState(true);
 
   const carregarBanners = async () => {
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/banners`, {
+    const res = await fetch(`${API_URL}/api/banners`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } // IMPORTANTE: faltou o token aqui!
     });
     const data = await res.json();
@@ -38,7 +38,7 @@ const [modalInstrucao, setModalInstrucao] = useState(true);
     formData.append("imagem", imagem);
     formData.append("tipo", tipo); // ENVIANDO O TIPO PARA O BACKEND
 
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/banners`, {
+    const res = await fetch(`${API_URL}/api/banners`, {
       method: "POST",
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       body: formData,
@@ -61,7 +61,7 @@ const confirmarAcao = () => {
 };
 
 const deletarBanner = async (id) => {
-  await fetch(`${import.meta.env.VITE_API_URL}/api/banners/${id}`, {
+  await fetch(`${API_URL}/api/banners/${id}`, {
     method: "DELETE",
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
   });
@@ -174,9 +174,9 @@ const limparCampos = () => {
           <div key={b.id} className="banner-card">
             {/* RENDERIZAÇÃO CONDICIONAL */}
             {b.tipo === 'video' ? (
-              <video src={`${import.meta.env.VITE_API_URL}/uploads/banners/${b.imagem}`} width="100%" />
+              <video src={`${API_URL}/uploads/banners/${b.imagem}`} width="100%" />
             ) : (
-              <img src={`${import.meta.env.VITE_API_URL}/uploads/banners/${b.imagem}`} alt="Banner" />
+              <img src={`${API_URL}/uploads/banners/${b.imagem}`} alt="Banner" />
             )}
             
             <div className="banner-info">

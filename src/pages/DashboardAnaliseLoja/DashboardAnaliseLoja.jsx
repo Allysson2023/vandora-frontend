@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./DashboardAnaliseLoja.css";
+import { API_URL } from "../../apiConfig";
 
 function DashboardAnaliseLoja() {
 
@@ -16,7 +17,7 @@ function DashboardAnaliseLoja() {
     const carregarDados = async () => {
 
         const resposta = await fetch(
-            `${import.meta.env.VITE_API_URL}/api/funcionario/loja-dashboard/${id}`,
+            `${API_URL}/api/funcionario/loja-dashboard/${id}`,
             {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`

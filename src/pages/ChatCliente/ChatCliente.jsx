@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate,  useLocation  } from "react-router-dom";
 import socket from "../../socket";
 import "./ChatCliente.css";
+import { API_URL } from "../../apiConfig";
 
 function ChatCliente() {
  
@@ -32,10 +33,10 @@ const mensagemInicial = location.state?.mensagemInicial;
         try {
 
             const [msgRes, chatRes] = await Promise.all([
-                fetch(`${import.meta.env.VITE_API_URL}/api/chat/${chatId}/mensagens`, {
+                fetch(`${API_URL}/api/chat/${chatId}/mensagens`, {
                     headers: { Authorization: `Bearer ${token}` }
                 }),
-                fetch(`${import.meta.env.VITE_API_URL}/api/chat/${chatId}`, {
+                fetch(`${API_URL}/api/chat/${chatId}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 })
             ]);
@@ -145,7 +146,7 @@ useEffect(() => {
   if (!mensagem.trim()) return;
 
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat/mensagem`, {
+    const res = await fetch(`${API_URL}/api/chat/mensagem`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -177,7 +178,7 @@ useEffect(() => {
         jaEnviouInicial.current = true;
 
         try {
-            await fetch(`${import.meta.env.VITE_API_URL}/api/chat/mensagem`, {
+            await fetch(`${API_URL}/api/chat/mensagem`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

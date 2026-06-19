@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Home.css";
+import { API_URL } from "../../apiConfig";
 
 function Home() {
 
@@ -76,10 +77,10 @@ const [videoIndex, setVideoIndex] = useState(0);
   try {
     // Fazemos todas as requisições em paralelo
     await Promise.all([
-      fetch(`${import.meta.env.VITE_API_URL}/api/banners/imagens`).then(r => r.json()).then(setImagensBanner),
-      fetch(`${import.meta.env.VITE_API_URL}/api/banners/video`).then(r => r.json()).then(setVideos),
-      fetch(`${import.meta.env.VITE_API_URL}/api/categories`).then(r => r.json()).then(setCategorias),
-      fetch(`${import.meta.env.VITE_API_URL}/api/stores`).then(r => r.json()).then(setLojas),
+      fetch(`${API_URL}/api/banners/imagens`).then(r => r.json()).then(setImagensBanner),
+      fetch(`${API_URL}/api/banners/video`).then(r => r.json()).then(setVideos),
+      fetch(`${API_URL}/api/categories`).then(r => r.json()).then(setCategorias),
+      fetch(`${API_URL}/api/stores`).then(r => r.json()).then(setLojas),
       // ... adicione outras chamadas aqui
     ]);
   } catch (err) {
@@ -172,7 +173,7 @@ useEffect(() => {
   // =========================
   useEffect(() => {
 if (loading) return;
-    let url = `${import.meta.env.VITE_API_URL}/api/products?pagina=${pagina}`;
+    let url = `${API_URL}/api/products?pagina=${pagina}`;
 
     if (busca) {
       url += `&busca=${busca}`;
@@ -222,7 +223,7 @@ if (loading) return;
     return;
   }
 
-  fetch(`${import.meta.env.VITE_API_URL}/api/cart`, {
+  fetch(`${API_URL}/api/cart`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -260,7 +261,7 @@ if (loading) return;
 
   try {
 
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/cart`, {
+    const res = await fetch(`${API_URL}/api/cart`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -477,7 +478,7 @@ if (usuarioLogado?.tipo === "admin") {
 <div className="home-destaques">
     <div className="banner-container">
       <img 
-        src={`${import.meta.env.VITE_API_URL}/uploads/banners/${imagensBanner[bannerIndex]?.imagem}`} 
+        src={`${API_URL}/uploads/banners/${imagensBanner[bannerIndex]?.imagem}`} 
         alt="Banner"
         className="banner-ativo"
         onError={(e) => { e.target.src = "https://dummyimage.com/1200x300"; }}
@@ -498,7 +499,7 @@ if (usuarioLogado?.tipo === "admin") {
             <img
               src={
                 loja.imagem
-                  ? `${import.meta.env.VITE_API_URL}/uploads/lojas/${loja.imagem}`
+                  ? `${API_URL}/uploads/lojas/${loja.imagem}`
                   : "https://dummyimage.com/300x300"
               }
               alt={loja.nome}
@@ -529,7 +530,7 @@ if (usuarioLogado?.tipo === "admin") {
     <div className="video-container">
       <video 
         key={videos[videoIndex].id} 
-        src={`${import.meta.env.VITE_API_URL}/uploads/banners/${videos[videoIndex].imagem}`} 
+        src={`${API_URL}/uploads/banners/${videos[videoIndex].imagem}`} 
         autoPlay 
         muted 
         className="video-ativo"
@@ -597,7 +598,7 @@ if (usuarioLogado?.tipo === "admin") {
             <img
               src={
                 produto.imagem
-                  ? `${import.meta.env.VITE_API_URL}/uploads/produtos/${produto.imagem}`
+                  ? `${API_URL}/uploads/produtos/${produto.imagem}`
                   : "https://dummyimage.com/300x300"
               }
               alt={produto.nome}

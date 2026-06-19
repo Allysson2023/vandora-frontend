@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./PedidoStatus.css";
 import { formatarDataBR } from "../../utils/dateUtils";
-
+import { API_URL } from "../../apiConfig";
 function PedidoStatus() {
 
     const { id } = useParams();
@@ -23,7 +23,7 @@ const [comentario, setComentario] = useState("");
 
 useEffect(() => {
     // Altere a URL para buscar apenas UM pedido (a rota /pedidos/:id que você criou)
-    fetch(`${import.meta.env.VITE_API_URL}/api/pedidos/${id}`, {
+    fetch(`${API_URL}/api/pedidos/${id}`, {
         headers: {
             "Authorization": `Bearer ${token}`
         }
@@ -57,7 +57,7 @@ useEffect(() => {
     try {
 
         const res = await fetch(
-            `${import.meta.env.VITE_API_URL}/api/chat/abrir`,
+            `${API_URL}/api/chat/abrir`,
             {
                 method: "POST",
                 headers: {
@@ -87,7 +87,7 @@ useEffect(() => {
 
 async function finalizarPedido() {
     try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/pedidos/${pedido.id}/status`, {
+        const res = await fetch(`${API_URL}/api/pedidos/${pedido.id}/status`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -110,7 +110,7 @@ async function finalizarPedido() {
 
 async function enviarAvaliacao() {
     
-    await fetch(`${import.meta.env.VITE_API_URL}/api/avaliacao`, {
+    await fetch(`${API_URL}/api/avaliacao`, {
     method: "POST",
     headers: {
         "Content-Type": "application/json",
@@ -139,7 +139,7 @@ useEffect(() => {
   if (pedido.status !== "finalizado") return;
 
   fetch(
-    `${import.meta.env.VITE_API_URL}/api/avaliacao/verificar/${pedido.id}`,
+    `${API_URL}/api/avaliacao/verificar/${pedido.id}`,
     {
       headers: {
         Authorization: `Bearer ${token}`
@@ -249,7 +249,7 @@ const podeAbrirChat = ["aceito", "separação", "em Rota"].includes(pedido?.stat
                     >
 
                         <img
-                            src={`${import.meta.env.VITE_API_URL}/uploads/produtos/${item.imagem}`}
+                            src={`${API_URL}/uploads/produtos/${item.imagem}`}
                             alt={item.nome}
                         />
 

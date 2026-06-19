@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./CadastrarProduto.css";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../../apiConfig";
 
 function CadastrarProduto() {
 
@@ -20,7 +21,7 @@ function CadastrarProduto() {
   const [modalSucesso, setModalSucesso] = useState(false);
   useEffect(() => {
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/categories`)
+    fetch(`${API_URL}/api/categories`)
     .then(res => res.json())
     .then(data => setCategorias(data));
 
@@ -54,7 +55,7 @@ async function cadastrarProduto(e) {
     }
 
     const resposta = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/products`,
+      `${API_URL}/api/products`,
       {
         method: "POST",
 

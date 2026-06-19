@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AdminPanel.css";
+import { API_URL } from "../../apiConfig";
 
 function AdminPanel() {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const [dadosCadastrados, setDadosCadastrados] = useState({ user: "", pass: "" })
 
     const tokenSeguranca = localStorage.getItem("token");
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/users`, {
+      const response = await fetch(`${API_URL}/api/admin/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${tokenSeguranca}` },
         body: JSON.stringify({ 

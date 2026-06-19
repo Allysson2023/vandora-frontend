@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Notificacoes.css";
 import socket from "../../socket";
-
+import { API_URL } from "../../apiConfig";
 function Notificacoes() {
 
     const [notificacoes, setNotificacoes] = useState([]);
@@ -13,7 +13,7 @@ function Notificacoes() {
 
     useEffect(() => {
 
-        fetch(`${import.meta.env.VITE_API_URL}/api/notifications`, {
+        fetch(`${API_URL}/api/notifications`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

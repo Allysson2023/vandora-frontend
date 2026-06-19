@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import './EditarProduto.css'
+import { API_URL } from "../../apiConfig";
 
 function EditarProduto() {
 
@@ -13,11 +14,11 @@ const [imagem2, setImagem2] = useState(null);
 const [imagem3, setImagem3] = useState(null);
 const [showModal, setShowModal] = useState(false);
 
-const API_URL = `${import.meta.env.VITE_API_URL}`;
+const API_URL = `${API_URL}`;
 
   useEffect(() => {
 
-  fetch(`${import.meta.env.VITE_API_URL}/api/products/${id}`)
+  fetch(`${API_URL}/api/products/${id}`)
     .then(res => res.json())
     .then(data => {
       setProduto(data);
@@ -31,7 +32,7 @@ const API_URL = `${import.meta.env.VITE_API_URL}`;
 
   useEffect(() => {
 
-  fetch(`${import.meta.env.VITE_API_URL}/api/categories`)
+  fetch(`${API_URL}/api/categories`)
     .then(res => res.json())
     .then(data => setCategorias(data))
     .catch(err => console.log(err));
@@ -58,7 +59,7 @@ const API_URL = `${import.meta.env.VITE_API_URL}`;
   if (imagem2 instanceof File) formData.append("imagem2", imagem2);
   if (imagem3 instanceof File) formData.append("imagem3", imagem3);
 
-  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${id}`, {
+  const res = await fetch(`${API_URL}/api/products/${id}`, {
     method: "PUT",
     headers: { Authorization: `Bearer ${token}` },
     body: formData

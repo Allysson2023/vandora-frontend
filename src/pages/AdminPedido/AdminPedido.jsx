@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./AdminPedido.css";
 import { formatarDataBR } from "../../utils/dateUtils";
+import { API_URL } from "../../apiConfig";
 
 function AdminPedido() {
 
@@ -16,7 +17,7 @@ function AdminPedido() {
 
     useEffect(() => {
 
-        fetch(`${import.meta.env.VITE_API_URL}/api/pedidos/${id}`, {
+        fetch(`${API_URL}/api/pedidos/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -54,7 +55,7 @@ console.log(data);
 
         try {
 
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/pedidos/${id}/status`, {
+            const res = await fetch(`${API_URL}/api/pedidos/${id}/status`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

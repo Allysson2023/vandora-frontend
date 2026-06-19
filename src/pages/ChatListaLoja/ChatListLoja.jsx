@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate , useParams} from "react-router-dom";
 import socket from "../../socket";
 import "./ChatListLoja.css";
-
+import { API_URL } from "../../apiConfig";
 import somNotificacao from "../../assets/sounds/notification.mp3";
 
 function ChatListLoja() {
@@ -36,7 +36,7 @@ try {
 
     try {
         const res = await fetch(
-            `${import.meta.env.VITE_API_URL}/api/chat/loja/${lojaId}`,
+            `${API_URL}/api/chat/loja/${lojaId}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -119,7 +119,7 @@ useEffect(() => {
     try {
 
         await fetch(
-            `${import.meta.env.VITE_API_URL}/api/chat/visualizar/${chatId}`,
+            `${API_URL}/api/chat/visualizar/${chatId}`,
             {
                 method: "PUT",
                 headers: {

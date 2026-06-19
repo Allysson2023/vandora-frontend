@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./FuncionarioDashboard.css";
+import { API_URL } from "../../apiConfig";
 
 function FuncionarioDashboard() {
 
@@ -17,7 +18,7 @@ const [titulo, setTitulo] = useState("");
 
 
 const carregarBanners = async () => {
-  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/banners`);
+  const res = await fetch(`${API_URL}/api/banners`);
   const data = await res.json();
   setBanners(data);
 };
@@ -27,7 +28,7 @@ const enviarBanner = async () => {
   formData.append("imagem", imagem);
   formData.append("titulo", titulo);
 
-  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/banners`, {
+  const res = await fetch(`${API_URL}/api/banners`, {
     method: "POST",
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     body: formData,
@@ -46,7 +47,7 @@ const enviarBanner = async () => {
 const carregarResumo = async () => {
 
   const resposta = await fetch(
-    `${import.meta.env.VITE_API_URL}/api/funcionario/resumo`,
+    `${API_URL}/api/funcionario/resumo`,
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`

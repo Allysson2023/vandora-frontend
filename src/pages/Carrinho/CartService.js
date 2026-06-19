@@ -1,4 +1,5 @@
-const API_URL = '${import.meta.env.VITE_API_URL}/api';
+import { API_URL } from "../../apiConfig";
+
 
 export const obterItensCarrinho = async (token) => {
     const response = await fetch(`${API_URL}/cart`, {
@@ -8,7 +9,7 @@ export const obterItensCarrinho = async (token) => {
 };
 
 export const calcularFrete = async (cepCliente) => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/api/calcular-frete`, {
+  const response = await fetch(`${API_URL}/api/calcular-frete`, {
     method: "POST",
     headers: { 
       "Content-Type": "application/json" 

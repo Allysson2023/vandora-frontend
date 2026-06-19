@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./MaisVendidos.css";
-
+import { API_URL } from "../../apiConfig";
 function MaisVendidos() {
 
   const { id } = useParams();
@@ -20,7 +20,7 @@ function MaisVendidos() {
     const token = localStorage.getItem("token");
 
     const res = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/stores/${id}/mais-vendidos`,
+      `${API_URL}/api/stores/${id}/mais-vendidos`,
       {
         headers: {
           Authorization: `Bearer ${token}`

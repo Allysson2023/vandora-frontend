@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Carrinho.css";
 import { obterItensCarrinho } from './CartService';
+import { API_URL } from "../../apiConfig";
 
 function Carrinho() {
   const navigate = useNavigate();
@@ -27,21 +28,21 @@ function Carrinho() {
   const possuiProdutoIndisponivel = carrinho.some(item => item.estoque <= 0);
 
   const aumentar = async (id) => {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/cart/increase/${id}`, { 
+    const response = await fetch(`${API_URL}/api/cart/increase/${id}`, { 
         method: "PUT", headers: { Authorization: `Bearer ${token}` } 
     });
     if (response.ok) setCarrinho(prev => prev.map(item => item.product_id === id ? { ...item, quantidade: item.quantidade + 1 } : item));
   };
 
   const diminuir = async (id) => {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/cart/decrease/${id}`, { 
+    const res = await fetch(`${API_URL}/api/cart/decrease/${id}`, { 
         method: "PUT", headers: { Authorization: `Bearer ${token}` } 
     });
     if (res.ok) setCarrinho(prev => prev.map(item => item.product_id === id ? { ...item, quantidade: item.quantidade - 1 } : item).filter(item => item.quantidade > 0));
   };
 
   const confirmarRemocao = async () => {
-    await fetch(`${import.meta.env.VITE_API_URL}/api/cart/delete/${produtoExcluir}`, { 
+    await fetch(`${API_URL}/api/cart/delete/${produtoExcluir}`, { 
         method: "DELETE", headers: { Authorization: `Bearer ${token}` } 
     });
     setCarrinho(prev => prev.filter(item => item.product_id !== produtoExcluir));
@@ -49,7 +50,7 @@ function Carrinho() {
   };
 
   const limparCarrinho = async () => {
-    await fetch(`${import.meta.env.VITE_API_URL}/api/cart/clear`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+    await fetch(`${API_URL}/api/cart/clear`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
     setCarrinho([]);
   };
 
@@ -71,7 +72,7 @@ function Carrinho() {
 
             {carrinho.map((item) => (
               <div key={item.product_id} className={`card-carrinho ${item.estoque <= 0 ? "indisponivel-card" : ""}`}>
-                <img src={`${import.meta.env.VITE_API_URL}/uploads/produtos/${item.imagem}`} alt={item.nome} />
+                <img src={`${API_URL}/uploads/produtos/${item.imagem}`} alt={item.nome} />
                 <div className="info-carrinho">
                   <h3>{item.nome}</h3>
                   <p>{item.estoque <= 0 ? "Indisponível" : `Estoque: ${item.estoque}`}</p>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./StoreComentarios.css";
-
+import { API_URL } from "../../apiConfig";
 function StoreComentarios() {
 
     const { id } = useParams();
@@ -25,7 +25,7 @@ const [respostas, setRespostas] = useState({});
 
     useEffect(() => {
 
-        fetch(`${import.meta.env.VITE_API_URL}/api/stores/${id}/comentarios`)
+        fetch(`${API_URL}/api/stores/${id}/comentarios`)
             .then(res => res.json())
             .then(data => {
 
@@ -40,7 +40,7 @@ const [respostas, setRespostas] = useState({});
 
     useEffect(() => {
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/stores/${id}/avaliacoes`)
+    fetch(`${API_URL}/api/stores/${id}/avaliacoes`)
         .then(res => res.json())
         .then(data => {
             setResumoAvaliacoes(data);
@@ -54,7 +54,7 @@ useEffect(() => {
     const token = localStorage.getItem("token");
 
     fetch(
-        `${import.meta.env.VITE_API_URL}/api/stores/${id}`,
+        `${API_URL}/api/stores/${id}`,
         {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -100,7 +100,7 @@ const responderComentario = async (avaliacaoId) => {
         }
 
         const res = await fetch(
-            `${import.meta.env.VITE_API_URL}/api/avaliacoes/${avaliacaoId}/responder`,
+            `${API_URL}/api/avaliacoes/${avaliacaoId}/responder`,
             {
                 method: "POST",
                 headers: {

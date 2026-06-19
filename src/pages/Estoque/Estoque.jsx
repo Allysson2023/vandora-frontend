@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams,  useNavigate  } from "react-router-dom";
 import "./Estoque.css";
+import { API_URL } from "../../apiConfig";
 
 function Estoque() {
 
@@ -21,7 +22,7 @@ function Estoque() {
     const token = localStorage.getItem("token");
 
     const res = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/stores/${id}/estoque`,
+      `${API_URL}/api/stores/${id}/estoque`,
       {
         headers: {
           Authorization: `Bearer ${token}`

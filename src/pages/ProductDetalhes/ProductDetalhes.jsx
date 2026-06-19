@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./ProductDetalhes.css";
-
+import { API_URL } from "../../apiConfig";
 function ProdutoDetalhe(){
 
     const { id } = useParams();
@@ -45,7 +45,7 @@ const [curtido, setCurtido] = useState(false);
 
 
         const response = await fetch(
-            `${import.meta.env.VITE_API_URL}/api/cart`,
+            `${API_URL}/api/cart`,
             {
                 method: "POST",
 
@@ -90,18 +90,18 @@ const [curtido, setCurtido] = useState(false);
     const token = localStorage.getItem("token");
 
     // produto
-    fetch(`${import.meta.env.VITE_API_URL}/api/products/${id}`)
+    fetch(`${API_URL}/api/products/${id}`)
         .then(res => res.json())
         .then(data => {
             setProduto(data);
 
             setImagemPrincipal(
-                `${import.meta.env.VITE_API_URL}/uploads/produtos/${data.imagem}`
+                `${API_URL}/uploads/produtos/${data.imagem}`
             );
         });
 
     // total curtidas
-    fetch(`${import.meta.env.VITE_API_URL}/api/products/${id}/likes`)
+    fetch(`${API_URL}/api/products/${id}/likes`)
         .then(res => res.json())
         .then(data => {
             setTotalCurtidas(data.total);
@@ -109,7 +109,7 @@ const [curtido, setCurtido] = useState(false);
 
     // se usuário curtiu
     if (token) {
-        fetch(`${import.meta.env.VITE_API_URL}/api/products/${id}/liked`, {
+        fetch(`${API_URL}/api/products/${id}/liked`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -135,7 +135,7 @@ const toggleLike = async () => {
 
         if (!curtido) {
 
-            await fetch(`${import.meta.env.VITE_API_URL}/api/products/${id}/like`, {
+            await fetch(`${API_URL}/api/products/${id}/like`, {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -148,7 +148,7 @@ const toggleLike = async () => {
 
         } else {
 
-            await fetch(`${import.meta.env.VITE_API_URL}/api/products/${id}/like`, {
+            await fetch(`${API_URL}/api/products/${id}/like`, {
                 method: "DELETE",
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -218,15 +218,15 @@ const mostrarToast = (msg) => {
         <img
             className={
                 imagemPrincipal ===
-                `${import.meta.env.VITE_API_URL}/uploads/produtos/${produto.imagem}`
+                `${API_URL}/uploads/produtos/${produto.imagem}`
                 ? "miniatura ativa"
                 : "miniatura"
             }
-            src={`${import.meta.env.VITE_API_URL}/uploads/produtos/${produto.imagem}`}
+            src={`${API_URL}/uploads/produtos/${produto.imagem}`}
             alt=""
             onClick={() =>
                 setImagemPrincipal(
-                    `${import.meta.env.VITE_API_URL}/uploads/produtos/${produto.imagem}`
+                    `${API_URL}/uploads/produtos/${produto.imagem}`
                 )
             }
         />
@@ -235,15 +235,15 @@ const mostrarToast = (msg) => {
             <img
                 className={
                     imagemPrincipal ===
-                    `${import.meta.env.VITE_API_URL}/uploads/produtos/${produto.imagem2}`
+                    `${API_URL}/uploads/produtos/${produto.imagem2}`
                     ? "miniatura ativa"
                     : "miniatura"
                 }
-                src={`${import.meta.env.VITE_API_URL}/uploads/produtos/${produto.imagem2}`}
+                src={`${API_URL}/uploads/produtos/${produto.imagem2}`}
                 alt=""
                 onClick={() =>
                     setImagemPrincipal(
-                        `${import.meta.env.VITE_API_URL}/uploads/produtos/${produto.imagem2}`
+                        `${API_URL}/uploads/produtos/${produto.imagem2}`
                     )
                 }
             />
@@ -253,15 +253,15 @@ const mostrarToast = (msg) => {
             <img
                 className={
                     imagemPrincipal ===
-                    `${import.meta.env.VITE_API_URL}/uploads/produtos/${produto.imagem3}`
+                    `${API_URL}/uploads/produtos/${produto.imagem3}`
                     ? "miniatura ativa"
                     : "miniatura"
                 }
-                src={`${import.meta.env.VITE_API_URL}/uploads/produtos/${produto.imagem3}`}
+                src={`${API_URL}/uploads/produtos/${produto.imagem3}`}
                 alt=""
                 onClick={() =>
                     setImagemPrincipal(
-                        `${import.meta.env.VITE_API_URL}/uploads/produtos/${produto.imagem3}`
+                        `${API_URL}/uploads/produtos/${produto.imagem3}`
                     )
                 }
             />

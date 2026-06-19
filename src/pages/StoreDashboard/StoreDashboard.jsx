@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./StoreDashboard.css";
-
+import { API_URL } from "../../apiConfig";
 import {
   LineChart,
   Line,
@@ -42,7 +42,7 @@ const [config, setConfig] = useState({
 
 useEffect(() => {
     if (modalDescontoAberta) {
-        fetch(`${import.meta.env.VITE_API_URL}/api/stores/${id}/desconto-config`, {
+        fetch(`${API_URL}/api/stores/${id}/desconto-config`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         })
         .then(res => res.json())
@@ -87,7 +87,7 @@ useEffect(() => {
       const token = localStorage.getItem("token");
 
       const response = await fetch(
-  `${import.meta.env.VITE_API_URL}/api/stores/${id}/dashboard`,
+  `${API_URL}/api/stores/${id}/dashboard`,
   {
     headers: {
       Authorization: `Bearer ${token}`
@@ -777,7 +777,7 @@ useEffect(() => {
                 <button 
                     className="btn-salvar"
                     onClick={async () => {
-                        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/stores/${id}/desconto-config`, {
+                        const res = await fetch(`${API_URL}/api/stores/${id}/desconto-config`, {
                             method: 'PUT',
                             headers: { 
                                 'Content-Type': 'application/json', 

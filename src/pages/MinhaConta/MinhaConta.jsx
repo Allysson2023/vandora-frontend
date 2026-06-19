@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./MinhaConta.css";
-
+import { API_URL } from "../../apiConfig";
 function MinhaConta() {
 
     const navigate = useNavigate();
@@ -22,7 +22,7 @@ function MinhaConta() {
         try {
 
             const resposta = await fetch(
-                `${import.meta.env.VITE_API_URL}/api/perfil-cliente/${id}`,
+                `${API_URL}/api/perfil-cliente/${id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -47,7 +47,7 @@ function MinhaConta() {
         try {
 
             const resposta = await fetch(
-                `${import.meta.env.VITE_API_URL}/api/perfil-cliente/${id}/pedidos`,
+                `${API_URL}/api/perfil-cliente/${id}/pedidos`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -89,7 +89,7 @@ function MinhaConta() {
             {usuario.imagem_perfil ? (
 
                 <img
-                    src={`${import.meta.env.VITE_API_URL}/uploads/perfil/${usuario.imagem_perfil}`}
+                    src={`${API_URL}/uploads/perfil/${usuario.imagem_perfil}`}
                     alt="Foto Perfil"
                     className="conta-foto"
                 />

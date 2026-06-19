@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./Financeiro.css";
+import { API_URL } from "../../apiConfig";
 
 function Financeiro() {
 
@@ -18,7 +19,7 @@ function Financeiro() {
         const token = localStorage.getItem("token");
 
         const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/stores/${id}/financeiro`,
+          `${API_URL}/api/stores/${id}/financeiro`,
           {
             headers: {
               Authorization: `Bearer ${token}`

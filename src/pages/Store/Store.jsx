@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./Store.css";
-
+import { API_URL } from "../../apiConfig";
 function Store() {
 
     const [loading, setLoading] = useState(true);
@@ -48,13 +48,13 @@ const carregarDadosDaLoja = async () => {
     setErro(false);
     try {
         const [lojaRes, prodRes, favRes, totalFavRes, avalRes] = await Promise.all([
-            fetch(`${import.meta.env.VITE_API_URL}/api/stores/${id}/public`).then(r => r.json()),
-            fetch(`${import.meta.env.VITE_API_URL}/api/stores/${id}/products?pagina=${pagina}`).then(r => r.json()),
-            fetch(`${import.meta.env.VITE_API_URL}/api/stores/${id}/favorito`, {
+            fetch(`${API_URL}/api/stores/${id}/public`).then(r => r.json()),
+            fetch(`${API_URL}/api/stores/${id}/products?pagina=${pagina}`).then(r => r.json()),
+            fetch(`${API_URL}/api/stores/${id}/favorito`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
             }).then(r => r.json()).catch(() => ({ favorito: false })),
-            fetch(`${import.meta.env.VITE_API_URL}/api/stores/${id}/total-favoritos`).then(r => r.json()),
-            fetch(`${import.meta.env.VITE_API_URL}/api/stores/${id}/avaliacoes`).then(r => r.json())
+            fetch(`${API_URL}/api/stores/${id}/total-favoritos`).then(r => r.json()),
+            fetch(`${API_URL}/api/stores/${id}/avaliacoes`).then(r => r.json())
         ]);
 
         setStore(lojaRes);
@@ -109,7 +109,7 @@ useEffect(() => {
     // CARREGAR PRODUTOS
     // =========================
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_API_URL}/api/stores/${id}/products?pagina=${pagina}`)
+        fetch(`${API_URL}/api/stores/${id}/products?pagina=${pagina}`)
             .then(res => res.json())
             .then(data => {
 
@@ -132,7 +132,7 @@ useEffect(() => {
     if (!token) return;
 
     fetch(
-        `${import.meta.env.VITE_API_URL}/api/stores/${id}/favorito`,
+        `${API_URL}/api/stores/${id}/favorito`,
         {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -150,7 +150,7 @@ useEffect(() => {
 useEffect(() => {
 
     fetch(
-        `${import.meta.env.VITE_API_URL}/api/stores/${id}/total-favoritos`
+        `${API_URL}/api/stores/${id}/total-favoritos`
     )
         .then(res => res.json())
         .then(data => {
@@ -164,7 +164,7 @@ useEffect(() => {
     // CARREGAR LOJA
     // =========================
     useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/stores/${id}/public`)
+    fetch(`${API_URL}/api/stores/${id}/public`)
         .then(res => res.json())
         .then(data => setStore(data))
         .catch(err => console.log(err));
@@ -172,7 +172,7 @@ useEffect(() => {
 
 useEffect(() => {
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/stores/${id}/avaliacoes`)
+    fetch(`${API_URL}/api/stores/${id}/avaliacoes`)
         .then(res => res.json())
         .then(data => {
             setAvaliacao(data);
@@ -246,7 +246,7 @@ const handleFavoritar = async () => {
     try {
 
         const response = await fetch(
-            `${import.meta.env.VITE_API_URL}/api/stores/${id}/favoritar`,
+            `${API_URL}/api/stores/${id}/favoritar`,
             {
                 method: "POST",
                 headers: {
@@ -283,7 +283,7 @@ const abrirChatLoja = async () => {
     try {
 
         const response = await fetch(
-            `${import.meta.env.VITE_API_URL}/api/chat/abrir`,
+            `${API_URL}/api/chat/abrir`,
             {
                 method: "POST",
                 headers: {
@@ -371,7 +371,7 @@ if (erro) {
                     className="store-banner"
                     src={
                         store?.imagem
-                            ? `${import.meta.env.VITE_API_URL}/uploads/lojas/${store.imagem}`
+                            ? `${API_URL}/uploads/lojas/${store.imagem}`
                             : "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1200"
                     }
                     alt="banner"
@@ -385,7 +385,7 @@ if (erro) {
                         className="store-logo"
                         src={
                             store?.imagem
-                                ? `${import.meta.env.VITE_API_URL}/uploads/lojas/${store.imagem}`
+                                ? `${API_URL}/uploads/lojas/${store.imagem}`
                                 : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRl55ZXLSARGsTv4qgCQBC_UD8wwSrV-3I-qg&s"
                         }
                         alt="logo"
@@ -544,7 +544,7 @@ if (erro) {
                             <img
                                 src={
                                     produto.imagem
-                                        ? `${import.meta.env.VITE_API_URL}/uploads/produtos/${produto.imagem}`
+                                        ? `${API_URL}/uploads/produtos/${produto.imagem}`
                                         : "https://dummyimage.com/300x300"
                                 }
                                 alt={produto.nome}

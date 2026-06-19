@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { obterItensCarrinho } from './CartService';
 import "./Checkout.css";
-
+import { API_URL } from "../../apiConfig";
 function Checkout() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -64,7 +64,7 @@ function Checkout() {
       });
 
       // Busca desconto usando o idL (ID local)
-      fetch(`${import.meta.env.VITE_API_URL}/api/stores/${idL}/public/desconto-config`, {
+      fetch(`${API_URL}/api/stores/${idL}/public/desconto-config`, {
     headers: { Authorization: `Bearer ${token}` }
 })
 .then(res => res.json())
@@ -101,14 +101,14 @@ useEffect(() => {
     };
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/pedidos`, {
+      const response = await fetch(`${API_URL}/api/pedidos`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(payload)
       });
 
       if (response.ok) {
-        await fetch(`${import.meta.env.VITE_API_URL}/api/cart/clear`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+        await fetch(`${API_URL}/api/cart/clear`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
         navigate("/meus-pedidos", { replace: true });
       } else {
         alert("Erro ao finalizar pedido");

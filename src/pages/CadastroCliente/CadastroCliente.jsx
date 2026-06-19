@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CadastroCliente.css";
+import { API_URL } from "../../apiConfig";
 
 function CadastroCliente() {
     const navigate = useNavigate();
@@ -25,7 +26,7 @@ function CadastroCliente() {
 
         try {
             setLoading(true);
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users`, {
+            const res = await fetch(`${API_URL}/api/users`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password })
