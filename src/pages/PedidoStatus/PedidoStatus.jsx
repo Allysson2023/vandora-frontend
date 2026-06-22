@@ -231,7 +231,7 @@ const podeAbrirChat = ["aceito", "separação", "em Rota"].includes(pedido?.stat
   <p className="data-pedido">
     🔄 Atualizado em: {formatarDataBR(pedido.updated_at)}
   </p>
-)}
+)} 
                     </div>
                 )}
 

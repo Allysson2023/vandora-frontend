@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./StoreDashboard.css";
+import { formatarDataBR } from "../../utils/dateUtils";
 import { API_URL } from "../../apiConfig";
 import {
   LineChart,
@@ -707,14 +708,6 @@ useEffect(() => {
       <p>
         <strong>Status:</strong> {resumo.ultimoPedido.status}
       </p>
-
-      {/* 🆕 DATA E HORA */}
-      <p>
-  <strong>📅 Pedido feito em:</strong>{" "}
-  {new Date(resumo.ultimoPedido.created_at).toLocaleString("pt-BR")}
-</p>
-
-    
 
     </div>
 

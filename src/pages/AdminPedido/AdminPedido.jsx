@@ -188,9 +188,9 @@ console.log(data);
                     <div key={item.id} className="produto-item">
 
                         <img
-                            src={`http://localhost:5000/uploads/produtos/${item.imagem}`}
-                            alt={item.nome}
-                        />
+    src={`${API_URL}/uploads/produtos/${item.imagem}`}
+    alt={item.nome}
+/>
 
                         <div>
                             <h3>{item.nome}</h3>
