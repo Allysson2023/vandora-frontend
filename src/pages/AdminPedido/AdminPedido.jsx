@@ -1,109 +1,77 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom"; // <--- Esta linha é a mais importante
 import "./AdminPedido.css";
 import { formatarDataBR } from "../../utils/dateUtils";
 import { API_URL } from "../../apiConfig";
 
 function AdminPedido() {
-
     const { id } = useParams();
     const navigate = useNavigate();
 
     const [pedido, setPedido] = useState(null);
     const [itens, setItens] = useState([]);
+    const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState("");
+    const [modalFinalizarPedido, setModalFinalizarPedido] = useState(false);
 
     const token = localStorage.getItem("token");
 
-    useEffect(() => {
-
-        fetch(`${API_URL}/api/pedidos/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
+    const buscarPedido = async () => {
+        setCarregando(true);
+        setErro("");
+        try {
+            const res = await fetch(`${API_URL}/api/pedidos/${id}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            if (!res.ok) throw new Error("Erro ao buscar");
+            
+            const data = await res.json();
+            const p = data.pedido;
+            if (p && typeof p.dadosEntrega === "string") {
+                p.dadosEntrega = JSON.parse(p.dadosEntrega);
             }
-        })
-            .then(res => res.json())
-            .then(data => {
-console.log(data);
+            setPedido(p);
+            setItens(data.itens || []);
+        } catch (err) {
+            setErro("Não foi possível carregar o pedido.");
+        } finally {
+            setCarregando(false);
+        }
+    };
 
-    if (!data.pedido) {
-        setErro(data.message || "Pedido não encontrado");
-        return;
-    }
-
-    const pedidoFormatado = data.pedido;
-
-    if (
-        pedidoFormatado.dadosEntrega &&
-        typeof pedidoFormatado.dadosEntrega === "string"
-    ) {
-        pedidoFormatado.dadosEntrega = JSON.parse(
-            pedidoFormatado.dadosEntrega
-        );
-    }
-
-    setPedido(pedidoFormatado);
-    setItens(data.itens || []);
-})
-            .catch(err => console.log(err));
-
+    useEffect(() => {
+        buscarPedido();
     }, [id, token]);
 
-    const [modalFinalizarPedido, setModalFinalizarPedido] = useState(false);
-
     async function atualizarStatus(status) {
-
         try {
-
             const res = await fetch(`${API_URL}/api/pedidos/${id}/status`, {
                 method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
-                },
+                headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
                 body: JSON.stringify({ status })
             });
-
             const data = await res.json();
-
-            if (!res.ok) {
-                alert(data.message);
-                return;
-            }
-
-            setPedido(prev => ({
-                ...prev,
-                status
-            }));
-
+            if (!res.ok) { alert(data.message); return; }
+            setPedido(prev => ({ ...prev, status }));
         } catch (err) {
             console.log(err);
-            setErro("Erro ao carregar pedido");
         }
     }
 
-    if (erro) {
-    return <h1>{erro}</h1>;
-}
+    // --- BLOCO DE RETORNOS CONDICIONAIS ---
+    if (carregando) return <div className="status-container"><h1>Carregando...</h1></div>;
+    if (erro) return (
+        <div className="status-container">
+            <h1>Erro</h1>
+            <p>{erro}</p>
+            <button onClick={buscarPedido}>Tentar Novamente</button>
+        </div>
+    );
+    if (!pedido) return null; // Proteção extra
 
-    if (!pedido) {
-        return <h1>Carregando...</h1>;
-    }
-
+    // --- RENDERIZAÇÃO ---
     const status = pedido.status;
-
-    const isFinal = status === "finalizado" || status === "cancelado" || status === "recusado";
-
-    const nomesStatus = {
-    pendente: "⏳ Pendente",
-    aceito: "✅ Pedido Aceito",
-    separacao: "📦 Em Separação",
-    rota: "🛵 Em Rota",
-    finalizado: "✔️ Finalizado",
-    recusado: "❌ Recusado",
-    cancelado: "🚫 Cancelado"
-};
-
+    const nomesStatus = { /* ... seu objeto ... */ };
     return (
 
         <div className="admin-pedido">

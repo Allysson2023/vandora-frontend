@@ -331,6 +331,23 @@ BOTÃO VER PERFIL CLIENTE
     transform: scale(.98);
 }
 
+.status-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+    gap: 20px;
+}
+.btn-tentar-novamente {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 /* =========================
 TABLET
 ========================= */
