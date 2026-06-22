@@ -2,7 +2,7 @@ import { API_URL } from "../../apiConfig";
 
 
 export const obterItensCarrinho = async (token) => {
-    const response = await fetch(`${API_URL}/cart`, {
+    const response = await fetch(`${API_URL}/api/cart`, {
         headers: { Authorization: `Bearer ${token}` }
     });
     return response.json();

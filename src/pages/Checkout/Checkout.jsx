@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { obterItensCarrinho } from './CartService';
+import { obterItensCarrinho } from './CartServiceCheckout';
 import "./Checkout.css";
 import { API_URL } from "../../apiConfig";
 function Checkout() {
@@ -37,7 +37,7 @@ function Checkout() {
             desconto = descontoConfig.tipo_desconto === 'porcentagem' 
                 ? (subtotal * valorDesc) / 100 
                 : valorDesc;
-        }
+        } 
     }
     
     return {
