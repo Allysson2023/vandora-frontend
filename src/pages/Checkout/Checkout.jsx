@@ -100,7 +100,7 @@ useEffect(() => {
         total_final: totalFinal
     };
 
-    try {
+    try { 
       const response = await fetch(`${API_URL}/api/pedidos`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },

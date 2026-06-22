@@ -2,10 +2,12 @@ import { API_URL } from "../../apiConfig";
 
 
 export const obterItensCarrinho = async (token) => {
-    const response = await fetch(`${API_URL}/cart`, {
-        headers: { Authorization: `Bearer ${token}` }
+    // Adicione o /api/ antes do cart
+    const response = await fetch(`${API_URL}/api/cart`, { 
+        method: "GET",
+        headers: { "Authorization": `Bearer ${token}` }
     });
-    return response.json();
+    return await response.json();
 };
 
 export const calcularFrete = async (cepCliente) => {

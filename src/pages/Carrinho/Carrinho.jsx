@@ -28,10 +28,22 @@ function Carrinho() {
   const possuiProdutoIndisponivel = carrinho.some(item => item.estoque <= 0);
 
   const aumentar = async (id) => {
+    // Adicione o /api/ antes do cart
     const response = await fetch(`${API_URL}/api/cart/increase/${id}`, { 
-        method: "PUT", headers: { Authorization: `Bearer ${token}` } 
+        method: "PUT", 
+        headers: { 
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json" // Boa prática adicionar
+        } 
     });
-    if (response.ok) setCarrinho(prev => prev.map(item => item.product_id === id ? { ...item, quantidade: item.quantidade + 1 } : item));
+    
+    if (response.ok) {
+        setCarrinho(prev => prev.map(item => 
+            item.product_id === id ? { ...item, quantidade: item.quantidade + 1 } : item
+        ));
+    } else {
+        alert("Erro ao aumentar quantidade");
+    }
   };
 
   const diminuir = async (id) => {
@@ -50,9 +62,21 @@ function Carrinho() {
   };
 
   const limparCarrinho = async () => {
-    await fetch(`${API_URL}/api/cart/clear`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+  try {
+    const res = await fetch(`${API_URL}/api/cart/clear`, { 
+        method: "DELETE", 
+        headers: { Authorization: `Bearer ${token}` } 
+    });
+    
+    if (!res.ok) throw new Error("Falha ao limpar");
+    console.log("Tentando acessar:", `${API_URL}/api/cart/clear`);
+    
     setCarrinho([]);
-  };
+  } catch (error) {
+    console.error("Erro na requisição:", error);
+    alert("Não foi possível limpar o carrinho. Tente novamente.");
+  }
+};
 
   return (
     <div className="pagina-carrinho">
