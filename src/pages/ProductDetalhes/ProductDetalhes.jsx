@@ -188,7 +188,7 @@ const mostrarToast = (msg) => {
                 className="btn-voltars"
                 onClick={() => navigate(-1)}
             >
-                ← Voltar
+                ← 
             </button> 
 
         </div>
