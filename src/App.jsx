@@ -61,6 +61,7 @@ function App() {
 
   if (user?.id) {
     socket.emit("join", user.id);
+    socket.emit("join_loja", user.id);
   }
 
   const notificationSound = new Audio(somNotificacao);
@@ -71,9 +72,15 @@ function App() {
   };
 
   socket.on("nova_notificacao", handleNotificacao);
+  socket.on("novo_pedido", (data) => {
+    handleNotificacao(); // Toca o som de notificação
+    console.log("Novo pedido recebido!", data);
+    // Aqui você pode disparar um toast/alerta visual se quiser
+  });
 
   return () => {
     socket.off("nova_notificacao", handleNotificacao);
+    socket.off("novo_pedido");
   };
 }, []);
 
