@@ -5,20 +5,24 @@ import socket from "../../socket";
 import somPedido from "../../assets/sounds/notification.mp3";
 import { formatarDataBR } from "../../utils/dateUtils";
 import { API_URL } from "../../apiConfig";
+
 function PainelPedidos() {
 
     const navigate = useNavigate();
     const { id: storeId } = useParams();
     const token = localStorage.getItem("token");
+
     const user = JSON.parse(localStorage.getItem("user"));
+    const userId = user?.id;
 
     const [pedidos, setPedidos] = useState([]);
-
-    // 🔥 MODAL STATE
     const [modalAberto, setModalAberto] = useState(false);
     const [pedidoSelecionado, setPedidoSelecionado] = useState(null);
     const [acao, setAcao] = useState(null);
     const [faturamentoHoje, setFaturamentoHoje] = useState(0);
+    const [carregando, setCarregando] = useState(true);
+    const [erro, setErro] = useState("");
+    const [dados, setDados] = useState(null);
 
     // 👇 AQUI ENTRA A FUNÇÃO
 function abrirPedido(id) {
@@ -38,24 +42,31 @@ useEffect(() => {
 }, [token]);
 
     useEffect(() => {
+    if (!userId) return; // Segurança: só executa se tiver o ID
 
     audioRef.current = new Audio(somPedido);
     audioRef.current.volume = 1;
 
-    const fetchPedidos = () => {
-        fetch(`${API_URL}/api/loja/pedidos`, {
-            headers: { Authorization: `Bearer ${token}` }
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (Array.isArray(data)) setPedidos(data);
-        });
+    const fetchPedidos = async () => {
+        setCarregando(true);
+        setErro("");
+        try {
+            const res = await fetch(`${API_URL}/api/loja/pedidos`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            if (!res.ok) throw new Error("Erro ao buscar pedidos");
+            const data = await res.json();
+            setPedidos(Array.isArray(data) ? data : []);
+        } catch (err) {
+            setErro("Não foi possível carregar os pedidos.");
+        } finally {
+            setCarregando(false);
+        }
     };
 
     fetchPedidos();
 
-    socket.emit("join_loja", user.id);
-
+    socket.emit("join_loja", userId); // Use o userId aqui
     socket.on("novo_pedido", () => {
         audioRef.current.currentTime = 0;
         audioRef.current.play().catch(() => {});
@@ -63,8 +74,8 @@ useEffect(() => {
     });
 
     return () => socket.off("novo_pedido");
-
-}, [token, storeId, user]);
+// 👇 AQUI ESTÁ A MUDANÇA: Use token, storeId e userId (não o objeto user)
+}, [token, storeId, userId]);
 
     // 🔥 ABRIR MODAL
     function abrirModal(pedido, tipo) {
@@ -110,6 +121,24 @@ useEffect(() => {
         }
     };
 
+    if (carregando) return (
+    <div className="status-container">
+        <div className="spinner"></div>
+        <p>Preparando os dados, um momento...</p>
+    </div>
+);
+
+if (erro) return (
+    <div className="status-container">
+        <h1 className="erro-titulo">⚠️</h1>
+        <h2>Ops! Erro ao carregar</h2>
+        <p>{erro}</p>
+        <button className="btn-retry" onClick={() => window.location.reload()}>
+    Tentar Novamente
+</button>
+    </div>
+);
+    
     return (
 
         <div className="painel-container">
