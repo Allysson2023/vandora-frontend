@@ -12,6 +12,8 @@ function ChatLoja() {
     const [mensagens, setMensagens] = useState([]);
     const [texto, setTexto] = useState("");
 
+    const [enviando, setEnviando] = useState(false);
+
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
 
@@ -138,32 +140,22 @@ useEffect(() => {
     if (!chatId) return;
 
     const handle = (msg) => {
-
-        if (!msg?.chat_id) return;
         if (Number(msg.chat_id) !== Number(chatId)) return;
 
-        const isMyMessage =
-            msg.remetente_tipo === "loja" &&
-            Number(msg.remetente_id) === Number(user?.id);
-
-        if (isMyMessage) return; // ❌ bloqueia eco
+        // Se for a MENSAGEM QUE VOCÊ ENVIOU, o servidor vai emitir ela de volta.
+        // Você já a adicionou no enviar(), então não adicione de novo!
+        const isMyMessage = Number(msg.remetente_id) === Number(user?.id);
+        if (isMyMessage) return; 
 
         setMensagens(prev => {
-  const exists = prev.some(
-    m => m.id === msg.id || m.temp_id === msg.temp_id
-  );
-
-  if (exists) return prev;
-
-  return [...prev, msg];
-});
+            // Verifica se essa mensagem já não está no array (evita duplicar)
+            if (prev.some(m => m.id === msg.id)) return prev;
+            return [...prev, msg];
+        });
     };
 
     socket.on("nova_mensagem", handle);
-
-    return () => {
-        socket.off("nova_mensagem", handle);
-    };
+    return () => socket.off("nova_mensagem", handle);
 }, [chatId, user?.id]);
 
     // ===============================
@@ -185,48 +177,45 @@ useEffect(() => {
     // ===============================
     // ENVIAR MENSAGEM
     // ===============================
-    const [enviando, setEnviando] = useState(false);
+    async function enviar() {
+    // Agora o React entende o que é 'enviando'
+    if (!texto.trim() || enviando) return; 
 
-async function enviar() {
-  if (!texto.trim() || enviando) return;
-
-  const novaMsg = {
-    id: Date.now(), // temporário
-    chat_id: Number(chatId),
-    mensagem: texto,
-    remetente_tipo: "loja",
-    remetente_id: user?.id,
-    criado_em: new Date().toISOString(),
-    temp_id: Date.now()
-  };
-
-  // 🔥 atualiza na hora (UI instantânea)
-  setMensagens(prev => [...prev, novaMsg]);
-
-  setTexto("");
-  setEnviando(true);
-
-  try {
-    await fetch(`${API_URL}/api/chat/mensagem`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({
+    setEnviando(true); // Bloqueia novos cliques
+    
+    const tempId = Date.now();
+    const novaMsg = {
+        id: tempId,
         chat_id: Number(chatId),
         mensagem: texto,
-        tipo: "texto",
         remetente_tipo: "loja",
-        loja_id: user?.loja_id
-      })
-    });
+        remetente_id: user?.id,
+        criado_em: new Date().toISOString(),
+    };
 
-  } catch (err) {
-    console.log(err);
-  } finally {
-    setEnviando(false);
-  }
+    setMensagens(prev => [...prev, novaMsg]);
+    setTexto("");
+
+    try {
+        await fetch(`${API_URL}/api/chat/mensagem`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                chat_id: Number(chatId),
+                mensagem: texto,
+                tipo: "texto",
+                remetente_tipo: "loja",
+                loja_id: user?.loja_id
+            })
+        });
+    } catch (err) {
+        console.log("Erro ao enviar:", err);
+    } finally {
+        setEnviando(false); // Libera o botão novamente
+    }
 }
 
     return (

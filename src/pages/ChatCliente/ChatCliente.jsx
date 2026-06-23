@@ -8,7 +8,7 @@ function ChatCliente() {
  
     const { chatId } = useParams();
     const navigate = useNavigate();
-
+ 
     const [mensagem, setMensagem] = useState("");
     const [mensagens, setMensagens] = useState([]);
     const [chatInfo, setChatInfo] = useState(null);
@@ -106,16 +106,19 @@ useEffect(() => {
   const handleMessage = (msg) => {
     if (Number(msg.chat_id) !== Number(chatId)) return;
 
-    setMensagens(prev => {
-      const exists = prev.some(m => m.id === msg.id);
-      if (exists) return prev;
+    // BLOQUEIO DE ECO: 
+    // Verifica se o ID do remetente é o ID do usuário logado (cliente)
+    // O backend envia "remetente_id" no objeto da mensagem
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (Number(msg.remetente_id) === Number(user?.id)) return;
 
+    setMensagens(prev => {
+      if (prev.some(m => m.id === msg.id)) return prev;
       return [...prev, msg];
     });
   };
 
   socket.on("nova_mensagem", handleMessage);
-
   return () => socket.off("nova_mensagem", handleMessage);
 }, [chatId]);
 
@@ -145,8 +148,22 @@ useEffect(() => {
     async function enviarMensagem() {
   if (!mensagem.trim()) return;
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const tempMsg = {
+    id: Date.now(), // ID temporário
+    chat_id: Number(chatId),
+    mensagem: mensagem,
+    remetente_tipo: "cliente",
+    remetente_id: user?.id,
+    criado_em: new Date().toISOString()
+  };
+
+  // 1. Atualização Otimista
+  setMensagens(prev => [...prev, tempMsg]);
+  setMensagem("");
+
   try {
-    const res = await fetch(`${API_URL}/api/chat/mensagem`, {
+    await fetch(`${API_URL}/api/chat/mensagem`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -154,16 +171,14 @@ useEffect(() => {
       },
       body: JSON.stringify({
         chat_id: Number(chatId),
-        mensagem,
+        mensagem: tempMsg.mensagem,
         tipo: "texto",
         remetente_tipo: "cliente"
       })
     });
-
-    setMensagem("");
-
   } catch (err) {
     console.log(err);
+    // Se der erro, você pode remover a mensagem da lista aqui
   }
 }
 

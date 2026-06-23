@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect } from "react";
-
+import { ChatProvider } from './ChatContext';
 import socket from "./socket";
 
 import Login from "./pages/Login/Login";
@@ -78,6 +78,7 @@ function App() {
 }, []);
 
   return (
+    <ChatProvider>
     <BrowserRouter>
 
     <CookieConsent />
@@ -166,6 +167,7 @@ function App() {
       </Routes>
 
     </BrowserRouter>
+    </ChatProvider>
   );
 }
 

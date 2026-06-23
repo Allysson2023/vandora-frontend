@@ -8,6 +8,8 @@ function Mensagens() {
   const navigate = useNavigate();
 
 
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+  
  useEffect(() => {
 
   const token = localStorage.getItem("token");
@@ -35,6 +37,30 @@ function Mensagens() {
   console.log("TOKEN SENDO USADO:", token);
 
 }, []);
+
+useEffect(() => {
+  if (!currentUser?.id) return;
+
+  socket.emit("join", currentUser.id); // O cliente precisa entrar no seu próprio canal
+
+  const handleNovaMsg = (msg) => {
+    setConversas(prev => {
+      const index = prev.findIndex(c => Number(c.chatId) === Number(msg.chat_id));
+      if (index === -1) return prev; // Se não estiver na lista, ignora
+
+      let updated = [...prev];
+      updated[index].ultimaMensagem = msg.mensagem;
+      
+      // Move para o topo
+      const chatAtualizado = updated.splice(index, 1)[0];
+      updated.unshift(chatAtualizado);
+      return updated;
+    });
+  };
+
+  socket.on("nova_mensagem", handleNovaMsg);
+  return () => socket.off("nova_mensagem", handleNovaMsg);
+}, [currentUser?.id]);
 
   return (
     <div className="mensagens-container">
