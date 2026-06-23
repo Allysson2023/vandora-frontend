@@ -37,8 +37,18 @@ useEffect(() => {
         headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => res.json())
-    .then(data => setFaturamentoHoje(data.total_hoje))
-    .catch(err => console.error("Erro ao buscar faturamento"));
+    .then(data => {
+        // Log para ver o que está chegando
+        console.log("Dados do faturamento:", data); 
+        
+        // Garante que será um número (se for undefined/null, vira 0)
+        const valor = parseFloat(data.total_hoje) || 0;
+        setFaturamentoHoje(valor);
+    })
+    .catch(err => {
+        console.error("Erro ao buscar faturamento");
+        setFaturamentoHoje(0); // Garante 0 em caso de erro
+    });
 }, [token]);
 
     useEffect(() => {
@@ -84,6 +94,21 @@ useEffect(() => {
         setModalAberto(true);
     }
 
+    const atualizarFaturamento = () => {
+    fetch(`${API_URL}/api/loja/faturamento-hoje`, {
+        headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(res => res.json())
+    .then(data => setFaturamentoHoje(Number(data.total_hoje) || 0))
+    .catch(err => console.error("Erro ao atualizar faturamento", err));
+};
+
+// No seu useEffect de montagem:
+useEffect(() => {
+    atualizarFaturamento();
+}, [token]);
+
+
     // 🔥 CONFIRMAR AÇÃO
     const confirmar = async () => {
 
@@ -96,6 +121,9 @@ useEffect(() => {
                 },
                 body: JSON.stringify({ status: acao })
             });
+            if (res.ok) {
+        atualizarFaturamento(); // Chama a função aqui
+    }
 
             const data = await res.json();
 
@@ -204,9 +232,10 @@ if (erro) return (
 
     {/* Aqui usamos o novo estilo */}
     <div className="faturamento-card">
-        <span>Faturamento de Hoje</span>
-        <h2>R$ {Number(faturamentoHoje).toFixed(2)}</h2>
-    </div>
+    <span>Faturamento de Hoje</span>
+    {/* Use o operador lógico OR para fallback */}
+    <h2>R$ {(Number(faturamentoHoje) || 0).toFixed(2)}</h2>
+</div>
 </div>
 
             {/* LISTA */}
