@@ -61,7 +61,7 @@ function AdminPedido() {
     // --- BLOCO DE RETORNOS CONDICIONAIS ---
     if (carregando) return <div className="status-container"><h1>Carregando...</h1></div>;
     if (erro) return (
-        <div className="status-container">
+        <div className="status-container">  
             <h1>Erro</h1>
             <p>{erro}</p>
             <button onClick={buscarPedido}>Tentar Novamente</button>

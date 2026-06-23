@@ -286,24 +286,7 @@ const podeAbrirChat = ["aceito", "separação", "em Rota"].includes(pedido?.stat
     <h2>Total: R$ {parseFloat(pedido.total_final).toFixed(2)}</h2>
 </div>
 
-<div className="botoes-acao-status">
-    {pedido.status === "AGUARDANDO_CONFIRMACAO" && (
-        <button className="btn-aceitar" onClick={() => mudarStatus("aceito")}>Aceitar Pedido</button>
-    )}
-    {pedido.status === "aceito" && (
-        <button className="btn-separacao" onClick={() => mudarStatus("separação")}>Iniciar Separação</button>
-    )}
-    {pedido.status === "separação" && (
-        <button className="btn-rota" onClick={() => mudarStatus("em Rota")}>Enviar para Rota</button>
-    )}
-    {pedido.status === "em Rota" && (
-        <button className="btn-finalizar" onClick={() => mudarStatus("finalizado")}>Finalizar Pedido</button>
-    )}
-    {/* Botão de Cancelar sempre disponível para status iniciais */}
-    {["AGUARDANDO_CONFIRMACAO", "aceito", "separação"].includes(pedido.status) && (
-        <button className="btn-cancelar" onClick={() => mudarStatus("cancelado")}>Cancelar</button>
-    )}
-</div>
+
 
             {mostrarModal && (
   <div className="review-backdrop">
