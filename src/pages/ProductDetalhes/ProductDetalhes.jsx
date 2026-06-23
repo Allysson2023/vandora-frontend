@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import "./ProductDetalhes.css";
 import { API_URL } from "../../apiConfig";
 function ProdutoDetalhe(){
@@ -129,7 +129,7 @@ const toggleLike = async () => {
     if (!token) {
         setModalLogin(true);
         return;
-    }
+    } 
 
     try {
 
@@ -276,10 +276,9 @@ const mostrarToast = (msg) => {
                 <h1>{produto.nome}</h1>
                 {totalCurtidas > 0 && (
     <div className="pd-total-curtidas">
-        ❤️ {totalCurtidas} pessoas curtiram este produto
+        ❤️ {totalCurtidas} 
     </div>
 )}
-
                <button
     className={`pd-heart-btn ${curtido ? "ativo" : ""}`}
     type="button"
@@ -287,10 +286,14 @@ const mostrarToast = (msg) => {
 >
     {curtido ? "❤️" : "🤍"}
 </button>
+
                 
-                <p className="loja">
-                    Loja: {produto.nomeLoja}
-                </p>
+               <p className="loja">
+    Loja:{" "}
+    <Link to={`/store/${produto.store_id}`} className="link-loja">
+        {produto.nomeLoja}
+    </Link>
+</p>
 
                 <p className="descricao">
                     {produto.descricao}
@@ -320,12 +323,14 @@ const mostrarToast = (msg) => {
     ) : (
 
         <p className="estoque">
-            Estoque disponível: {produto.estoque}
+            Disponível: {produto.estoque}
         </p>
 
     )
 }
 
+
+            </div>
                 <button
   className="btn-carrinho"
   onClick={adicionarAoCarrinho}
@@ -337,8 +342,6 @@ const mostrarToast = (msg) => {
       : "Adicionar ao Carrinho"
   }
 </button>
-
-            </div>
 
 
         </div>

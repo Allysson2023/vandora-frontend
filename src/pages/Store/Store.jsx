@@ -338,7 +338,7 @@ if (erro) {
             {/* TOP BAR */}
             <div className="store-top-bar">
 
-                <button className="btn-back" onClick={() => navigate("/")}>
+                <button className="btn-back" onClick={() => navigate(-1)}>
                     ← Voltar
                 </button>
 

@@ -171,8 +171,8 @@ GALERIA
 
     background:linear-gradient(
         145deg,
-        #111827,
-        #1f2937
+        #1eff00,
+        #28d811
     );
 
     color:white;
@@ -464,31 +464,68 @@ GALERIA
     }
 }
 
+.link-loja {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.2s;
+    cursor: pointer;
+}
 
+.link-loja:hover {
+    text-decoration: underline;
+    color: #1e40af;
+}
 
 
 @media(max-width: 900px){
+
     .btn-voltars {
         top: 10px;
-    left: 10px;
-    padding: 10px 14px;
-    font-size: 14px;
+        left: 10px;
+        width: 40px; /* Um pouco menor no mobile */
+        height: 40px;
+        background: rgba(0, 0, 0, 0.3); /* Fica mais elegante */
+        color: white;
+    }
+    /* 1. Ajuste da tela toda */
+    .pagina-produto {
+        padding: 0;
+        background: #fff; /* Fundo branco fica mais limpo */
     }
 
-    .produto-detalhe{
-        flex-direction: column;
+    /* 2. Galeria: Imagem ocupa a largura total */
+    .imagem-principal {
+        width: 100%;
+        max-width: none;
+        height: 350px;
+        border-radius: 0; /* Tira o arredondado para ocupar tudo */
+        box-shadow: none;
+    }
+
+    /* 3. Info: Remove o efeito "card flutuante" no celular */
+    .info-produto {
+        box-shadow: none;
+        border-radius: 0;
         padding: 20px;
     }
 
-    .imagem-principal{
-        height: 380px;
-    } 
-
-    .info-produto h1{
-        font-size: 30px;
+    /* 4. Botão de Comprar: Fixado embaixo (O truque da Shopee) */
+    .btn-carrinho {
+        position: fixed !important; /* O !important garante que ele ignore qualquer outro estilo */
+        bottom: 0 !important;       /* Força a ficar colado na base */
+        left: 0 !important;
+        width: 100% !important;     /* Garante que ocupe a largura toda */
+        border-radius: 0 !important;
+        margin: 0 !important;       /* Remove qualquer margem que possa estar empurrando ele */
+        padding: 20px !important;
+        z-index: 9999 !important;
+        box-shadow: 0 -2px 10px rgba(0, 238, 0, 0.1); /* Sombra suave para destacar o botão */
     }
 
-    .preco-atual{
-        font-size: 34px;
+    /* 5. Ajuste para o conteúdo não ficar escondido atrás do botão */
+    .produto-detalhe {
+        padding: 0 0 80px 0;
+        flex-direction: column;
     }
 }
