@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ChatProvider } from './ChatContext';
 import socket from "./socket";
 
@@ -42,6 +42,7 @@ import About from './pages/About/About';
 import CookieConsent from "./pages/CookieConsent/CookieConsent";
 import GerenciarBanners from "./pages/GerenciarBanners/GerenciarBanners";
 import Checkout from "./pages/Checkout/Checkout";
+import ToastNotificacao from "./components/ToastNotificacao/ToastNotificacao";
 
 const RotaFuncionario = ({ children }) => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -54,6 +55,7 @@ const RotaFuncionario = ({ children }) => {
   return children;
 };
 function App() {
+  const [toast, setToast] = useState(null);
 
  useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -66,14 +68,15 @@ function App() {
 
     // OUVINTE GLOBAL DE NOTIFICAÇÃO
     const handleNotificacao = (data) => {
-      console.log("🔥 NOTIFICAÇÃO RECEBIDA NO APP:", data);
-      
-      // Toca o som
-      const notificationSound = new Audio('/sounds/notification.mp3');
-      notificationSound.play().catch(e => console.log("Som bloqueado", e));
+  console.log("🔥 NOTIFICAÇÃO RECEBIDA NO APP:", data);
+  
+  // Toca o som
+  const notificationSound = new Audio('/sounds/notification.mp3');
+  notificationSound.play().catch(e => console.log("Som bloqueado", e));
 
-      
-    };
+  // AQUI É O PULO DO GATO: atualiza o estado para mostrar o Toast
+  setToast(data.mensagem); 
+};
 
     socket.on("nova_notificacao", handleNotificacao);
 
@@ -85,6 +88,12 @@ function App() {
   return (
     <ChatProvider>
     <BrowserRouter>
+    {toast && (
+          <ToastNotificacao 
+            mensagem={toast} 
+            onClose={() => setToast(null)} // Quando o X for clicado, o toast some
+          />
+        )}
 
     <CookieConsent />
       <Routes>
