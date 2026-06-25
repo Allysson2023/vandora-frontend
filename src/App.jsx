@@ -72,8 +72,7 @@ function App() {
       const notificationSound = new Audio('/sounds/notification.mp3');
       notificationSound.play().catch(e => console.log("Som bloqueado", e));
 
-      // Opcional: Você pode disparar um alerta visual aqui ou usar um Toast/Snack
-      alert(`Nova notificação: ${data.titulo}`); 
+      
     };
 
     socket.on("nova_notificacao", handleNotificacao);
