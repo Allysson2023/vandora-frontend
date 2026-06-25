@@ -2,16 +2,12 @@ import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./PainelPedidos.css";
 import socket from "../../socket";
-import somPedido from "../../assets/sounds/notification.mp3";
 import { formatarDataBR } from "../../utils/dateUtils";
 import { API_URL } from "../../apiConfig";
 
 function PainelPedidos() {
-
     const navigate = useNavigate();
-    const { id: storeId } = useParams();
     const token = localStorage.getItem("token");
-
     const user = JSON.parse(localStorage.getItem("user"));
     const userId = user?.id;
 
@@ -22,96 +18,72 @@ function PainelPedidos() {
     const [faturamentoHoje, setFaturamentoHoje] = useState(0);
     const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState("");
-    const [dados, setDados] = useState(null);
-
-    // 👇 AQUI ENTRA A FUNÇÃO
-function abrirPedido(id) {
-    navigate(`/admin/pedido/${id}`);
-}
-
+    
     const audioRef = useRef(null);
 
-    // Adicione este useEffect para buscar o valor
-useEffect(() => {
-    fetch(`${API_URL}/api/loja/faturamento-hoje`, {
-        headers: { Authorization: `Bearer ${token}` }
-    })
-    .then(res => res.json())
-    .then(data => {
-        // Log para ver o que está chegando
-        console.log("Dados do faturamento:", data); 
-        
-        // Garante que será um número (se for undefined/null, vira 0)
-        const valor = parseFloat(data.total_hoje) || 0;
-        setFaturamentoHoje(valor);
-    })
-    .catch(err => {
-        console.error("Erro ao buscar faturamento");
-        setFaturamentoHoje(0); // Garante 0 em caso de erro
-    });
-}, [token]);
-
-    useEffect(() => {
-    if (!userId) return; // Segurança: só executa se tiver o ID
-
-    audioRef.current = new Audio(somPedido);
-    audioRef.current.volume = 1;
-
+    // 1. FUNÇÃO PARA BUSCAR PEDIDOS (Obrigatória para o Socket)
     const fetchPedidos = async () => {
-        setCarregando(true);
-        setErro("");
         try {
             const res = await fetch(`${API_URL}/api/loja/pedidos`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            if (!res.ok) throw new Error("Erro ao buscar pedidos");
             const data = await res.json();
-            setPedidos(Array.isArray(data) ? data : []);
+            setPedidos(data);
+            setCarregando(false);
         } catch (err) {
-            setErro("Não foi possível carregar os pedidos.");
-        } finally {
+            setErro("Erro ao carregar pedidos");
             setCarregando(false);
         }
     };
 
-    fetchPedidos();
+    // 2. FUNÇÃO DE FATURAMENTO
+    const atualizarFaturamento = () => {
+        fetch(`${API_URL}/api/loja/faturamento-hoje`, {
+            headers: { Authorization: `Bearer ${token}` }
+        })
+        .then(res => res.json())
+        .then(data => setFaturamentoHoje(Number(data.total_hoje) || 0))
+        .catch(err => console.error("Erro ao atualizar faturamento", err));
+    };
 
-    socket.emit("join_loja", userId); // Use o userId aqui
-    socket.on("novo_pedido", () => {
-        audioRef.current.currentTime = 0;
-        audioRef.current.play().catch(() => {});
+    // 3. EFEITO DO SOCKET E CARGA INICIAL
+    useEffect(() => {
         fetchPedidos();
-    });
+        atualizarFaturamento();
 
-    return () => socket.off("novo_pedido");
-// 👇 AQUI ESTÁ A MUDANÇA: Use token, storeId e userId (não o objeto user)
-}, [token, storeId, userId]);
+        if (!userId) return;
 
-    // 🔥 ABRIR MODAL
+        const entrarNaSala = () => {
+            socket.emit("join_loja", userId);
+            console.log("Tentando entrar na sala do lojista:", userId);
+        };
+
+        entrarNaSala();
+        socket.on("connect", entrarNaSala);
+
+        socket.on("novo_pedido", (data) => {
+    console.log("🔥 Pedido recebido via Socket:", data);
+    // Isso vai buscar o <audio> que colocamos no passo 1 e tocar
+    if (audioRef.current) audioRef.current.play().catch(() => {});
+    fetchPedidos();
+    atualizarFaturamento();
+});
+
+        return () => {
+            socket.off("connect", entrarNaSala);
+            socket.off("novo_pedido");
+        };
+    }, [userId, token]);
+
+    // --- FUNÇÕES AUXILIARES ---
+    function abrirPedido(id) { navigate(`/admin/pedido/${id}`); }
     function abrirModal(pedido, tipo) {
         setPedidoSelecionado(pedido);
         setAcao(tipo);
         setModalAberto(true);
     }
 
-    const atualizarFaturamento = () => {
-    fetch(`${API_URL}/api/loja/faturamento-hoje`, {
-        headers: { Authorization: `Bearer ${token}` }
-    })
-    .then(res => res.json())
-    .then(data => setFaturamentoHoje(Number(data.total_hoje) || 0))
-    .catch(err => console.error("Erro ao atualizar faturamento", err));
-};
-
-// No seu useEffect de montagem:
-useEffect(() => {
-    atualizarFaturamento();
-}, [token]);
-
-
-    // 🔥 CONFIRMAR AÇÃO
     const confirmar = async () => {
-
         try {
             const res = await fetch(`${API_URL}/api/pedidos/${pedidoSelecionado.id}/status`, {
                 method: "PUT",
@@ -121,55 +93,25 @@ useEffect(() => {
                 },
                 body: JSON.stringify({ status: acao })
             });
+
             if (res.ok) {
-        atualizarFaturamento(); // Chama a função aqui
-    }
-
-            const data = await res.json();
-
-            if (!res.ok) {
+                atualizarFaturamento();
+                fetchPedidos(); // Atualiza lista
+                setModalAberto(false);
+            } else {
+                const data = await res.json();
                 alert(data.message);
-                return;
             }
-
-            setPedidos(prev =>
-                prev.map(p =>
-                    p.id === pedidoSelecionado.id
-                        ? { ...p, status: acao }
-                        : p
-                )
-            );
-
-            setModalAberto(false);
-            setPedidoSelecionado(null);
-            setAcao(null);
-
-        } catch (err) {
-            console.log(err);
-        }
+        } catch (err) { console.error(err); }
     };
 
-    if (carregando) return (
-    <div className="status-container">
-        <div className="spinner"></div>
-        <p>Preparando os dados, um momento...</p>
-    </div>
-);
-
-if (erro) return (
-    <div className="status-container">
-        <h1 className="erro-titulo">⚠️</h1>
-        <h2>Ops! Erro ao carregar</h2>
-        <p>{erro}</p>
-        <button className="btn-retry" onClick={() => window.location.reload()}>
-    Tentar Novamente
-</button>
-    </div>
-);
+    // --- RENDER ---
+    if (carregando) return <div className="status-container"><div className="spinner"></div></div>;
     
     return (
 
         <div className="painel-container">
+            <audio ref={audioRef} src="/sounds/notification.mp3" preload="auto" />
 
             {/* 🔥 MODAL */}
             {modalAberto && (

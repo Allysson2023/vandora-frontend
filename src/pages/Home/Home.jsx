@@ -171,44 +171,38 @@ useEffect(() => {
   // =========================
   // PRODUTOS
   // =========================
-  useEffect(() => {
-if (loading) return;
-    let url = `${API_URL}/api/products?pagina=${pagina}`;
+ useEffect(() => {
+  // 1. Não busca se o carregamento global não terminou
+  if (loading) return;
 
-    if (busca) {
-      url += `&busca=${busca}`;
-    }
+  // 2. Só busca se as categorias já tiverem sido carregadas (pelo menos 1)
+  if (categorias.length === 0) return; 
 
-    if (categoriaSelecionada) {
-      url += `&categoria=${categoriaSelecionada}`;
-    }
+  let url = `${API_URL}/api/products?pagina=${pagina}`;
 
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        
+  if (busca) url += `&busca=${encodeURIComponent(busca)}`;
+  
+  // AQUI: Só adiciona o parâmetro se houver uma categoria selecionada
+  if (categoriaSelecionada) {
+    url += `&categoria=${encodeURIComponent(categoriaSelecionada)}`;
+  }
 
 
-        if (Array.isArray(data)) {
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      
+      if (Array.isArray(data)) {
+        setProdutos(pagina === 1 ? data : prev => [...prev, ...data]);
+        setTemMaisProdutos(data.length >= 30);
+      } else {
+        setProdutos([]);
+      }
+    })
+    .catch(err => console.error("Erro na busca:", err));
 
-          if (pagina === 1) {
-            setProdutos(data);
-          } else {
-            setProdutos(prev => [...prev, ...data]);
-          }
-
-          setTemMaisProdutos(data.length >= 30);
-
-        } else {
-
-          setProdutos([]);
-
-        }
-
-      })
-      .catch(err => console.log(err));
-
-  }, [categoriaSelecionada, busca, pagina, loading]);
+// Adicionamos 'categorias.length' como dependência para garantir que ele espere os dados
+}, [categoriaSelecionada, busca, pagina, loading, categorias.length]);
 
   // =========================
   // CARRINHO
@@ -311,8 +305,6 @@ if (usuarioLogado?.tipo === "admin") {
   tipoExibicao = "Administrador";
 }
 
-
-
 // --- TELA DE CARREGANDO ---
   if (loading) {
     return (
@@ -336,6 +328,11 @@ if (usuarioLogado?.tipo === "admin") {
       </div>
     );
   }
+
+
+
+
+
   return (
     <div className="home">
       
@@ -561,7 +558,7 @@ if (usuarioLogado?.tipo === "admin") {
   >
     Todos
   </span>
-
+ 
   {categorias.map((cat, index) => {
 
 

@@ -23,7 +23,6 @@ import Notificacoes from "./pages/Notificacoes/Notificacoes";
 import ChatLoja from "./pages/ChatLoja/ChatLoja";
 import ChatListLoja from "./pages/ChatListaLoja/ChatListLoja";
 import StoreDashboard from "./pages/StoreDashboard/StoreDashboard";
-import somNotificacao from "./assets/sounds/notification.mp3";
 import MaisVendidos from "./pages/MaisVendidos/MaisVendidos";
 import Estoque from "./pages/Estoque/Estoque";
 import Financeiro from "./pages/Financeiro/Financeiro";
@@ -56,33 +55,33 @@ const RotaFuncionario = ({ children }) => {
 };
 function App() {
 
-  useEffect(() => {
-  const user = JSON.parse(localStorage.getItem("user"));
+ useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-  if (user?.id) {
-    socket.emit("join", user.id);
-    socket.emit("join_loja", user.id);
-  }
+    if (user?.id) {
+      // Entra na sala com o prefixo correto
+      socket.emit("join", `user_${user.id}`);
+      socket.emit("join_loja", user.id);
+    }
 
-  const notificationSound = new Audio(somNotificacao);
+    // OUVINTE GLOBAL DE NOTIFICAÇÃO
+    const handleNotificacao = (data) => {
+      console.log("🔥 NOTIFICAÇÃO RECEBIDA NO APP:", data);
+      
+      // Toca o som
+      const notificationSound = new Audio('/sounds/notification.mp3');
+      notificationSound.play().catch(e => console.log("Som bloqueado", e));
 
-  const handleNotificacao = () => {
-    notificationSound.currentTime = 0;
-    notificationSound.play().catch(() => {});
-  };
+      // Opcional: Você pode disparar um alerta visual aqui ou usar um Toast/Snack
+      alert(`Nova notificação: ${data.titulo}`); 
+    };
 
-  socket.on("nova_notificacao", handleNotificacao);
-  socket.on("novo_pedido", (data) => {
-    handleNotificacao(); // Toca o som de notificação
-    console.log("Novo pedido recebido!", data);
-    // Aqui você pode disparar um toast/alerta visual se quiser
-  });
+    socket.on("nova_notificacao", handleNotificacao);
 
-  return () => {
-    socket.off("nova_notificacao", handleNotificacao);
-    socket.off("novo_pedido");
-  };
-}, []);
+    return () => {
+      socket.off("nova_notificacao", handleNotificacao);
+    };
+  }, []);
 
   return (
     <ChatProvider>

@@ -12,39 +12,22 @@ function Notificacoes() {
     const token = localStorage.getItem("token");
 
     useEffect(() => {
+    fetch(`${API_URL}/api/notifications`, {
+        headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(res => res.json())
+    .then(data => setNotificacoes(data));
+}, [token]);
 
-        fetch(`${API_URL}/api/notifications`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            setNotificacoes(data);
-        })
-
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
-
-    if (user?.id) {
-        socket.emit("join", user.id);
-    }
-
-    socket.on("nova_notificacao", (data) => {
-
-        console.log("CHEGOU EM TEMPO REAL:", data);
-    
-        
-
-        // adiciona nova notificação na lista
+useEffect(() => {
+    const handleNovaNotificacao = (data) => {
         setNotificacoes((prev) => [data, ...prev]);
+    };
 
-    });
+    socket.on("nova_notificacao", handleNovaNotificacao);
 
-   return () => {
-       socket.off("nova_notificacao");
-   };
-
-    }, []);
+    return () => socket.off("nova_notificacao", handleNovaNotificacao);
+}, []);
 
     return (
 
