@@ -74,14 +74,32 @@ function ChatLoja() {
     // ===============================
     // SOCKET ENTRAR NO CHAT
     // ===============================
-    useEffect(() => {
+
+
+// ==================================================
+// SOCKET ÚNICO E PADRONIZADO (Substitua os dois antigos por este)
+// ==================================================
+useEffect(() => {
     if (!chatId) return;
 
-    socket.emit("entrar_chat", { chatId });
+    // Entra na sala
+    socket.emit("join_chat", chatId);
 
-    return () => {
-        socket.emit("sair_chat", { chatId });
+    // Ouve o evento
+    const handleMessage = (msg) => {
+        if (Number(msg.chat_id) !== Number(chatId)) return;
+        // Bloqueio de eco (para não duplicar sua própria mensagem)
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (Number(msg.remetente_id) === Number(user?.id)) return;
+
+        setMensagens(prev => {
+            if (prev.some(m => m.id === msg.id)) return prev;
+            return [...prev, msg];
+        });
     };
+
+    socket.on("nova_mensagem", handleMessage);
+    return () => socket.off("nova_mensagem", handleMessage);
 }, [chatId]);
 
     // ===============================
@@ -133,30 +151,7 @@ useEffect(() => {
 }, [chatId]);
 
 
-    // ===============================
-    // SOCKET REALTIME
-    // ===============================
-    useEffect(() => {
-    if (!chatId) return;
 
-    const handle = (msg) => {
-        if (Number(msg.chat_id) !== Number(chatId)) return;
-
-        // Se for a MENSAGEM QUE VOCÊ ENVIOU, o servidor vai emitir ela de volta.
-        // Você já a adicionou no enviar(), então não adicione de novo!
-        const isMyMessage = Number(msg.remetente_id) === Number(user?.id);
-        if (isMyMessage) return; 
-
-        setMensagens(prev => {
-            // Verifica se essa mensagem já não está no array (evita duplicar)
-            if (prev.some(m => m.id === msg.id)) return prev;
-            return [...prev, msg];
-        });
-    };
-
-    socket.on("nova_mensagem", handle);
-    return () => socket.off("nova_mensagem", handle);
-}, [chatId, user?.id]);
 
     // ===============================
     // AUTO SCROLL

@@ -84,42 +84,31 @@ useEffect(() => {
     abriuChatRef.current = false;
 }, [chatId]);
 
+
     // ===============================
-    // SOCKET ENTRAR NO CHAT
-    // ===============================
-    useEffect(() => {
+// SOCKET MENSAGENS EM TEMPO REAL
+// ===============================
+useEffect(() => {
     if (!chatId) return;
 
-    socket.emit("entrar_chat", { chatId });
+    // Entra na sala
+    socket.emit("join_chat", chatId);
 
-    return () => {
-        socket.emit("sair_chat", { chatId });
+    // Ouve o evento
+    const handleMessage = (msg) => {
+        if (Number(msg.chat_id) !== Number(chatId)) return;
+        // Bloqueio de eco (para não duplicar sua própria mensagem)
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (Number(msg.remetente_id) === Number(user?.id)) return;
+
+        setMensagens(prev => {
+            if (prev.some(m => m.id === msg.id)) return prev;
+            return [...prev, msg];
+        });
     };
-}, [chatId]);
 
-    // ===============================
-    // SOCKET MENSAGENS EM TEMPO REAL
-    // ===============================
-    useEffect(() => {
-  if (!chatId) return;
-
-  const handleMessage = (msg) => {
-    if (Number(msg.chat_id) !== Number(chatId)) return;
-
-    // BLOQUEIO DE ECO: 
-    // Verifica se o ID do remetente é o ID do usuário logado (cliente)
-    // O backend envia "remetente_id" no objeto da mensagem
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (Number(msg.remetente_id) === Number(user?.id)) return;
-
-    setMensagens(prev => {
-      if (prev.some(m => m.id === msg.id)) return prev;
-      return [...prev, msg];
-    });
-  };
-
-  socket.on("nova_mensagem", handleMessage);
-  return () => socket.off("nova_mensagem", handleMessage);
+    socket.on("nova_mensagem", handleMessage);
+    return () => socket.off("nova_mensagem", handleMessage);
 }, [chatId]);
 
     // ===============================
