@@ -72,6 +72,10 @@ function ChatListLoja() {
     // 2. Escutar novas mensagens para atualizar a lista
     const handleNovaMsg = (msg) => {
         if (msg.remetente_tipo !== 'cliente') return;
+
+        const user = JSON.parse(localStorage.getItem("user"));
+    if (Number(msg.remetente_id) === Number(user?.id)) return;
+    
         setListaChats(prev => {
             const index = prev.findIndex(c => Number(c.id) === Number(msg.chat_id));
             if (index === -1) return prev;
