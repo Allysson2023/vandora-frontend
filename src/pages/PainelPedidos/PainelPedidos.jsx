@@ -48,32 +48,37 @@ function PainelPedidos() {
 
     // 3. EFEITO DO SOCKET E CARGA INICIAL
     useEffect(() => {
-        fetchPedidos();
-        atualizarFaturamento();
-
-        if (!userId) return;
-
-        const entrarNaSala = () => {
-            socket.emit("join_loja", userId);
-            console.log("Tentando entrar na sala do lojista:", userId);
-        };
-
-        entrarNaSala();
-        socket.on("connect", entrarNaSala);
-
-        socket.on("novo_pedido", (data) => {
-    console.log("🔥 Pedido recebido via Socket:", data);
-    // Isso vai buscar o <audio> que colocamos no passo 1 e tocar
-    if (audioRef.current) audioRef.current.play().catch(() => {});
     fetchPedidos();
     atualizarFaturamento();
-});
 
-        return () => {
-            socket.off("connect", entrarNaSala);
-            socket.off("novo_pedido");
-        };
-    }, [userId, token]);
+    if (!userId) return;
+
+    // Função de entrada na sala
+    const entrarNaSala = () => {
+        socket.emit("join_loja", userId);
+        console.log("✅ Entrou na sala da loja:", userId);
+    };
+
+    // Escutar novos pedidos
+    const handleNovoPedido = (data) => {
+        console.log("🔔 Pedido recebido via Socket:", data);
+        if (audioRef.current) audioRef.current.play().catch(() => {});
+        fetchPedidos();
+        atualizarFaturamento();
+    };
+
+    // Conecta e entra na sala
+    socket.on("connect", entrarNaSala);
+    entrarNaSala(); 
+
+    // Escuta o evento
+    socket.on("novo_pedido", handleNovoPedido);
+
+    return () => {
+        socket.off("connect", entrarNaSala);
+        socket.off("novo_pedido", handleNovoPedido);
+    };
+}, [userId, token]);
 
     // --- FUNÇÕES AUXILIARES ---
     function abrirPedido(id) { navigate(`/admin/pedido/${id}`); }
