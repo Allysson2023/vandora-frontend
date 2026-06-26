@@ -48,39 +48,34 @@ function PainelPedidos() {
 
     // 3. EFEITO DO SOCKET E CARGA INICIAL
     useEffect(() => {
-        if (!id) return;
-
-    fetchPedidos();
-    atualizarFaturamento();
-
-
-    // Função de entrada na sala
+    // 1. Função que executa a entrada na sala
     const entrarNaSala = () => {
-        const nomeDaSala = `loja_${id}`;
-        socket.emit("join_loja", nomeDaSala);
-        console.log("✅ Entrou na sala da loja:", nomeDaSala);
+        if (!userId) return;
+        socket.emit("join_loja", userId);
+        console.log("✅ Entrou na sala da loja (Socket ID:", socket.id, ")");
     };
 
-    // Escutar novos pedidos
+    // 2. Escuta APENAS o evento de pedido novo
     const handleNovoPedido = (data) => {
-        console.log("🔔 Pedido recebido via Socket:", data);
-        if (audioRef.current) audioRef.current.play().catch(() => {});
-        fetchPedidos();
+        console.log("🔔 PEDIDO NOVO CHEGOU NA LOJA:", data);
+        fetchPedidos(); 
         atualizarFaturamento();
     };
 
-    // Conecta e entra na sala
-    socket.on("connect", entrarNaSala);
-    entrarNaSala(); 
+    // 3. Garante que entra se já estiver conectado, ou espera conectar
+    if (socket.connected) {
+        entrarNaSala();
+    } else {
+        socket.once("connect", entrarNaSala); // .once garante que não duplica
+    }
 
-    // Escuta o evento
     socket.on("novo_pedido", handleNovoPedido);
 
     return () => {
-        socket.off("connect", entrarNaSala);
         socket.off("novo_pedido", handleNovoPedido);
+        socket.off("connect", entrarNaSala);
     };
-}, [ token, id]);
+}, [userId]);
 
     // --- FUNÇÕES AUXILIARES ---
     function abrirPedido(id) { navigate(`/admin/pedido/${id}`); }
