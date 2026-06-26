@@ -1,17 +1,49 @@
 .toast-notificacao {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #fff;
-  border-left: 5px solid #28a745;
-  padding: 15px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  bottom: 25px;
+  right: 25px;
+  width: 320px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   z-index: 9999;
-  border-radius: 4px;
-  animation: slideIn 0.3s ease-out;
+  border-left: 6px solid #28a745;
+  animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.toast-notificacao p {
+  margin: 0;
+  color: #333;
+  font-size: 14px;
+}
+
+.toast-notificacao strong {
+  color: #28a745;
+  font-size: 15px;
+}
+
+.toast-notificacao button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #aaa;
+  font-size: 16px;
+  transition: color 0.2s;
+}
+
+.toast-notificacao button:hover {
+  color: #333;
 }
 
 @keyframes slideIn {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
+  from { transform: translateX(120%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
 }
