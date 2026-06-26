@@ -78,10 +78,28 @@ function App() {
   setToast(data.mensagem); 
 };
 
+// 2. OUVINTE DE MENSAGENS (O NOVO)
+  const handleNovaMensagem = (msg) => {
+    // Filtra: só notifica se for mensagem de outro usuário (cliente)
+    if (msg.remetente_tipo !== 'cliente') return;
+    
+    // Opcional: não notificar se o usuário já estiver dentro de um chat
+    if (window.location.pathname.includes('/chat/')) return;
+
+    // Toca o som (pode ser o mesmo ou um diferente)
+    const msgSound = new Audio('/sounds/notification.mp3');
+    msgSound.play().catch(e => console.log("Som bloqueado", e));
+
+    // Dispara o Toast com a mensagem
+    setToast(`Nova mensagem de cliente: ${msg.mensagem.substring(0, 30)}...`);
+  };
+
     socket.on("nova_notificacao", handleNotificacao);
+    socket.on("nova_mensagem", handleNovaMensagem);
 
     return () => {
       socket.off("nova_notificacao", handleNotificacao);
+      socket.off("nova_mensagem", handleNovaMensagem);
     };
   }, []);
 
