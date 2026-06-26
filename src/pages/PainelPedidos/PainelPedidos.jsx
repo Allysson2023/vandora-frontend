@@ -18,7 +18,7 @@ function PainelPedidos() {
     const [faturamentoHoje, setFaturamentoHoje] = useState(0);
     const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState("");
-    const { loja_id } = useParams();
+    const { id } = useParams();
     const audioRef = useRef(null);
 
     // 1. FUNÇÃO PARA BUSCAR PEDIDOS (Obrigatória para o Socket)
@@ -55,8 +55,8 @@ function PainelPedidos() {
 
     // Função de entrada na sala
     const entrarNaSala = () => {
-        const nomeDaSala = `loja_${loja_id}`; 
-        socket.emit("join_loja", nomeDaSala);
+    const nomeDaSala = `loja_${id}`; // Usa o 'id' aqui
+    socket.emit("join_loja", nomeDaSala);
     console.log("✅ Entrou na sala da loja:", nomeDaSala);
     };
 
