@@ -18,7 +18,7 @@ function PainelPedidos() {
     const [faturamentoHoje, setFaturamentoHoje] = useState(0);
     const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState("");
-    
+    const { loja_id } = useParams();
     const audioRef = useRef(null);
 
     // 1. FUNÇÃO PARA BUSCAR PEDIDOS (Obrigatória para o Socket)
@@ -55,8 +55,9 @@ function PainelPedidos() {
 
     // Função de entrada na sala
     const entrarNaSala = () => {
-        socket.emit("join_loja", userId);
-        console.log("✅ Entrou na sala da loja:", userId);
+        const nomeDaSala = `loja_${loja_id}`; 
+        socket.emit("join_loja", nomeDaSala);
+    console.log("✅ Entrou na sala da loja:", nomeDaSala);
     };
 
     // Escutar novos pedidos
@@ -78,7 +79,7 @@ function PainelPedidos() {
         socket.off("connect", entrarNaSala);
         socket.off("novo_pedido", handleNovoPedido);
     };
-}, [userId, token]);
+}, [userId, token, loja_id]);
 
     // --- FUNÇÕES AUXILIARES ---
     function abrirPedido(id) { navigate(`/admin/pedido/${id}`); }
