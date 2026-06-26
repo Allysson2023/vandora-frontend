@@ -87,7 +87,7 @@ function App() {
     if (window.location.pathname.includes('/chat/')) return;
 
     // Toca o som (pode ser o mesmo ou um diferente)
-    const msgSound = new Audio('/sounds/notification.mp3');
+    const msgSound = new Audio('/sounds/mensagem.mp3');
     msgSound.play().catch(e => console.log("Som bloqueado", e));
 
     // Dispara o Toast com a mensagem
