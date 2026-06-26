@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Mensagens.css";
 import { API_URL } from "../../apiConfig";
+import socket from "../../socket";
 function Mensagens() {
 
   const [conversas, setConversas] = useState([]);
@@ -39,19 +40,24 @@ function Mensagens() {
 }, []);
 
 useEffect(() => {
-  if (!currentUser?.id) return;
+  if (conversas.length === 0) return;
 
-  socket.emit("join", currentUser.id); // O cliente precisa entrar no seu próprio canal
+  // 1. Entrar em todas as salas de chat que o cliente já possui
+  conversas.forEach(c => {
+    socket.emit("join_chat", c.chatId);
+  });
 
+  // 2. Ouve o evento de nova mensagem
   const handleNovaMsg = (msg) => {
     setConversas(prev => {
+      // Encontra o chat na lista
       const index = prev.findIndex(c => Number(c.chatId) === Number(msg.chat_id));
       if (index === -1) return prev; // Se não estiver na lista, ignora
 
       let updated = [...prev];
       updated[index].ultimaMensagem = msg.mensagem;
       
-      // Move para o topo
+      // Move o chat atualizado para o topo da lista
       const chatAtualizado = updated.splice(index, 1)[0];
       updated.unshift(chatAtualizado);
       return updated;
@@ -59,9 +65,12 @@ useEffect(() => {
   };
 
   socket.on("nova_mensagem", handleNovaMsg);
-  return () => socket.off("nova_mensagem", handleNovaMsg);
-}, [currentUser?.id]);
-
+  
+  // Limpeza
+  return () => {
+    socket.off("nova_mensagem", handleNovaMsg);
+  };
+}, [conversas]);
   return (
     <div className="mensagens-container">
 
