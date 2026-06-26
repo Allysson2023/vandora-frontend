@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import socket from "../../socket";
 import { API_URL } from "../../apiConfig";
 import { useChat } from "../../ChatContext"; // Importa o estado global
 import "./ChatListLoja.css";
@@ -59,6 +60,39 @@ function ChatListLoja() {
             console.log(err);
         }
     }
+
+    useEffect(() => {
+    if (listaChats.length === 0) return;
+
+    // 1. Entrar nas salas de todos os chats que aparecem na lista
+    listaChats.forEach(chat => {
+        socket.emit("join_chat", chat.id);
+    });
+
+    // 2. Escutar novas mensagens para atualizar a lista
+    const handleNovaMsg = (msg) => {
+        setListaChats(prev => {
+            const index = prev.findIndex(c => Number(c.id) === Number(msg.chat_id));
+            if (index === -1) return prev;
+
+            let updated = [...prev];
+            // Atualiza a última mensagem e marca como "tem_nova_msg"
+            updated[index].ultima_mensagem = msg.mensagem;
+            updated[index].tem_nova_msg = 1;
+
+            // Move para o topo
+            const chatAtualizado = updated.splice(index, 1)[0];
+            updated.unshift(chatAtualizado);
+            return updated;
+        });
+    };
+
+    socket.on("nova_mensagem", handleNovaMsg);
+
+    return () => {
+        socket.off("nova_mensagem", handleNovaMsg);
+    };
+}, [listaChats]);
 
     // ===============================
     // RENDERIZAÇÃO

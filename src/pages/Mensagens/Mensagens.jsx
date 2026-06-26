@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import socket from "../../socket";
 import "./Mensagens.css";
 import { API_URL } from "../../apiConfig";
-import socket from "../../socket";
 function Mensagens() {
 
   const [conversas, setConversas] = useState([]);
