@@ -54,10 +54,13 @@ function PainelPedidos() {
 
     // 2. Lógica do Socket
     const entrarNaSala = () => {
-        if (!userId) return;
-        socket.emit("join_loja", userId);
-        console.log("✅ Entrou na sala da loja (Socket ID:", socket.id, ")");
-    };
+    // Se o ID da URL existir, entra na sala
+    if (id) {
+        const nomeDaSala = `loja_${id}`;
+        socket.emit("join_loja_direto", nomeDaSala);
+        console.log("✅ Painel conectado e entrando na sala:", nomeDaSala);
+    }
+};
 
     const handleNovoPedido = (data) => {
         console.log("🔔 PEDIDO NOVO CHEGOU NA LOJA:", data);
