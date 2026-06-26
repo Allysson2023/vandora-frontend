@@ -48,34 +48,38 @@ function PainelPedidos() {
 
     // 3. EFEITO DO SOCKET E CARGA INICIAL
     useEffect(() => {
-    // 1. Função que executa a entrada na sala
+    // 1. Carrega os dados iniciais
+    fetchPedidos();
+    atualizarFaturamento();
+
+    // 2. Lógica do Socket
     const entrarNaSala = () => {
         if (!userId) return;
         socket.emit("join_loja", userId);
         console.log("✅ Entrou na sala da loja (Socket ID:", socket.id, ")");
     };
 
-    // 2. Escuta APENAS o evento de pedido novo
     const handleNovoPedido = (data) => {
         console.log("🔔 PEDIDO NOVO CHEGOU NA LOJA:", data);
         fetchPedidos(); 
         atualizarFaturamento();
     };
 
-    // 3. Garante que entra se já estiver conectado, ou espera conectar
+    // Conecta e entra na sala
     if (socket.connected) {
         entrarNaSala();
     } else {
-        socket.once("connect", entrarNaSala); // .once garante que não duplica
+        socket.once("connect", entrarNaSala);
     }
 
+    // Escuta o evento
     socket.on("novo_pedido", handleNovoPedido);
 
     return () => {
         socket.off("novo_pedido", handleNovoPedido);
         socket.off("connect", entrarNaSala);
     };
-}, [userId]);
+}, [userId]); // Mantenha aqui
 
     // --- FUNÇÕES AUXILIARES ---
     function abrirPedido(id) { navigate(`/admin/pedido/${id}`); }
