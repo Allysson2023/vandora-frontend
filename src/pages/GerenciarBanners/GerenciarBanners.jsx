@@ -12,9 +12,13 @@ function GerenciarBanners() {
 const [idParaExcluir, setIdParaExcluir] = useState(null);
 const fileInputRef = useRef(null); // Adicione isso
 const [modalInstrucao, setModalInstrucao] = useState(true);
+  const [lojasDoFuncionario, setLojasDoFuncionario] = useState([]);
+  const [lojaSelecionada, setLojaSelecionada] = useState("");
 
-
-  useEffect(() => { carregarBanners(); }, []);
+  useEffect(() => { 
+    carregarBanners(); 
+    carregarMinhasLojas();
+  }, []);
 
   const carregarBanners = async () => {
   try {
@@ -29,14 +33,27 @@ const [modalInstrucao, setModalInstrucao] = useState(true);
   }
 };
 
+const carregarMinhasLojas = async () => {
+    try {
+        const res = await fetch(`${API_URL}/api/funcionario/minhas-lojas`, {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        });
+        const data = await res.json();
+        setLojasDoFuncionario(data);
+    } catch (error) {
+        console.error("Erro ao carregar lojas:", error);
+    }
+};
+
   const cadastrarBanner = async () => {
     // Adicionamos a validação do tipo também
-    if (!imagem || !titulo || !tipo) return alert("Preencha todos os campos!");
+    if (!imagem || !titulo || !tipo || !lojaSelecionada) return alert("Preencha todos os campos e selecione uma loja!");
     
     const formData = new FormData();
     formData.append("titulo", titulo);
     formData.append("imagem", imagem);
-    formData.append("tipo", tipo); // ENVIANDO O TIPO PARA O BACKEND
+    formData.append("tipo", tipo);
+    formData.append("loja_id", lojaSelecionada);
 
     const res = await fetch(`${API_URL}/api/banners`, {
       method: "POST",
@@ -72,6 +89,7 @@ const limparCampos = () => {
   setTitulo("");
   setImagem(null);
   setTipo("imagem");
+  setLojaSelecionada("");
   
   // O "pulo do gato" para limpar o input de arquivo:
   if (fileInputRef.current) {
@@ -161,6 +179,19 @@ const limparCampos = () => {
     <option value="video">Vídeo</option>
 </select>
 
+// esse e para selecionar a lojas 
+<label style={{ display: 'block', margin: '10px 0 5px' }}>Loja de Destino:</label>
+<select 
+    value={lojaSelecionada} 
+    onChange={(e) => setLojaSelecionada(e.target.value)}
+    style={{ width: '100%', padding: '10px', marginBottom: '15px' }}
+>
+    <option value="">Selecione uma loja</option>
+    {lojasDoFuncionario.map(loja => (
+        <option key={loja.id} value={loja.id}>{loja.nome}</option>
+    ))}
+</select>
+
 
 <button className="save-btn" onClick={() => setModalConfirmacao({ aberto: true, acao: "cadastrar" })}>
   Publicar Banner
@@ -181,6 +212,7 @@ const limparCampos = () => {
             
             <div className="banner-info">
               <h4>{b.titulo} ({b.tipo})</h4>
+              <p>Destino: <strong>Loja ID: {b.loja_id}</strong></p>
 <button className="delete-btn" onClick={() => {
   setIdParaExcluir(b.id);
   setModalConfirmacao({ aberto: true, acao: "excluir" });

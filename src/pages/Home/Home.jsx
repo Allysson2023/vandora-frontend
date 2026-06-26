@@ -364,7 +364,7 @@ if (usuarioLogado?.tipo === "admin") {
           />
  
          <button onClick={abrirCarrinho} className="btn-carrinhoo">
-  🛒 Carrinho
+  🛒 
 
   <span className="cart-badge">
     {quantidadeCarrinho}
@@ -473,16 +473,25 @@ if (usuarioLogado?.tipo === "admin") {
 )}
 
 <div className="home-destaques">
-    <div className="banner-container">
-      <img 
-        src={`${API_URL}/uploads/banners/${imagensBanner[bannerIndex]?.imagem}`} 
-        alt="Banner"
-        className="banner-ativo"
-        onError={(e) => { e.target.src = "https://dummyimage.com/1200x300"; }}
-      />
-    </div>
-  
+  <div 
+    className="banner-container" 
+    onClick={() => {
+      // Verifica se o banner tem um loja_id e redireciona
+      const banner = imagensBanner[bannerIndex];
+      if (banner && banner.loja_id) {
+        navigate(`/store/${banner.loja_id}`);
+      }
+    }}
+    style={{ cursor: 'pointer' }} // Adiciona o cursor de mãozinha para indicar que é clicável
+  >
+    <img 
+      src={`${API_URL}/uploads/banners/${imagensBanner[bannerIndex]?.imagem}`} 
+      alt="Banner"
+      className="banner-ativo"
+      onError={(e) => { e.target.src = "https://dummyimage.com/1200x300"; }}
+    />
   </div>
+</div>
 
       {/* LOJAS */}
 
@@ -524,14 +533,17 @@ if (usuarioLogado?.tipo === "admin") {
 
 <div className="home-destaques">
   {videos.length > 0 ? (
-    <div className="video-container">
+    <div 
+      className="video-container" 
+      onClick={() => navigate(`/store/${videos[videoIndex].loja_id}`)}
+      style={{ cursor: 'pointer' }}
+    >
       <video 
         key={videos[videoIndex].id} 
         src={`${API_URL}/uploads/banners/${videos[videoIndex].imagem}`} 
         autoPlay 
         muted 
         className="video-ativo"
-        // Adicione isso se quiser que ele reinicie o vídeo atual após o término
         onEnded={() => {
             setVideoIndex((prev) => (prev + 1) % videos.length);
         }}
