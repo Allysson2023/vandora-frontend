@@ -166,10 +166,35 @@ function PerfilCliente() {
             <strong>{usuario.username}</strong>
           </div>
 
-          <div className="info-item">
-            <span>E-mail</span>
-            <strong>{usuario.email}</strong>
-          </div>
+          {/* Novos itens */}
+    <div className="info-item">
+        <span>Nome Completo</span>
+        <strong>{usuario.nome_completo || "Não informado"}</strong>
+    </div>
+
+    <div className="info-item">
+        <span>E-mail</span>
+        <strong>{usuario.email}</strong>
+    </div>
+
+    <div className="info-item">
+        <span>Telefone</span>
+        <strong>{usuario.telefone || "Não informado"}</strong>
+    </div>
+
+    <div className="info-item">
+        <span>Data de Nascimento</span>
+        <strong>
+            {usuario.data_nascimento 
+                ? new Date(usuario.data_nascimento).toLocaleDateString("pt-BR") 
+                : "Não informado"}
+        </strong>
+    </div>
+
+    <div className="info-item">
+        <span>CPF/CNPJ</span>
+        <strong>{usuario.cpf_cnpj || "Não informado"}</strong>
+    </div>
 
           <div className="info-item">
             <span>Conta criada em</span>

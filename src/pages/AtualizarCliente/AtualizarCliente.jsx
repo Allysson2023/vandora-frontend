@@ -25,6 +25,13 @@ function AtualizarCliente() {
 
     const [imagem, setImagem] = useState(null);
     const [mostrarSenha, setMostrarSenha] = useState(false);
+    const [nomeCompleto, setNomeCompleto] = useState("");
+    const [email, setEmail] = useState("");
+    const [telefone, setTelefone] = useState("");
+    const [dataNascimento, setDataNascimento] = useState("");
+    const [cpfCnpj, setCpfCnpj] = useState("");
+
+    const [originalData, setOriginalData] = useState({});
 
     const abrirConfirmacao = (e) => {
     e.preventDefault();
@@ -63,14 +70,14 @@ function AtualizarCliente() {
 
             const token = localStorage.getItem("token");
 
-const res = await fetch(
-    `${API_URL}/api/users/${id}`,
-    {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    }
-);
+            const res = await fetch(
+                `${API_URL}/api/users/${id}`,
+                {
+                    headers: {
+                    Authorization: `Bearer ${token}`
+                    }
+                }
+            );
 
             const data = await res.json();
 
@@ -81,6 +88,13 @@ const res = await fetch(
 
             setUsername(data.username);
             setUsernameOriginal(data.username);
+            setNomeCompleto(data.nome_completo || "");
+            setEmail(data.email || "");
+            setTelefone(data.telefone || "");
+            setDataNascimento(data.data_nascimento ? data.data_nascimento.split('T')[0] : "");
+            setCpfCnpj(data.cpf_cnpj || "");
+
+            setOriginalData(data);
 
         } catch {
             setErro("Erro ao carregar cliente");
@@ -101,6 +115,11 @@ const res = await fetch(
         const formData = new FormData();
 
 formData.append("username", username);
+formData.append("nome_completo", nomeCompleto);
+formData.append("email", email);
+formData.append("telefone", telefone);
+formData.append("data_nascimento", dataNascimento);
+formData.append("cpf_cnpj", cpfCnpj);
 
 if (password.trim()) {
     formData.append("password", password);
@@ -149,9 +168,13 @@ const res = await fetch(
     }
 };
 const houveAlteracao =
-    username !== usernameOriginal ||
-    senhaAlterada ||
-    imagem;
+    username !== originalData.username ||
+    nomeCompleto !== (originalData.nome_completo || "") ||
+    email !== (originalData.email || "") ||
+    telefone !== (originalData.telefone || "") ||
+    dataNascimento !== (originalData.data_nascimento ? originalData.data_nascimento.split('T')[0] : "") ||
+    cpfCnpj !== (originalData.cpf_cnpj || "") ||
+    senhaAlterada;
     
     if (carregando) {
         return (
@@ -203,6 +226,12 @@ const houveAlteracao =
                         setUsername(e.target.value)
                     }
                 />
+
+                <input type="text" placeholder="Nome Completo" value={nomeCompleto} onChange={(e) => setNomeCompleto(e.target.value)} />
+<input type="email" placeholder="E-mail" value={email} onChange={(e) => setEmail(e.target.value)} />
+<input type="text" placeholder="Telefone" value={telefone} onChange={(e) => setTelefone(e.target.value)} />
+<input type="date" value={dataNascimento} onChange={(e) => setDataNascimento(e.target.value)} />
+<input type="text" placeholder="CPF ou CNPJ" value={cpfCnpj} onChange={(e) => setCpfCnpj(e.target.value)} />
 
  <div className="input-senha-container">
     <input
