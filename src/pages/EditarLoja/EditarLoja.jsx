@@ -12,6 +12,7 @@ function EditarLoja(){
     const [loja, setLoja] = useState(null);
 
     const [showModal, setShowModal] = useState(false);
+    const [showSucesso, setShowSucesso] = useState(false);
 
     useEffect(() => {
 
@@ -59,25 +60,37 @@ function EditarLoja(){
     horario_fechamento: loja.horario_fechamento,
     facebook: loja.facebook,
     instagram: loja.instagram,
-    meta_mensal: loja.meta_mensal
+    meta_mensal: loja.meta_mensal,
+    aceita_entrega: loja.aceita_entrega ? 1 : 0,
+    aceita_retirada: loja.aceita_retirada ? 1 : 0
   };
-  console.log(payload);
-  
 
-  const res = await fetch(`${API_URL}/api/stores/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
-    },
-    body: JSON.stringify(payload)
-  });
+  try {
+    const res = await fetch(`${API_URL}/api/stores/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(payload)
+    });
 
-  if (!res.ok) {
-    alert("Erro ao salvar");
-    return;
+    if (!res.ok) throw new Error("Erro ao salvar");
+
+    // Fecha a confirmação e abre o sucesso
+    setShowModal(false);
+    setShowSucesso(true);
+  } catch (error) {
+    alert("Erro ao atualizar loja");
   }
 };
+
+useEffect(() => {
+  if (showSucesso) {
+    const timer = setTimeout(() => setShowSucesso(false), 3000);
+    return () => clearTimeout(timer);
+  }
+}, [showSucesso]);
 
     return(
 
@@ -109,6 +122,52 @@ function EditarLoja(){
                     />
 
                 </div>
+
+                <div className="form-group">
+  <label>Endereço</label>
+  <input value={loja.endereco || ""} onChange={(e) => setLoja({...loja, endereco: e.target.value})} />
+</div>
+
+<div style={{ display: 'flex', gap: '10px' }}>
+  <div className="form-group" style={{ flex: 2 }}>
+    <label>Número</label>
+    <input value={loja.numero || ""} onChange={(e) => setLoja({...loja, numero: e.target.value})} />
+  </div>
+  <div className="form-group" style={{ flex: 3 }}>
+    <label>CEP</label>
+    <input value={loja.cep || ""} onChange={(e) => setLoja({...loja, cep: e.target.value})} />
+  </div>
+</div>
+
+<div className="form-group">
+  <label>Bairro</label>
+  <input value={loja.bairro || ""} onChange={(e) => setLoja({...loja, bairro: e.target.value})} />
+</div>
+
+<div className="form-group">
+  <label>Cidade</label>
+  <input value={loja.cidade || ""} onChange={(e) => setLoja({...loja, cidade: e.target.value})} />
+</div>
+
+{/* Checkboxes de Entrega/Retirada */}
+<div className="form-group-checkbox">
+  <label>
+    <input 
+      type="checkbox" 
+      checked={loja.aceita_entrega === 1} 
+      onChange={(e) => setLoja({...loja, aceita_entrega: e.target.checked ? 1 : 0})} 
+    />
+    Aceita Entrega
+  </label>
+  <label>
+    <input 
+      type="checkbox" 
+      checked={loja.aceita_retirada === 1} 
+      onChange={(e) => setLoja({...loja, aceita_retirada: e.target.checked ? 1 : 0})} 
+    />
+    Aceita Retirada
+  </label>
+</div>
 
                 <div className="form-group">
 
@@ -243,6 +302,27 @@ function EditarLoja(){
 
       </div>
 
+    </div>
+  </div>
+)}
+
+
+{showSucesso && (
+  <div className="modal-overlay">
+    <div className="modal-box">
+      <h2>Sucesso!</h2>
+      <p>As informações da sua loja foram atualizadas com sucesso.</p>
+      <div className="modal-actions">
+        <button
+          className="btn-confirm"
+          onClick={() => {
+            setShowSucesso(false);
+            
+          }}
+        >
+          Entendido
+        </button>
+      </div>
     </div>
   </div>
 )}
