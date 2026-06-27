@@ -7,7 +7,6 @@ function CadastrarLoja() {
   const [nome, setNome] = useState("");
   const [categoria, setCategoria] = useState("");
   const [categorias, setCategorias] = useState([]);
-  const [imagem, setImagem] = useState(null);
   const [username, setUsername] = useState("");
 const [password, setPassword] = useState("");
 
@@ -58,13 +57,10 @@ Senha: ${dadosLojista.password}
     const formData = new FormData();
 
     formData.append("nome", nome);
-    formData.append("categoria", categoria);
-    formData.append("imagem", imagem);
-
-    // NOVO
     formData.append("whatsapp", whatsapp);
-formData.append("username", username);
-formData.append("password", password);
+    formData.append("categoria", categoria);
+    formData.append("username", username);
+    formData.append("password", password);
 
     fetch(`${API_URL}/api/stores`, {
 
@@ -106,14 +102,14 @@ formData.append("password", password);
 
   }
 const formularioValido =
-  nome.trim() &&
-  categoria.trim() &&
-  whatsapp.trim() &&
-  username.trim() &&
-  password.trim() &&
-  imagem;
+  nome?.trim().length > 0 &&
+  categoria?.trim().length > 0 &&
+  whatsapp?.trim().length > 0 &&
+  username?.trim().length > 0 &&
+  password?.trim().length > 0;
 
-
+console.log("Valores:", { nome, categoria, whatsapp, username, password });
+console.log("Formulário Válido?", formularioValido);
 
   return ( 
 
@@ -181,26 +177,17 @@ const formularioValido =
         </select>
 
 
-
-
-        <input
-          type="file"
-          onChange={(e) => setImagem(e.target.files[0])}
+        <input type="text"
+          placeholder="Usuário do lojista"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
 
-<input
-  type="text"
-  placeholder="Usuário do lojista"
-  value={username}
-  onChange={(e) => setUsername(e.target.value)}
-/>
-
-<input
-  type="password"
-  placeholder="Senha do lojista"
-  value={password}
-  onChange={(e) => setPassword(e.target.value)}
-/>
+        <input  type="password"
+          placeholder="Senha do lojista"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
         <button type="submit"
         disabled={!formularioValido}
