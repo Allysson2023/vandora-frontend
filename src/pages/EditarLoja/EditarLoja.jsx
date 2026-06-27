@@ -45,12 +45,18 @@ function EditarLoja(){
     });
 
 }, [id]);
+
+
 useEffect(() => {
   if (showSucesso) {
-    const timer = setTimeout(() => setShowSucesso(false), 3000);
+    const timer = setTimeout(() => setShowSucesso(false), 15000);
     return () => clearTimeout(timer);
   }
 }, [showSucesso]);
+const tocarSomSucesso = () => {
+    const audio = new Audio('/sounds/sucesso.mp3'); 
+    audio.play().catch(e => console.log("Erro ao tocar som:", e));
+};
 
     if(!loja){
         return <p>Carregando...</p>;
@@ -67,6 +73,11 @@ useEffect(() => {
     facebook: loja.facebook,
     instagram: loja.instagram,
     meta_mensal: loja.meta_mensal,
+    endereco: loja.endereco,
+    numero: loja.numero,
+    bairro: loja.bairro,    
+    cidade: loja.cidade,        
+    cep: loja.cep,               
     aceita_entrega: loja.aceita_entrega ? 1 : 0,
     aceita_retirada: loja.aceita_retirada ? 1 : 0
   };
@@ -86,6 +97,7 @@ useEffect(() => {
     // Fecha a confirmação e abre o sucesso
     setShowModal(false);
     setShowSucesso(true);
+    tocarSomSucesso();
   } catch (error) {
     alert("Erro ao atualizar loja");
   }
