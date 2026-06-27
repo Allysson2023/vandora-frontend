@@ -434,13 +434,8 @@ useEffect(() => {
 
 
 <div
-  className={`quick-card ${desabilitado ? 'disabled' : ''}`}
+  className="quick-card"
   //onClick={() => navigate(`/store/${id}/clientes`)}
-  onClick={() => {
-    if (!desabilitado) {
-      navigate("/atualizar-perfil");
-    }
-  }}
 >
   <span>👥</span>
   <h3>Clientes</h3>
@@ -449,13 +444,8 @@ useEffect(() => {
         
         
         <div
-          className={`quick-card ${desabilitado ? 'disabled' : ''}`}
+          className="quick-card"
           //onClick={() => navigate("/atualizar-perfil")}
-          onClick={() => {
-    if (!desabilitado) {
-      navigate("/atualizar-perfil");
-    }
-  }}
         >
           <span>👤</span>
           <h3>Perfil</h3>
