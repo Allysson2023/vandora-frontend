@@ -204,6 +204,12 @@
   font-size: 15px;
 }
 
+.quick-card.disabled {
+  opacity: 0.5;            /* Deixa o card mais "apagado" */
+  cursor: not-allowed;     /* Mostra o ícone de bloqueado ao passar o mouse */
+  pointer-events: none;    /* Impede que qualquer clique passe pela div */
+}
+
 /* =========================
    BADGE CHAT
 ========================= */
@@ -508,6 +514,11 @@
     text-align: center;
   }
 
+  .quick-card.disabled {
+  opacity: 0.5;            /* Deixa o card mais "apagado" */
+  cursor: not-allowed;     /* Mostra o ícone de bloqueado ao passar o mouse */
+  pointer-events: none;    /* Impede que qualquer clique passe pela div */
+}
   /* seções */
 
   .section {
@@ -579,6 +590,11 @@
     margin: 0;
     text-align: left;
   }
+  .quick-card.disabled {
+  opacity: 0.5;            /* Deixa o card mais "apagado" */
+  cursor: not-allowed;     /* Mostra o ícone de bloqueado ao passar o mouse */
+  pointer-events: none;    /* Impede que qualquer clique passe pela div */
+}
 
 
 
@@ -622,6 +638,12 @@
   .quick-card h3 {
     font-size: 12px;
   }
+
+  .quick-card.disabled {
+  opacity: 0.5;            /* Deixa o card mais "apagado" */
+  cursor: not-allowed;     /* Mostra o ícone de bloqueado ao passar o mouse */
+  pointer-events: none;    /* Impede que qualquer clique passe pela div */
+}
 
 
 }

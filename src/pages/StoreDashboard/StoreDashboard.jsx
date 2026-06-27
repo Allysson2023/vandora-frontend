@@ -41,6 +41,8 @@ const [config, setConfig] = useState({
     valor_desconto: 0
 });
 
+const [desabilitado, setDesabilitado] = useState(false);
+
 useEffect(() => {
     if (modalDescontoAberta) {
         fetch(`${API_URL}/api/stores/${id}/desconto-config`, {
@@ -429,9 +431,16 @@ useEffect(() => {
   <h3>Financeiro</h3>
 </div>
 
+
+
 <div
-  className="quick-card"
-  onClick={() => navigate(`/store/${id}/clientes`)}
+  className={`quick-card ${desabilitado ? 'disabled' : ''}`}
+  //onClick={() => navigate(`/store/${id}/clientes`)}
+  onClick={() => {
+    if (!desabilitado) {
+      navigate("/atualizar-perfil");
+    }
+  }}
 >
   <span>👥</span>
   <h3>Clientes</h3>
@@ -440,8 +449,13 @@ useEffect(() => {
         
         
         <div
-          className="quick-card"
-          onClick={() => navigate("/atualizar-perfil")}
+          className={`quick-card ${desabilitado ? 'disabled' : ''}`}
+          //onClick={() => navigate("/atualizar-perfil")}
+          onClick={() => {
+    if (!desabilitado) {
+      navigate("/atualizar-perfil");
+    }
+  }}
         >
           <span>👤</span>
           <h3>Perfil</h3>
