@@ -92,14 +92,15 @@ function DashboardAnaliseLoja() {
                 </div>
 
                 <div className="adl-kpiCard">
-                    <span>📈 Ticket Médio</span>
-                    <strong>
-                        R$ {(
-                            (analytics.faturamentoMes || 0) /
-                            (analytics.total_pedidos || 1)
-                        ).toFixed(2)}
-                    </strong>
-                </div>
+    <span>📈 Ticket Médio</span>
+    <strong>
+        R$ {(
+            (analytics.total_pedidos > 0) 
+            ? (analytics.faturamentoMes / analytics.total_pedidos) 
+            : 0
+        ).toFixed(2)}
+    </strong>
+</div>
 
             </div>
 
@@ -134,11 +135,11 @@ function DashboardAnaliseLoja() {
                     <h3>Resumo Rápido</h3>
 
                     <ul className="adl-summaryList">
-                        <li>Total de produtos cadastrados</li>
-                        <li>Total de pedidos recebidos</li>
-                        <li>Faturamento atualizado</li>
-                        <li>Análise automática da loja</li>
-                    </ul>
+    <li>Total de produtos cadastrados: <strong>{analytics.total_produtos}</strong></li>
+    <li>Total de pedidos finalizados: <strong>{analytics.total_pedidos}</strong></li>
+    <li>Faturamento do mês: <strong>R$ {Number(analytics.faturamentoMes).toFixed(2)}</strong></li>
+    <li>Status: <strong>{analytics.faturamentoMes > 5000 ? "Excelente" : "Em crescimento"}</strong></li>
+</ul>
 
                 </div>
 

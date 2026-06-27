@@ -84,16 +84,14 @@ function MinhasLojas() {
                 </div>
 
                 <div className="ml-box ml-highlight">
-                    <span>💰 Faturamento de Hoje</span>
-
-                    <strong>
-                        {Number(loja.faturamento || 0).toLocaleString("pt-BR", {
-                            style: "currency",
-                            currency: "BRL"
-                        })}
-                    </strong>
-
-                </div>
+    <span>💰 Faturamento de Hoje</span>
+    <strong>
+        {Number(loja.faturamento || 0).toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL"
+        })}
+    </strong>
+</div>
 
             </div>
 
