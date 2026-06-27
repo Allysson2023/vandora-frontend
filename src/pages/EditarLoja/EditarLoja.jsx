@@ -45,6 +45,12 @@ function EditarLoja(){
     });
 
 }, [id]);
+useEffect(() => {
+  if (showSucesso) {
+    const timer = setTimeout(() => setShowSucesso(false), 3000);
+    return () => clearTimeout(timer);
+  }
+}, [showSucesso]);
 
     if(!loja){
         return <p>Carregando...</p>;
@@ -85,12 +91,7 @@ function EditarLoja(){
   }
 };
 
-useEffect(() => {
-  if (showSucesso) {
-    const timer = setTimeout(() => setShowSucesso(false), 3000);
-    return () => clearTimeout(timer);
-  }
-}, [showSucesso]);
+
 
     return(
 
