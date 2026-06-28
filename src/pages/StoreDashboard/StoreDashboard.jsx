@@ -223,19 +223,19 @@ useEffect(() => {
 
   } 
 
-  const CustomTooltip = ({ active, payload, label }) => {
+  const CustomTooltip = ({ active, payload, label, prefixo = "", sufixo = "" }) => {
   if (active && payload && payload.length) {
     return (
       <div style={{
-        background: '#0f172a',
+        background: '#000000',
         padding: '12px',
         borderRadius: '12px',
         border: '1px solid #334155',
         boxShadow: '0 10px 15px -3px rgba(255, 255, 255, 0.3)'
       }}>
-        <p style={{ color: '#94a3b8', fontSize: '12px' }}>{label}</p>
+        <p style={{ color: '#ffffff', fontSize: '12px' }}>{label}</p>
         <p style={{ color: '#fff', fontWeight: 'bold' }}>
-          {payload[0].value} unidades
+          {prefixo} {payload[0].value} {sufixo}
         </p>
       </div>
     );
@@ -481,7 +481,7 @@ useEffect(() => {
   }}
 />
 
-        <Tooltip content={<CustomTooltip />} />
+        <Tooltip content={<CustomTooltip sufixo="unidades" />} />
 
         <Bar
   dataKey="quantidade"
@@ -591,7 +591,7 @@ useEffect(() => {
   }}
 />
 
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip content={<CustomTooltip prefixo="R$" />} />
 
               <Line
   type="monotone"
@@ -648,7 +648,7 @@ useEffect(() => {
   }}
 />
 
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip content={<CustomTooltip sufixo="pedidos" />} />
 
               <Line
   type="monotone"
