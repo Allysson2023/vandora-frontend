@@ -2,18 +2,36 @@ import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./Store.css";
 import { API_URL } from "../../apiConfig";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+
 function Store() {
 
     const [loading, setLoading] = useState(true);
-const [erro, setErro] = useState(false);
-
-    
+    const [erro, setErro] = useState(false);
     const { id } = useParams();
     const navigate = useNavigate();
 
     let user = null;
 
-try {
+    const isLogged = !!user;
+    const isLojista = user?.tipo === "lojista";
+    const isDonoDaLoja = isLojista && user?.loja_id === Number(id);
+    const [produtos, setProdutos] = useState([]);
+    const [pagina, setPagina] = useState(1);
+    const [temMaisProdutos, setTemMaisProdutos] = useState(true);
+    const [store, setStore] = useState(null);
+    const [busca, setBusca] = useState("");
+    const [menuConfig, setMenuConfig] = useState(false);
+    const [favorito, setFavorito] = useState(false);
+    const [totalFavoritos, setTotalFavoritos] = useState(0);
+    const [avaliacao, setAvaliacao] = useState({media: 0, total: 0});
+    const menuRef = useRef(null);
+    const [copiado, setCopiado] = useState(false);
+
+    try {
   const storedUser = localStorage.getItem("user");
   user = storedUser ? JSON.parse(storedUser) : null;
 } catch (err) {
@@ -21,29 +39,7 @@ try {
   localStorage.removeItem("user");
 }
 
-const isLogged = !!user;
-const isLojista = user?.tipo === "lojista";
-const isDonoDaLoja = isLojista && user?.loja_id === Number(id);
-    
-const [produtos, setProdutos] = useState([]);
-    const [pagina, setPagina] = useState(1);
-    const [temMaisProdutos, setTemMaisProdutos] = useState(true);
-    const [store, setStore] = useState(null);
-    const [busca, setBusca] = useState("");
-    const [menuConfig, setMenuConfig] = useState(false);
-
-    const [favorito, setFavorito] = useState(false);
-const [totalFavoritos, setTotalFavoritos] = useState(0);
-
-    const [avaliacao, setAvaliacao] = useState({
-    media: 0,
-    total: 0
-});
-const menuRef = useRef(null);
-const [copiado, setCopiado] = useState(false);
-
-
-const carregarDadosDaLoja = async () => {
+    const carregarDadosDaLoja = async () => {
     setLoading(true);
     setErro(false);
     try {
@@ -78,18 +74,14 @@ useEffect(() => {
 
    const handleCompartilhar = async () => {
     try {
-        // Copia direto para a área de transferência
         await navigator.clipboard.writeText(window.location.href);
         setCopiado(true);
     setTimeout(() => setCopiado(false), 2000);
-        
-        // Feedback visual rápido
         alert("Link da loja copiado com sucesso!");
     } catch (err) {
         console.error("Erro ao copiar:", err);
     }
 };
-
 
     // =========================
     // FECHAR MENU AO CLICAR FORA
@@ -112,7 +104,6 @@ useEffect(() => {
         fetch(`${API_URL}/api/stores/${id}/products?pagina=${pagina}`)
             .then(res => res.json())
             .then(data => {
-
                 if (!Array.isArray(data)) return;
 
                 if (pagina === 1) {
@@ -120,17 +111,13 @@ useEffect(() => {
                 } else {
                     setProdutos(prev => [...prev, ...data]);
                 }
-
                 setTemMaisProdutos(data.length >= 20);
             });
     }, [id, pagina]);
 
     useEffect(() => {
-
     const token = localStorage.getItem("token");
-
     if (!token) return;
-
     fetch(
         `${API_URL}/api/stores/${id}/favorito`,
         {
@@ -171,7 +158,6 @@ useEffect(() => {
 }, [id]);
 
 useEffect(() => {
-
     fetch(`${API_URL}/api/stores/${id}/avaliacoes`)
         .then(res => res.json())
         .then(data => {
@@ -180,7 +166,6 @@ useEffect(() => {
         .catch(err => console.log(err));
 
 }, [id]);
-
 
     // =========================
     // FILTRO PRODUTOS
@@ -233,8 +218,6 @@ useEffect(() => {
 
 
 const handleFavoritar = async () => {
-
-    console.log("CLICOU NO FAVORITO");
 
     const token = localStorage.getItem("token");
 
@@ -305,14 +288,12 @@ const abrirChatLoja = async () => {
     }
 };
 
-
-
 // --- TELA DE CARREGAMENTO ---
 if (loading) {
     return (
         <div className="status-container">
             <div className="spinner"></div>
-            <p>Carregando loja...</p>
+            <p>Por favor Aguarde, Carregando loja...</p>
         </div>
     );
 }
@@ -330,7 +311,6 @@ if (erro) {
         </div>
     );
 }
-
 
     return (
         <div className="store-page">
@@ -393,29 +373,12 @@ if (erro) {
 
                     <div className="store-info">
 
-
-
                         <h1>{store?.nome}</h1>
                          <span>
         {totalFavoritos} favoritos
     </span>
                         <p>{store?.descricao}</p>
 
-
-
-
-
-
-
-
-
-                        
-
-                        
-
-                        {/* =========================
-                            STATUS + HORÁRIO (VOLTOU)
-                        ========================= */}
                         <div className="horario-loja">
 
                             <div className={`store-status ${isLojaAberta() ? "open" : "closed"}`}>
@@ -427,8 +390,6 @@ if (erro) {
                                 🕒 {store?.horario_abertura} às {store?.horario_fechamento}
                             </span>
                             </div>
- 
-
                         </div>
 
                         {/* =========================
@@ -532,6 +493,28 @@ if (erro) {
                     />
                 </div>
 
+{produtos.some(p => p.destaque === 1) && (
+  <div className="destaques-container" style={{ margin: "20px 0" }}>
+    <h2>Produtos em Destaque</h2>
+    <Swiper
+      modules={[Autoplay, Pagination]}
+      spaceBetween={20}
+      slidesPerView={2}
+      autoplay={{ delay: 3000 }}
+      pagination={{ clickable: true }}
+    >
+      {produtos.filter(p => p.destaque === 1).map(produto => (
+        <SwiperSlide key={produto.id}>
+          <div className="product-card" onClick={() => navigate(`/product/${produto.id}`)}>
+            <img src={`${API_URL}/uploads/produtos/${produto.imagem}`} alt={produto.nome} />
+            <h4>{produto.nome}</h4>
+            <p>R$ {produto.preco}</p>
+          </div>
+        </SwiperSlide>
+      ))}
+    </Swiper>
+  </div>
+)}
 
                 <div className="products-grid">
 

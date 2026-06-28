@@ -10,11 +10,10 @@ function EditarProduto() {
   const [produto, setProduto] = useState(null);
   const [categorias, setCategorias] = useState([]);
   const [imagem1, setImagem1] = useState(null);
-const [imagem2, setImagem2] = useState(null);
-const [imagem3, setImagem3] = useState(null);
-const [showModal, setShowModal] = useState(false);
+  const [imagem2, setImagem2] = useState(null);
+  const [imagem3, setImagem3] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
-const API_URL = `${API_URL}`;
 
   useEffect(() => {
 
@@ -51,9 +50,8 @@ const API_URL = `${API_URL}`;
   formData.append("preco", produto.preco);
   formData.append("preco_antigo", produto.preco_antigo || "");
   formData.append("estoque", produto.estoque);
-  
-  // CORREÇÃO AQUI: enviar category_id (usando o ID da categoria)
   formData.append("category_id", produto.category_id || "");
+  formData.append("destaque", produto.destaque ? 1 : 0);
 
   if (imagem1 instanceof File) formData.append("imagem", imagem1);
   if (imagem2 instanceof File) formData.append("imagem2", imagem2);
@@ -207,6 +205,18 @@ const API_URL = `${API_URL}`;
       </option>
     ))}
   </select>
+</div>
+
+<div className="form-group" style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "15px" }}>
+  <label style={{ margin: 0 }}>Destaque no Carrossel:</label>
+  <input
+    type="checkbox"
+    style={{ width: "auto", height: "auto" }}
+    checked={!!produto.destaque} // Converte 0/1 para booleano
+    onChange={(e) => 
+      setProduto({ ...produto, destaque: e.target.checked ? 1 : 0 })
+    }
+  />
 </div>
 
   <button className="btn-save" onClick={() => setShowModal(true)}>

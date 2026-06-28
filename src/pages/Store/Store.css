@@ -370,6 +370,23 @@
         0 15px 30px rgba(0,0,0,0.18);
 }
 
+
+.destaques-container .product-card {
+    cursor: pointer;
+    background: #fff;
+    padding: 10px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.destaques-container .product-card img {
+    width: 100%;
+    height: 180px; /* Ou o tamanho que preferir */
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+
 /* brilho */
 
 .product-card::before{
