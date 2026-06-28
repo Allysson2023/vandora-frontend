@@ -14,33 +14,24 @@ import {
   Bar,
   CartesianGrid
 } from "recharts";
-
 import socket from "../../socket";
-
-
-
-
-
 
 function StoreDashboard() {
 
   const { id } = useParams();
   const navigate = useNavigate();
-
   const [resumo, setResumo] = useState(null);
   const [pedidosPorDia, setPedidosPorDia] = useState([]);
   const [loading, setLoading] = useState(true);
   const [atividades, setAtividades] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
-
   const [modalDescontoAberta, setModalDescontoAberta] = useState(false);
-const [config, setConfig] = useState({
+  const [config, setConfig] = useState({
     desconto_ativo: false,
     valor_minimo_compra: 0,
     tipo_desconto: 'porcentagem',
     valor_desconto: 0
 });
-
 const [desabilitado, setDesabilitado] = useState(false);
 
 useEffect(() => {
@@ -73,19 +64,13 @@ useEffect(() => {
     navigate("/");
     return;
   }
-
-  // só depois que carregar resumo você valida loja
 }, [user, id]);
-
-
 
   // =========================
   // 📦 CARREGAR DASHBOARD
   // =========================
   const carregarDashboard = async () => {
 
-    
-    
     try {
       const token = localStorage.getItem("token");
 
@@ -99,7 +84,6 @@ useEffect(() => {
 );
 
 if (!response.ok) {
-  console.log("Erro HTTP:", response.status);
   setLoading(false);
   return;
 }
@@ -213,8 +197,6 @@ useEffect(() => {
 
 }, []);
 
-
-
   // =========================
   // ⏳ LOADING
   // =========================
@@ -222,7 +204,7 @@ useEffect(() => {
 
     return (
       <div className="dashboard-loading">
-        <p>Carregando dashboard...</p>
+        <p>Por favor Aguarde, Carregando dashboard...</p>
       </div>
     );
 
@@ -249,7 +231,7 @@ useEffect(() => {
         padding: '12px',
         borderRadius: '12px',
         border: '1px solid #334155',
-        boxShadow: '0 10px 15px -3px rgba(0,0,0,0.3)'
+        boxShadow: '0 10px 15px -3px rgba(255, 255, 255, 0.3)'
       }}>
         <p style={{ color: '#94a3b8', fontSize: '12px' }}>{label}</p>
         <p style={{ color: '#fff', fontWeight: 'bold' }}>
