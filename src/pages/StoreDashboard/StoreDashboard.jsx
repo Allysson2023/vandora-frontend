@@ -242,21 +242,23 @@ useEffect(() => {
   } 
 
   const CustomTooltip = ({ active, payload, label }) => {
-
-  if (!active || !payload?.length) return null;
-
-  return (
-    <div className="sdTooltip">
-
-      <p>{label}</p>
-
-      <strong>
-        {payload[0].value}
-      </strong>
-
-    </div>
-  );
-
+  if (active && payload && payload.length) {
+    return (
+      <div style={{
+        background: '#0f172a',
+        padding: '12px',
+        borderRadius: '12px',
+        border: '1px solid #334155',
+        boxShadow: '0 10px 15px -3px rgba(0,0,0,0.3)'
+      }}>
+        <p style={{ color: '#94a3b8', fontSize: '12px' }}>{label}</p>
+        <p style={{ color: '#fff', fontWeight: 'bold' }}>
+          {payload[0].value} unidades
+        </p>
+      </div>
+    );
+  }
+  return null;
 };
 
 
@@ -480,7 +482,7 @@ useEffect(() => {
         }}
       >
 
-        <CartesianGrid strokeDasharray="3 3" />
+        <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
 
        <XAxis
   dataKey="nome"
@@ -536,7 +538,7 @@ useEffect(() => {
         }}
       >
 
-        <CartesianGrid strokeDasharray="3 3" />
+        <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
 
         <XAxis
   dataKey="nome"
