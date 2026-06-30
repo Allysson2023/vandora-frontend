@@ -140,9 +140,6 @@
     letter-spacing: 1px;
 }
 
-.btn-carrinhooo:hover{
-    transform:translateY(-3px);
-}
 
 .modal-overlay{
     position: fixed;
