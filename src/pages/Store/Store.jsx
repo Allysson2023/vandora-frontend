@@ -499,7 +499,7 @@ if (erro) {
         <SwiperSlide key={produto.id}>
           <div className="product-card" onClick={() => navigate(`/product/${produto.id}`)}>
             <img src={`${API_URL}/uploads/produtos/${produto.imagem}`} alt={produto.nome} />
-            <h4>{produto.nome}</h4>
+            <h4>{produto.preco}</h4>
           </div>
         </SwiperSlide>
       ))}
