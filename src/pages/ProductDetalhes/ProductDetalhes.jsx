@@ -193,10 +193,13 @@ const mostrarToast = (msg) => {
 
     <div className="galeria">
 
-    <img
-        className="imagem-principal"
-        src={imagemPrincipal}
-        alt={produto.nome} />
+    <div className="container-zoom">
+        <img
+            className="imagem-zoom" // Mudamos a classe para imagem-zoom
+            src={imagemPrincipal}
+            alt={produto.nome} 
+        />
+    </div>
 
     <div className="miniaturas">
 
