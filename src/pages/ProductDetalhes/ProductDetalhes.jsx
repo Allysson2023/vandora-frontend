@@ -9,15 +9,13 @@ function ProdutoDetalhe(){
     const [modalSucesso, setModalSucesso] = useState(false);
     const [produto, setProduto] = useState(null);
     const [imagemPrincipal, setImagemPrincipal] = useState("");
-const [modalLogin, setModalLogin] =
-useState(false);
-
-const [totalCurtidas, setTotalCurtidas] = useState(0);
-
-const [curtido, setCurtido] = useState(false);
+    const [modalLogin, setModalLogin] =useState(false);
+    const [totalCurtidas, setTotalCurtidas] = useState(0);
+    const [backgroundPos, setBackgroundPos] = useState("0% 0%");
+    const [curtido, setCurtido] = useState(false);
     const [toast, setToast] = useState("");
 
-   const adicionarAoCarrinho = async () => {
+    const adicionarAoCarrinho = async () => {
 
        const token = localStorage.getItem("token");
 
@@ -165,6 +163,14 @@ const toggleLike = async () => {
     }
 };
 
+const handleMouseMove = (e) => {
+    const { left, top, width, height } = e.target.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    setBackgroundPos(`${x}% ${y}%`);
+};
+
+
 const mostrarToast = (msg) => {
     setToast(msg);
 
@@ -193,13 +199,21 @@ const mostrarToast = (msg) => {
 
     <div className="galeria">
 
-    <div className="container-zoom">
-        <img
-            className="imagem-zoom" // Mudamos a classe para imagem-zoom
-            src={imagemPrincipal}
-            alt={produto.nome} 
-        />
-    </div>
+    <div 
+    className="container-zoom" 
+    onMouseMove={handleMouseMove}
+    onMouseLeave={() => setBackgroundPos("50% 50%")} // Reseta quando o mouse sai
+    style={{ 
+        backgroundImage: `url(${imagemPrincipal})`,
+        backgroundPosition: backgroundPos 
+    }}
+>
+    <img 
+        className="imagem-zoom"
+        src={imagemPrincipal} 
+        alt={produto.nome} 
+    />
+</div>
 
     <div className="miniaturas">
 
