@@ -132,7 +132,7 @@
 }
 
 /* 🟢 BOTÃO */
-.btn-carrinhoo {
+.btn-carrinhooo {
     margin-top: 20px;
     height: 60px;
     font-size: 18px;
@@ -140,7 +140,7 @@
     letter-spacing: 1px;
 }
 
-.btn-carrinhoo:hover{
+.btn-carrinhooo:hover{
     transform:translateY(-3px);
 }
 
@@ -193,7 +193,7 @@
     font-size: 18px;
 }
 
-.btn-carrinhoo:disabled{
+.btn-carrinhooo:disabled{
     background: #999;
     cursor: not-allowed;
     opacity: 0.7;
@@ -415,7 +415,7 @@
     }
 
     /* 4. Botão de Comprar: Fixado embaixo (O truque da Shopee) */
-    .btn-carrinhoo {
+    .btn-carrinhooo {
         position: fixed !important; /* O !important garante que ele ignore qualquer outro estilo */
         bottom: 0 !important;       /* Força a ficar colado na base */
         left: 0 !important;

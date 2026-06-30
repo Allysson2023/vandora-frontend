@@ -273,7 +273,7 @@ const mostrarToast = (msg) => {
         <p className="indisponivel"> Produto indisponível</p>):(
         <p className="estoque">Disponível: {produto.estoque}</p> )} 
         
-         <button className="btn-carrinhoo" onClick={adicionarAoCarrinho}
+         <button className="btn-carrinhooo" onClick={adicionarAoCarrinho}
   disabled={produto.estoque <= 0}>
   { produto.estoque <= 0 ? "Produto Indisponível" : "Adicionar ao Carrinho" }</button>
         </div>
