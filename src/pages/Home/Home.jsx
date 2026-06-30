@@ -320,7 +320,7 @@ if (usuarioLogado?.tipo === "admin") {
     return (
       <div className="status-container">
         <div className="error-icon">⚠️</div>
-        <h3>Ops, estamos com dificuldades técnicas!</h3>
+        <h3>Ops!</h3>
         <p>No momento não foi possível conectar ao servidor.</p>
         <button className="btn-carregar" onClick={() => window.location.reload()}>
           Tentar novamente
@@ -328,10 +328,6 @@ if (usuarioLogado?.tipo === "admin") {
       </div>
     );
   }
-
-
-
-
 
   return (
     <div className="home">

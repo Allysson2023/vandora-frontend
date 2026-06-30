@@ -392,14 +392,6 @@ if (erro) {
                             </div>
                         </div>
 
-                        {/* =========================
-                            STATS (VOLTOU)
-                        ========================= */}
-                        {/* =========================
-
-
-    REDES SOCIAIS (NOVO BLOCO)
-========================= */}
 {(store?.facebook || store?.instagram) && (
 
 
@@ -495,7 +487,7 @@ if (erro) {
 
 {produtos.some(p => p.destaque === 1) && (
   <div className="destaques-container" style={{ margin: "20px 0" }}>
-    <h2>Produtos em Destaque</h2>
+    <h2>Promoções</h2>
     <Swiper
       modules={[Autoplay, Pagination]}
       spaceBetween={20}
@@ -508,7 +500,6 @@ if (erro) {
           <div className="product-card" onClick={() => navigate(`/product/${produto.id}`)}>
             <img src={`${API_URL}/uploads/produtos/${produto.imagem}`} alt={produto.nome} />
             <h4>{produto.nome}</h4>
-            <p>R$ {produto.preco}</p>
           </div>
         </SwiperSlide>
       ))}
@@ -548,15 +539,15 @@ if (erro) {
     {/* preços */}
     <div className="price-row">
 
-        <span className="product-price">
-            R$ {produto.preco}
-        </span>
-
         {produto.preco_antigo && (
             <span className="old-price">
                 R$ {produto.preco_antigo}
             </span>
         )}
+        <span className="product-price">
+            R$ {produto.preco}
+        </span>
+
 
     </div>
 
