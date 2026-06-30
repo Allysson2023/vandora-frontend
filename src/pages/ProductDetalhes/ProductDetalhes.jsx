@@ -4,7 +4,7 @@ import "./ProductDetalhes.css";
 import { API_URL } from "../../apiConfig";
 function ProdutoDetalhe(){
 
-    const { id } = useParams();
+    const {id, slug } = useParams();
     const navigate = useNavigate();
     const [modalSucesso, setModalSucesso] = useState(false);
     const [produto, setProduto] = useState(null);
@@ -84,41 +84,41 @@ function ProdutoDetalhe(){
 };
 
     useEffect(() => {
-
     const token = localStorage.getItem("token");
 
-    // produto
-    fetch(`${API_URL}/api/products/${id}`)
+    // 1. Define qual URL usar baseado no que veio na URL (id ou slug)
+    const urlProduto = slug 
+        ? `${API_URL}/api/products/slug/${slug}` 
+        : `${API_URL}/api/products/${id}`;
+
+    // Busca o produto
+    fetch(urlProduto)
         .then(res => res.json())
         .then(data => {
             setProduto(data);
+            setImagemPrincipal(`${API_URL}/uploads/produtos/${data.imagem}`);
+            
+            // Depois que o produto carregar, buscamos as curtidas usando o ID do produto carregado
+            // (Importante usar data.id aqui, pois o slug sozinho não serviria para buscar curtidas)
+            const prodId = data.id;
 
-            setImagemPrincipal(
-                `${API_URL}/uploads/produtos/${data.imagem}`
-            );
-        });
+            // total curtidas
+            fetch(`${API_URL}/api/products/${prodId}/likes`)
+                .then(res => res.json())
+                .then(likeData => setTotalCurtidas(likeData.total));
 
-    // total curtidas
-    fetch(`${API_URL}/api/products/${id}/likes`)
-        .then(res => res.json())
-        .then(data => {
-            setTotalCurtidas(data.total);
-        });
-
-    // se usuário curtiu
-    if (token) {
-        fetch(`${API_URL}/api/products/${id}/liked`, {
-            headers: {
-                Authorization: `Bearer ${token}`
+            // se usuário curtiu
+            if (token) {
+                fetch(`${API_URL}/api/products/${prodId}/liked`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                })
+                .then(res => res.json())
+                .then(likeData => setCurtido(likeData.liked));
             }
         })
-        .then(res => res.json())
-        .then(data => {
-            setCurtido(data.liked);
-        });
-    }
+        .catch(err => console.error("Erro ao carregar produto:", err));
 
-}, [id]);
+}, [id, slug]);
 
 const toggleLike = async () => {
 
