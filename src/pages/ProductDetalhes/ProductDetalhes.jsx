@@ -173,50 +173,34 @@ const mostrarToast = (msg) => {
     }, 2000);
 };
 
-
     if(!produto){
-        return <p>Carregando...</p>;
+        return <p>Aguarde Carregando...</p>;
     }
 
     return(
 
     <div className="pagina-produto">
-
         <div className="topo-detalhe">
-
-            <button
-                className="btn-voltars"
+            <button className="btn-voltars"
                 onClick={() => navigate(-1)}
-            >
-                ← 
-            </button> 
-
-        </div>
+            > ←  </button>  </div>
 
         <div className="produto-detalhe">
-
             {toast && (
     <div className="toast-like">
         {toast}
-    </div>
-)}
-
+    </div>)}
 
     <div className="galeria">
-        
 
     <img
         className="imagem-principal"
         src={imagemPrincipal}
-        alt={produto.nome}
-    />
-
-    
+        alt={produto.nome} />
 
     <div className="miniaturas">
 
-        <img
-            className={
+        <img className={
                 imagemPrincipal ===
                 `${API_URL}/uploads/produtos/${produto.imagem}`
                 ? "miniatura ativa"
@@ -227,69 +211,41 @@ const mostrarToast = (msg) => {
             onClick={() =>
                 setImagemPrincipal(
                     `${API_URL}/uploads/produtos/${produto.imagem}`
-                )
-            }
-        />
+                ) } />
 
-        {produto.imagem2 && (
-            <img
-                className={
+        {produto.imagem2 && ( <img className={
                     imagemPrincipal ===
                     `${API_URL}/uploads/produtos/${produto.imagem2}`
-                    ? "miniatura ativa"
-                    : "miniatura"
+                    ? "miniatura ativa" : "miniatura"
                 }
                 src={`${API_URL}/uploads/produtos/${produto.imagem2}`}
-                alt=""
-                onClick={() =>
+                alt="" onClick={() =>
                     setImagemPrincipal(
                         `${API_URL}/uploads/produtos/${produto.imagem2}`
-                    )
-                }
-            />
-        )}
-
+                    ) } /> )}
         {produto.imagem3 && (
             <img
                 className={
                     imagemPrincipal ===
                     `${API_URL}/uploads/produtos/${produto.imagem3}`
-                    ? "miniatura ativa"
-                    : "miniatura"
+                    ? "miniatura ativa" : "miniatura"
                 }
                 src={`${API_URL}/uploads/produtos/${produto.imagem3}`}
-                alt=""
-                onClick={() =>
+                alt="" onClick={() =>
                     setImagemPrincipal(
                         `${API_URL}/uploads/produtos/${produto.imagem3}`
-                    )
-                }
-            />
-        )}
-
-    </div>
-
-</div>
-
+                    ) }/> )}
+    </div> </div>
             <div className="info-produto">
-
                 <h1>{produto.nome}</h1>
                 {totalCurtidas > 0 && (
     <div className="pd-total-curtidas">
-        ❤️ {totalCurtidas} 
-    </div>
-)}
+        ❤️ {totalCurtidas} </div>)}
                <button
     className={`pd-heart-btn ${curtido ? "ativo" : ""}`}
     type="button"
-    onClick={toggleLike}
->
-    {curtido ? "❤️" : "🤍"}
-</button>
-
-                
-               <p className="loja">
-    Loja:{" "}
+    onClick={toggleLike}>{curtido ? "❤️" : "🤍"}</button>
+               <p className="loja">Loja:{" "}
     <Link to={`/store/${produto.store_id}`} className="link-loja">
         {produto.nomeLoja}
     </Link>
@@ -310,63 +266,27 @@ const mostrarToast = (msg) => {
                     <span className="preco-atual">
                         R$ {produto.preco}
                     </span>
-
                 </div>
 
-                {
-    produto.estoque <= 0 ? (
+                {produto.estoque <= 0 ? (
 
-        <p className="indisponivel">
-            Produto indisponível
-        </p>
-
-    ) : (
-
-        <p className="estoque">
-            Disponível: {produto.estoque}
-        </p>
-
-    )
-}
-
-
-            </div>
-                <button
-  className="btn-carrinho"
-  onClick={adicionarAoCarrinho}
-  disabled={produto.estoque <= 0}
->
-  {
-    produto.estoque <= 0
-      ? "Produto Indisponível"
-      : "Adicionar ao Carrinho"
-  }
-</button>
-
-
+        <p className="indisponivel"> Produto indisponível</p>):(
+        <p className="estoque">Disponível: {produto.estoque}</p> )} 
+        
+         <button className="btn-carrinho" onClick={adicionarAoCarrinho}
+  disabled={produto.estoque <= 0}>
+  { produto.estoque <= 0 ? "Produto Indisponível" : "Adicionar ao Carrinho" }</button>
         </div>
 
 
 
+        </div>
 
+        {modalSucesso && ( <div className="modal-overlay">
 
+    <div className="modal-sucesso"> <h3>Produto adicionado!</h3>
 
-
-
-
-
-
-        {modalSucesso && (
-
-  <div className="modal-overlay">
-
-    <div className="modal-sucesso">
-
-      <h3>Produto adicionado!</h3>
-
-      <p>
-        Produto adicionado ao carrinho com sucesso.
-      </p>
+      <p> Produto adicionado ao carrinho com sucesso. </p>
 
       <button
         className="btn-ok"
@@ -374,11 +294,8 @@ const mostrarToast = (msg) => {
       >
         OK
       </button>
-
     </div>
-
   </div>
-
 )}
 
 {modalLogin && (
@@ -423,13 +340,9 @@ const mostrarToast = (msg) => {
       >
         Fechar
       </button>
-
     </div>
-
   </div>
-
 )}
-
 
 
     </div>
