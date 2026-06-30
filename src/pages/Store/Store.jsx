@@ -497,7 +497,7 @@ if (erro) {
     >
       {produtos.filter(p => p.destaque === 1).map(produto => (
         <SwiperSlide key={produto.id}>
-          <div className="product-card" onClick={() => navigate(`/product/${produto.id}`)}>
+          <div className="product-card" onClick={() => navigate(`/product/slug/${produto.slug}`)}>
             <img src={`${API_URL}/uploads/produtos/${produto.imagem}`} alt={produto.nome} />
             <h4>R$:{produto.preco}</h4>
           </div>
@@ -513,7 +513,7 @@ if (erro) {
                         <div
                             key={produto.id}
                             className="product-card"
-                            onClick={() => navigate(`/product/${produto.id}`)}
+                            onClick={() => navigate(`/product/slug/${produto.slug}`)}
                         >
                             <img
                                 src={
