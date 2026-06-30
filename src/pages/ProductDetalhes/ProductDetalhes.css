@@ -415,9 +415,7 @@
     }
 
     /* 4. Botão de Comprar: Fixado embaixo (O truque da Shopee) */
-    .btn-carrinhooo {
-        position: fixed !important; /* O !important garante que ele ignore qualquer outro estilo */
-        bottom: 0 !important;       /* Força a ficar colado na base */
+    .btn-carrinhooo {       /* Força a ficar colado na base */
         left: 0 !important;
         width: 100% !important;     /* Garante que ocupe a largura toda */
         border-radius: 0 !important;
@@ -434,6 +432,11 @@
     }
 }
 @media (max-width: 768px) {
+
+    .btn-carrinhooo {
+        position: fixed !important; /* O !important garante que ele ignore qualquer outro estilo */
+        bottom: 0 !important;  
+    }
     .produto-detalhe {
         grid-template-columns: 1fr; /* Empilha tudo */
         gap: 20px;
