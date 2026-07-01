@@ -115,65 +115,82 @@ function EditarProduto() {
 
   <h1>Editar Produto</h1>
 
+{/* IMAGEM 1 */}
 <div className="form-group">
   <label>Imagem 1</label>
-  {imagem1 && (
-    <img
-      // Verifica se é string, se não, cria a URL temporária com segurança
-      src={typeof imagem1 === "string" ? imagem1 : URL.createObjectURL(imagem1)}
-      className="preview"
-      alt="imagem1"
+  <div className="preview-container">
+    <label htmlFor="input-img1" style={{ cursor: 'pointer' }}>
+      <img
+        src={typeof imagem1 === "string" ? imagem1 : URL.createObjectURL(imagem1)}
+        className="preview"
+        alt="imagem1"
+        title="Clique para trocar a imagem"
+      />
+    </label>
+    <input
+      id="input-img1"
+      type="file"
+      accept="image/*"
+      style={{ display: 'none' }}
+      onChange={(e) => {
+        if (e.target.files && e.target.files[0]) {
+          setImagem1(e.target.files[0]); // CORRETO: usa setImagem1
+        }
+      }}
     />
-  )}
-  <input
-    type="file"
-    accept="image/*"
-    onChange={(e) => {
-      if (e.target.files && e.target.files[0]) {
-        setImagem1(e.target.files[0]);
-      }
-    }}
-  />
+  </div>
 </div>
 
+{/* IMAGEM 2 */}
 <div className="form-group">
   <label>Imagem 2</label>
-  {imagem2 && (
-    <img 
-      src={typeof imagem2 === "string" ? imagem2 : URL.createObjectURL(imagem2)} 
-      className="preview" 
-      alt="imagem2"
+  <div className="preview-container">
+    <label htmlFor="input-img2" style={{ cursor: 'pointer' }}>
+      <img
+        src={typeof imagem2 === "string" ? imagem2 : URL.createObjectURL(imagem2)}
+        className="preview"
+        alt="imagem2"
+        title="Clique para trocar a imagem"
+      />
+    </label>
+    <input
+      id="input-img2"
+      type="file"
+      accept="image/*"
+      style={{ display: 'none' }}
+      onChange={(e) => {
+        if (e.target.files && e.target.files[0]) {
+          setImagem2(e.target.files[0]); // CORRIGIDO: mudado para setImagem2
+        }
+      }}
     />
-  )}
-  <input
-    type="file"
-    accept="image/*"
-    onChange={(e) => {
-      if (e.target.files && e.target.files[0]) {
-        setImagem2(e.target.files[0]);
-      }
-    }}
-  />
+  </div>
 </div>
 
+{/* IMAGEM 3 */}
 <div className="form-group">
-  <label>Imagem 3</label>
-  {imagem3 && (
-    <img 
-      src={typeof imagem3 === "string" ? imagem3 : URL.createObjectURL(imagem3)} 
-      className="preview" 
-      alt="imagem3"
+  <label>Imagem 3 </label>
+  <div className="preview-container">
+    <label htmlFor="input-img3" style={{ cursor: 'pointer' }}>
+      <img
+        src={typeof imagem3 === "string" ? imagem3 : URL.createObjectURL(imagem3)}
+        className="preview"
+        alt="imagem3"
+        title="Clique para trocar a imagem"
+      />
+    </label>
+    <input
+      id="input-img3"
+      type="file"
+      accept="image/*"
+      style={{ display: 'none' }}
+      onChange={(e) => {
+        if (e.target.files && e.target.files[0]) {
+          setImagem3(e.target.files[0]); // CORRIGIDO: mudado para setImagem3
+        }
+      }}
     />
-  )}
-  <input
-    type="file"
-    accept="image/*"
-    onChange={(e) => {
-      if (e.target.files && e.target.files[0]) {
-        setImagem3(e.target.files[0]);
-      }
-    }}
-  />
+  </div>
 </div>
 
 

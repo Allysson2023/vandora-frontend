@@ -94,12 +94,21 @@
 }
 
 .preview {
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
+    width: 150px;
+    height: 150px;
+    object-fit: cover; /* Faz a foto preencher o quadrado sem distorcer */
+    border: 2px dashed #ccc; /* Dá um ar de "área de upload" */
+    border-radius: 10px;
+    transition: transform 0.2s;
+}
+
+.preview:hover {
+    transform: scale(1.05); /* Dá um efeito de "zoom" ao passar o mouse */
+    border-color: #007bff;
+}
+
+.preview-container {
+    margin-bottom: 20px;
 }
 
 .modal-overlay {
