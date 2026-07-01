@@ -74,6 +74,7 @@ async function cadastrarProduto(e) {
       },
       body: JSON.stringify(dadosDoProduto)
     });
+    const result = await resposta.json();
 
     if (resposta.ok) {
 
@@ -91,7 +92,7 @@ async function cadastrarProduto(e) {
       setImagem3(null);
 
     } else {
-      setMensagem(data.message);
+      setMensagem(result.message || "Erro ao cadastrar produto");
     }
 
   } catch (erro) {
