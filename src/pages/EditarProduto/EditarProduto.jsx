@@ -117,44 +117,62 @@ function EditarProduto() {
 
 <div className="form-group">
   <label>Imagem 1</label>
-
   {imagem1 && (
-  <img
-    src={typeof imagem1 === "string" ? imagem1 : URL.createObjectURL(imagem1)}
-    className="preview"
-    alt="imagem1"
-  />
-)}
-
+    <img
+      // Verifica se é string, se não, cria a URL temporária com segurança
+      src={typeof imagem1 === "string" ? imagem1 : URL.createObjectURL(imagem1)}
+      className="preview"
+      alt="imagem1"
+    />
+  )}
   <input
     type="file"
-    onChange={(e) => setImagem1(e.target.files[0])}
+    accept="image/*"
+    onChange={(e) => {
+      if (e.target.files && e.target.files[0]) {
+        setImagem1(e.target.files[0]);
+      }
+    }}
   />
 </div>
 
 <div className="form-group">
   <label>Imagem 2</label>
-
   {imagem2 && (
-    <img src={typeof imagem2 === "string" ? imagem2 : URL.createObjectURL(imagem2)} className="preview" />
+    <img 
+      src={typeof imagem2 === "string" ? imagem2 : URL.createObjectURL(imagem2)} 
+      className="preview" 
+      alt="imagem2"
+    />
   )}
-
   <input
     type="file"
-    onChange={(e) => setImagem2(e.target.files[0])}
+    accept="image/*"
+    onChange={(e) => {
+      if (e.target.files && e.target.files[0]) {
+        setImagem2(e.target.files[0]);
+      }
+    }}
   />
 </div>
 
 <div className="form-group">
   <label>Imagem 3</label>
-
   {imagem3 && (
-    <img src={typeof imagem3 === "string" ? imagem3 : URL.createObjectURL(imagem3)} className="preview" />
+    <img 
+      src={typeof imagem3 === "string" ? imagem3 : URL.createObjectURL(imagem3)} 
+      className="preview" 
+      alt="imagem3"
+    />
   )}
-
   <input
     type="file"
-    onChange={(e) => setImagem3(e.target.files[0])}
+    accept="image/*"
+    onChange={(e) => {
+      if (e.target.files && e.target.files[0]) {
+        setImagem3(e.target.files[0]);
+      }
+    }}
   />
 </div>
 
