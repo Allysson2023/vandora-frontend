@@ -1,75 +1,104 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import './EditarProduto.css'
+import './EditarProduto.css';
 import { API_URL } from "../../apiConfig";
 
 function EditarProduto() {
-
   const { id } = useParams();
   const navigate = useNavigate();
   const [produto, setProduto] = useState(null);
   const [categorias, setCategorias] = useState([]);
+  
+  // Estados para as imagens (Podem ser File ou String)
   const [imagem1, setImagem1] = useState(null);
   const [imagem2, setImagem2] = useState(null);
   const [imagem3, setImagem3] = useState(null);
+  
   const [showModal, setShowModal] = useState(false);
 
+  // Função central para enviar ao ImgBB
+  const uploadImagemSeguro = async (file) => {
+    // Se já for string (link do banco), não precisa subir de novo
+    if (typeof file === "string") return file;
+    // Se não tiver imagem, retorna null
+    if (!file) return null;
 
-  useEffect(() => {
+    const formData = new FormData();
+    formData.append("image", file);
 
-  fetch(`${API_URL}/api/products/${id}`)
-    .then(res => res.json())
-    .then(data => {
-      setProduto(data);
-
-      setImagem1(data.imagem ? `${API_URL}/${data.imagem}` : null);
-      setImagem2(data.imagem2 ? `${API_URL}/${data.imagem2}` : null);
-      setImagem3(data.imagem3 ? `${API_URL}/${data.imagem3}` : null);
+    const res = await fetch(`${API_URL}/api/upload-image`, {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+        },
+        body: formData
     });
 
-}, [id]);
+    const data = await res.json();
+    return data.url; // Retorna a URL que veio do seu backend
+};
 
   useEffect(() => {
+    fetch(`${API_URL}/api/products/${id}`)
+      .then(res => res.json())
+      .then(data => {
+        setProduto(data);
+        setImagem1(data.imagem);
+        setImagem2(data.imagem2);
+        setImagem3(data.imagem3);
+      });
+  }, [id]);
 
-  fetch(`${API_URL}/api/categories`)
-    .then(res => res.json())
-    .then(data => setCategorias(data))
-    .catch(err => console.log(err));
-
-}, []);
-
-  if (!produto) return <p>Carregando...</p>;
-  
+  useEffect(() => {
+    fetch(`${API_URL}/api/categories`)
+      .then(res => res.json())
+      .then(data => setCategorias(data));
+  }, []);
 
   const confirmarSalvar = async () => {
-  const token = localStorage.getItem("token");
-  const formData = new FormData();
+    const token = localStorage.getItem("token");
 
-  formData.append("nome", produto.nome);
-  formData.append("descricao", produto.descricao);
-  formData.append("preco", produto.preco);
-  formData.append("preco_antigo", produto.preco_antigo || "");
-  formData.append("estoque", produto.estoque);
-  formData.append("category_id", produto.category_id || "");
-  formData.append("destaque", produto.destaque ? 1 : 0);
+    // 1. Faz upload das imagens (só envia se for File, se for string já retorna a URL)
+    const url1 = await uploadImagemSeguro(imagem1);
+  const url2 = await uploadImagemSeguro(imagem2);
+  const url3 = await uploadImagemSeguro(imagem3);
 
-  if (imagem1 instanceof File) formData.append("imagem", imagem1);
-  if (imagem2 instanceof File) formData.append("imagem2", imagem2);
-  if (imagem3 instanceof File) formData.append("imagem3", imagem3);
+    // 2. Monta o objeto final para o banco
+    const dadosAtualizados = {
+      nome: produto.nome,
+      descricao: produto.descricao,
+      preco: produto.preco,
+      preco_antigo: produto.preco_antigo,
+      estoque: produto.estoque,
+      category_id: produto.category_id,
+      destaque: produto.destaque,
+      // Agora salvamos as URLs (novas ou as antigas que já estavam lá)
+      imagem: url1,
+      imagem2: url2,
+      imagem3: url3
+    };
 
-  const res = await fetch(`${API_URL}/api/products/${id}`, {
-    method: "PUT",
-    headers: { Authorization: `Bearer ${token}` },
-    body: formData
-  });
+    // 3. Envia via JSON
+    const res = await fetch(`${API_URL}/api/products/${id}`, {
+      method: "PUT",
+      headers: { 
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}` 
+      },
+      body: JSON.stringify(dadosAtualizados)
+    });
 
-  if (!res.ok) {
-    const errorData = await res.json();
-    alert("Erro ao salvar: " + errorData.message);
-    return;
-  }
-  alert("Produto atualizado!");
+    if (!res.ok) {
+      const errorData = await res.json();
+      alert("Erro ao salvar: " + errorData.message);
+      return;
+    }
+    
+    alert("Produto atualizado!");
+    navigate(-1);
 };
+
+  if (!produto) return <p>Carregando...</p>;
 
   return (
 

@@ -28,46 +28,32 @@ function CadastrarProduto() {
   }, []);
 
 async function cadastrarProduto(e) {
-
   e.preventDefault();
-
+  
   try {
+    // Agora o upload passa pelo seu backend, escondendo a chave
+    const url1 = await uploadImagemSeguro(imagem);
+    const url2 = await uploadImagemSeguro(imagem2);
+    const url3 = await uploadImagemSeguro(imagem3);
 
-    const formData = new FormData();
+    const dadosDoProduto = {
+      nome, descricao, preco, 
+      preco_antigo: precoAntigo,
+      estoque,
+      category_id: categoryId,
+      imagem: url1,
+      imagem2: url2,
+      imagem3: url3
+    };
 
-    formData.append("nome", nome);
-    formData.append("descricao", descricao);
-    formData.append("preco", preco);
-    formData.append("preco_antigo", precoAntigo);
-    formData.append("estoque", estoque);
-    formData.append("category_id", categoryId);
-
-    if (imagem) {
-      formData.append("imagem", imagem);
-    }
-
-    if (imagem2) {
-      formData.append("imagem2", imagem2);
-    }
-
-    if (imagem3) {
-      formData.append("imagem3", imagem3);
-    }
-
-    const resposta = await fetch(
-      `${API_URL}/api/products`,
-      {
-        method: "POST",
-
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
-        },
-
-        body: formData
-      }
-    );
-
-    const data = await resposta.json();
+    const resposta = await fetch(`${API_URL}/api/products`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      },
+      body: JSON.stringify(dadosDoProduto)
+    });
 
     if (resposta.ok) {
 
