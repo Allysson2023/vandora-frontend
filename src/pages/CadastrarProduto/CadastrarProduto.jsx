@@ -27,6 +27,26 @@ function CadastrarProduto() {
 
   }, []);
 
+  const uploadImagemSeguro = async (file) => {
+    if (!file) return null; // Se não tem imagem, retorna null
+    if (typeof file === "string") return file; // Se já for URL, retorna ela mesma
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    const res = await fetch(`${API_URL}/api/upload-image`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      },
+      body: formData
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Falha no upload");
+    return data.url; 
+  };
+
 async function cadastrarProduto(e) {
   e.preventDefault();
   
@@ -76,6 +96,7 @@ async function cadastrarProduto(e) {
 
   } catch (erro) {
     setMensagem("Erro ao cadastrar produto");
+    console.log(erro)
   }
 }
 
