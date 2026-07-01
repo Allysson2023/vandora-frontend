@@ -126,6 +126,7 @@ function App() {
         <Route path="/cadastrar-loja" element={<CadastrarLoja />} />
         <Route path="/atualizar-perfil" element={<AtualizarPerfil />} />
         <Route path="/store/:id" element={<Store />} />
+        <Route path="/store/:slug" element={<Store />} />
         <Route path="/store/:id/admin/produtos" element={<AdminProdutos />} />
         <Route path="/admin/produto/:id" element={<EditarProduto />} />
         <Route path="/editar-loja/:id" element={<EditarLoja />} />

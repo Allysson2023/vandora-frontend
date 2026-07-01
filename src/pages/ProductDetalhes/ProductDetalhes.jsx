@@ -121,7 +121,6 @@ function ProdutoDetalhe(){
 }, [id, slug]);
 
 const toggleLike = async () => {
-
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -129,37 +128,38 @@ const toggleLike = async () => {
         return;
     } 
 
+    // SEGURANÇA: Verifica se o produto carregou antes de tentar curtir
+    if (!produto || !produto.id) {
+        console.error("ID do produto não disponível.");
+        return;
+    }
+
     try {
+        // MUDANÇA AQUI: use produto.id ao invés de id
+        const endpoint = `${API_URL}/api/products/${produto.id}/like`;
 
         if (!curtido) {
-
-            await fetch(`${API_URL}/api/products/${id}/like`, {
+            await fetch(endpoint, {
                 method: "POST",
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+                headers: { Authorization: `Bearer ${token}` }
             });
 
             setCurtido(true);
             setTotalCurtidas(prev => prev + 1);
             mostrarToast("❤️ Curtida adicionada!");
-
         } else {
-
-            await fetch(`${API_URL}/api/products/${id}/like`, {
+            await fetch(endpoint, {
                 method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+                headers: { Authorization: `Bearer ${token}` }
             });
 
             setCurtido(false);
             setTotalCurtidas(prev => prev - 1);
             mostrarToast("💔 Curtida removida!");
         }
-
     } catch (err) {
-        console.log(err);
+        console.error("Erro na requisição:", err);
+        alert("Erro ao processar sua curtida.");
     }
 };
 

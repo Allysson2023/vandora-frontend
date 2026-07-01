@@ -387,7 +387,7 @@ if (erro) {
                                     ? "ABERTA"
                                     : "FECHADA"}
                             <span>
-                                🕒 {store?.horario_abertura} às {store?.horario_fechamento}
+                                 {store?.horario_abertura} às {store?.horario_fechamento}
                             </span>
                             </div>
                         </div>
@@ -398,10 +398,6 @@ if (erro) {
 
     
     <div className="store-social">
-        <button className="btn-compartilhar" onClick={handleCompartilhar}>
-    {copiado ? "✅ Link Copiado!" : "🔗 "}
-</button>
-
 <button
     className="social-btn mensagem"
     onClick={abrirChatLoja}
@@ -507,6 +503,7 @@ if (erro) {
   </div>
 )}
 
+<h2>Produtos</h2>
                 <div className="products-grid">
 
                     {produtosFiltrados.map(produto => (
@@ -530,11 +527,6 @@ if (erro) {
                     <div className="product-info">
 
     <h3>{produto.nome}</h3>
-
-    {/* likes */}
-    <div className="likes-row">
-        ❤️ {produto.curtidas ?? 0}
-    </div>
 
     {/* preços */}
     <div className="price-row">
