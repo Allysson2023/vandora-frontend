@@ -481,11 +481,11 @@ if (usuarioLogado?.tipo === "admin") {
     style={{ cursor: 'pointer' }} // Adiciona o cursor de mãozinha para indicar que é clicável
   >
     <img 
-      src={`${API_URL}/uploads/banners/${imagensBanner[bannerIndex]?.imagem}`} 
-      alt="Banner"
-      className="banner-ativo"
-      onError={(e) => { e.target.src = "https://dummyimage.com/1200x300"; }}
-    />
+  src={imagensBanner[bannerIndex]?.imagem} 
+  alt="Banner"
+  className="banner-ativo"
+  onError={(e) => { e.target.src = "https://dummyimage.com/1200x300"; }}
+/>
   </div>
 </div>
 
@@ -499,11 +499,7 @@ if (usuarioLogado?.tipo === "admin") {
             onClick={() => navigate(`/store/${loja.id}`)}
           >
             <img
-              src={
-                loja.imagem
-                  ? `${API_URL}/uploads/lojas/${loja.imagem}`
-                  : "https://dummyimage.com/300x300"
-              }
+              src={loja.imagem || "https://dummyimage.com/300x300"}
               alt={loja.nome}
             />
             <p>{loja.nome}</p>
@@ -536,7 +532,7 @@ if (usuarioLogado?.tipo === "admin") {
     >
       <video 
         key={videos[videoIndex].id} 
-        src={`${API_URL}/uploads/banners/${videos[videoIndex].imagem}`} 
+        src={videos[videoIndex].imagem}
         autoPlay 
         muted 
         className="video-ativo"

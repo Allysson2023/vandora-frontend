@@ -96,7 +96,7 @@ function Carrinho() {
 
             {carrinho.map((item) => (
               <div key={item.product_id} className={`card-carrinho ${item.estoque <= 0 ? "indisponivel-card" : ""}`}>
-                <img src={`${API_URL}/uploads/produtos/${item.imagem}`} alt={item.nome} />
+                <img src={item.imagem} alt={item.nome} />
                 <div className="info-carrinho">
                   <h3>{item.nome}</h3>
                   <p>{item.estoque <= 0 ? "Indisponível" : `Estoque: ${item.estoque}`}</p>

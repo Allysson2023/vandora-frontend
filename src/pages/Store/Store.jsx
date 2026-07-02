@@ -512,15 +512,7 @@ if (erro) {
                             className="product-card"
                             onClick={() => navigate(`/product/slug/${produto.slug}`)}
                         >
-                            <img
-                                src={
-                                    produto.imagem
-                                        ? `${API_URL}/uploads/produtos/${produto.imagem}`
-                                        : "https://dummyimage.com/300x300"
-                                }
-                                alt={produto.nome}
-
-                            />
+                            <img src={produto.imagem} alt={produto.nome} />
 
 
 

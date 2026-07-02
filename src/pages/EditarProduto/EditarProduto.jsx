@@ -121,11 +121,15 @@ function EditarProduto() {
   <div className="preview-container">
     <label htmlFor="input-img1" style={{ cursor: 'pointer' }}>
       <img
-        src={typeof imagem1 === "string" ? imagem1 : URL.createObjectURL(imagem1)}
-        className="preview"
-        alt="imagem1"
-        title="Clique para trocar a imagem"
-      />
+  src={
+    typeof imagem1 === "string" 
+      ? imagem1 
+      : (imagem1 instanceof File ? URL.createObjectURL(imagem1) : "")
+  }
+  className="preview"
+  alt="imagem1"
+  title="Clique para trocar a imagem"
+/>
     </label>
     <input
       id="input-img1"
@@ -147,11 +151,15 @@ function EditarProduto() {
   <div className="preview-container">
     <label htmlFor="input-img2" style={{ cursor: 'pointer' }}>
       <img
-        src={typeof imagem2 === "string" ? imagem2 : URL.createObjectURL(imagem2)}
-        className="preview"
-        alt="imagem2"
-        title="Clique para trocar a imagem"
-      />
+  src={
+    typeof imagem2 === "string" 
+      ? imagem2 
+      : (imagem2 instanceof File ? URL.createObjectURL(imagem2) : "")
+  }
+  className="preview"
+  alt="imagem2"
+  title="Clique para trocar a imagem"
+/>
     </label>
     <input
       id="input-img2"
@@ -173,11 +181,15 @@ function EditarProduto() {
   <div className="preview-container">
     <label htmlFor="input-img3" style={{ cursor: 'pointer' }}>
       <img
-        src={typeof imagem3 === "string" ? imagem3 : URL.createObjectURL(imagem3)}
-        className="preview"
-        alt="imagem3"
-        title="Clique para trocar a imagem"
-      />
+  src={
+    typeof imagem3 === "string" 
+      ? imagem3 
+      : (imagem3 instanceof File ? URL.createObjectURL(imagem3) : "")
+  }
+  className="preview"
+  alt="imagem3"
+  title="Clique para trocar a imagem"
+/>
     </label>
     <input
       id="input-img3"

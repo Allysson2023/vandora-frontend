@@ -96,7 +96,7 @@ function ProdutoDetalhe(){
         .then(res => res.json())
         .then(data => {
             setProduto(data);
-            setImagemPrincipal(`${API_URL}/uploads/produtos/${data.imagem}`);
+            setImagemPrincipal(data.imagem);
             
             // Depois que o produto carregar, buscamos as curtidas usando o ID do produto carregado
             // (Importante usar data.id aqui, pois o slug sozinho não serviria para buscar curtidas)
@@ -198,61 +198,46 @@ const mostrarToast = (msg) => {
     </div>)}
 
     <div className="galeria">
-
     <div 
-    className="container-zoom" 
-    onMouseMove={handleMouseMove}
-    onMouseLeave={() => setBackgroundPos("50% 50%")} // Reseta quando o mouse sai
-    style={{ 
-        backgroundImage: `url(${imagemPrincipal})`,
-        backgroundPosition: backgroundPos 
-    }}
->
-    <img 
-        className="imagem-zoom"
-        src={imagemPrincipal} 
-        alt={produto.nome} 
-    />
-</div>
+        className="container-zoom" 
+        onMouseMove={handleMouseMove}
+        onMouseLeave={() => setBackgroundPos("50% 50%")}
+        style={{ 
+            backgroundImage: `url(${imagemPrincipal})`,
+            backgroundPosition: backgroundPos 
+        }}
+    >
+        <img className="imagem-zoom" src={imagemPrincipal} alt={produto.nome} />
+    </div>
 
     <div className="miniaturas">
+        {/* Usando a URL direta do banco */}
+        <img 
+            className={imagemPrincipal === produto.imagem ? "miniatura ativa" : "miniatura"}
+            src={produto.imagem} 
+            alt="Foto 1" 
+            onClick={() => setImagemPrincipal(produto.imagem)} 
+        />
 
-        <img className={
-                imagemPrincipal ===
-                `${API_URL}/uploads/produtos/${produto.imagem}`
-                ? "miniatura ativa"
-                : "miniatura"
-            }
-            src={`${API_URL}/uploads/produtos/${produto.imagem}`}
-            alt=""
-            onClick={() =>
-                setImagemPrincipal(
-                    `${API_URL}/uploads/produtos/${produto.imagem}`
-                ) } />
+        {produto.imagem2 && (
+            <img 
+                className={imagemPrincipal === produto.imagem2 ? "miniatura ativa" : "miniatura"}
+                src={produto.imagem2} 
+                alt="Foto 2" 
+                onClick={() => setImagemPrincipal(produto.imagem2)} 
+            />
+        )}
 
-        {produto.imagem2 && ( <img className={
-                    imagemPrincipal ===
-                    `${API_URL}/uploads/produtos/${produto.imagem2}`
-                    ? "miniatura ativa" : "miniatura"
-                }
-                src={`${API_URL}/uploads/produtos/${produto.imagem2}`}
-                alt="" onClick={() =>
-                    setImagemPrincipal(
-                        `${API_URL}/uploads/produtos/${produto.imagem2}`
-                    ) } /> )}
         {produto.imagem3 && (
-            <img
-                className={
-                    imagemPrincipal ===
-                    `${API_URL}/uploads/produtos/${produto.imagem3}`
-                    ? "miniatura ativa" : "miniatura"
-                }
-                src={`${API_URL}/uploads/produtos/${produto.imagem3}`}
-                alt="" onClick={() =>
-                    setImagemPrincipal(
-                        `${API_URL}/uploads/produtos/${produto.imagem3}`
-                    ) }/> )}
-    </div> </div>
+            <img 
+                className={imagemPrincipal === produto.imagem3 ? "miniatura ativa" : "miniatura"}
+                src={produto.imagem3} 
+                alt="Foto 3" 
+                onClick={() => setImagemPrincipal(produto.imagem3)} 
+            />
+        )}
+    </div>
+</div>
             <div className="info-produto">
                 <h1>{produto.nome}</h1>
                 {totalCurtidas > 0 && (
