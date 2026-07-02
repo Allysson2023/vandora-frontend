@@ -155,10 +155,7 @@ function AdminPedido() {
                 {itens.map(item => (
                     <div key={item.id} className="produto-item">
 
-                        <img
-    src={`${API_URL}/uploads/produtos/${item.imagem}`}
-    alt={item.nome}
-/>
+                        <img src={item.imagem} alt={produto.nome} />
 
                         <div>
                             <h3>{item.nome}</h3>

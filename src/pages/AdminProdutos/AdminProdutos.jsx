@@ -79,9 +79,7 @@ const produtosFiltrados = produtos.filter(produto =>
 
         <div className="admin-card" key={produto.id}>
 
-          <img
-            src={`${API_URL}/uploads/produtos/${produto.imagem}`}
-          />
+          <img src={produto.imagem} alt={produto.nome} />
 
           <div>
             <h3>

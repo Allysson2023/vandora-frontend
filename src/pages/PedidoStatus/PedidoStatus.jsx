@@ -251,10 +251,7 @@ const podeAbrirChat = ["aceito", "separação", "em Rota"].includes(pedido?.stat
                         className="card-produto-pedido"
                     >
 
-                        <img
-                            src={`${API_URL}/uploads/produtos/${item.imagem}`}
-                            alt={item.nome}
-                        />
+                        <img src={produto.imagem} alt={produto.nome} />
 
                         <div>
 
