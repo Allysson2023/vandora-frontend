@@ -31,7 +31,7 @@ function EditarLoja() {
   const confirmarAtualizacao = async () => {
     setLoading(true);
     const token = localStorage.getItem("token");
-    let logoUrlFinal = loja.logo_url || "";
+    let logoUrlFinal = loja.imagem || "";
 
     try {
       // 1. Upload da logo para o ImgBB (se uma nova foi selecionada)
@@ -92,10 +92,10 @@ function EditarLoja() {
         <div className="form-group">
           <label>Logo da Loja</label>
           <img 
-            src={logo ? URL.createObjectURL(logo) : (loja.logo_url || "https://via.placeholder.com/150")} 
-            alt="Logo" 
-            style={{ width: '150px', marginBottom: '10px', display: 'block' }}
-          />
+  src={logo ? URL.createObjectURL(logo) : (loja.imagem || "https://via.placeholder.com/150")} 
+  alt="Logo" 
+  style={{ width: '150px', marginBottom: '10px', display: 'block' }}
+/>
           <input type="file" accept="image/*" onChange={(e) => setLogo(e.target.files[0])} />
         </div>
 
