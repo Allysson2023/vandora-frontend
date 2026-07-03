@@ -363,10 +363,7 @@ if (erro) {
             src={store?.imagem || "https://via.placeholder.com/150"}
             alt={store?.nome || "Loja"}
         />
-        
-        {/* Adicione o nome da loja aqui também para ficar bonito */}
-        <h1>{store?.nome}</h1>
-
+    
                     <div className="store-info">
 
                         <h1>{store?.nome}</h1>
