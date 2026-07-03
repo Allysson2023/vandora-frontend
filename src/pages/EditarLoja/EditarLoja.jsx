@@ -46,7 +46,11 @@ function EditarLoja() {
         });
         
         const dataUpload = await resUpload.json();
-        if (!resUpload.ok) throw new Error("Erro ao subir a logo");
+        if (!resUpload.ok) {
+    // Adicione esse console.error para ver o erro exato do backend no seu console do navegador
+    console.error("Erro do Backend no Upload:", dataUpload); 
+    throw new Error(dataUpload.message || "Erro ao subir a logo");
+}
         logoUrlFinal = dataUpload.url; // URL recebida do ImgBB
       }
 
