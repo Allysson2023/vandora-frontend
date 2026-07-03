@@ -72,7 +72,7 @@ const carregarMinhasLojas = async () => {
       body: JSON.stringify({
         titulo: titulo,
         loja_id: lojaSelecionada,
-        tipo: tipo,
+        tipo: "imagem",
         imagemUrl: dataUpload.url // A URL que veio do ImgBB
       }),
     });
