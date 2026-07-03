@@ -347,21 +347,25 @@ if (erro) {
             {/* HEADER */}
             <div className="store-header">
 
-                <img
-                    className="store-banner"
-                    src={loja.imagem}
-                        alt={loja.nome}
-                />
+    <img
+        className="store-banner"
+        // O ?. protege o código. O || fornece uma imagem padrão caso loja.imagem esteja vazio
+        src={store?.imagem || "https://via.placeholder.com/800x200"}
+        alt={store?.nome || "Carregando..."}
+    />
 
-                <div className="store-overlay"></div>
+    <div className="store-overlay"></div>
 
-                <div className="store-profile">
+    <div className="store-profile">
 
-                    <img
-                        className="store-logo"
-                        src={loja.imagem}
-                        alt={loja.nome}
-                    />
+        <img
+            className="store-logo"
+            src={store?.imagem || "https://via.placeholder.com/150"}
+            alt={store?.nome || "Loja"}
+        />
+        
+        {/* Adicione o nome da loja aqui também para ficar bonito */}
+        <h1>{store?.nome}</h1>
 
                     <div className="store-info">
 
