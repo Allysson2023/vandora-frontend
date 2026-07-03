@@ -522,7 +522,7 @@ if (usuarioLogado?.tipo === "admin") {
   
 
 
-
+{/* 
 <div className="home-destaques">
   {videos.length > 0 ? (
     <div 
@@ -544,9 +544,7 @@ if (usuarioLogado?.tipo === "admin") {
   ) : (
     <p>Carregando vídeos...</p>
   )}
-</div>
-
-
+</div> */}
 
       {/* CATEGORIAS */}
 <div className="menu">
