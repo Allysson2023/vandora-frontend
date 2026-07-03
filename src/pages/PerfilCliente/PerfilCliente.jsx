@@ -115,7 +115,7 @@ function PerfilCliente() {
   {usuario.imagem_perfil ? (
 
     <img
-      src={`${API_URL}/uploads/perfil/${usuario.imagem_perfil}`}
+      src={usuario.imagem_perfil}
       alt="Foto de Perfil"
       className="foto-perfil"
     />
