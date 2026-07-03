@@ -46,30 +46,49 @@ const carregarMinhasLojas = async () => {
 };
 
   const cadastrarBanner = async () => {
-    // Adicionamos a validação do tipo também
-    if (!imagem || !titulo || !tipo || !lojaSelecionada) return alert("Preencha todos os campos e selecione uma loja!");
-    
-    const formData = new FormData();
-    formData.append("titulo", titulo);
-    formData.append("imagem", imagem);
-    formData.append("tipo", tipo);
-    formData.append("loja_id", lojaSelecionada);
+  if (!imagem || !titulo || !tipo || !lojaSelecionada) return alert("Preencha tudo!");
 
-    const res = await fetch(`${API_URL}/api/banners`, {
+  // 1. Primeiro: Upload para o ImgBB através do seu servidor
+  const formData = new FormData();
+  formData.append("image", imagem); // O backend que trata o ImgBB espera "image"
+
+  try {
+    const resUpload = await fetch(`${API_URL}/api/upload-store-logo`, { // Use a mesma rota de upload da logo
       method: "POST",
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      body: formData,
+      body: formData
+    });
+
+    const dataUpload = await resUpload.json();
+    if (!resUpload.ok) throw new Error("Erro ao subir a imagem");
+
+    // 2. Agora: Salvar os dados no seu banco de dados enviando a URL
+    const res = await fetch(`${API_URL}/api/banners`, {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}` 
+      },
+      body: JSON.stringify({
+        titulo: titulo,
+        loja_id: lojaSelecionada,
+        tipo: tipo,
+        imagemUrl: dataUpload.url // A URL que veio do ImgBB
+      }),
     });
 
     if (res.ok) {
       alert("Cadastrado com sucesso!");
-      limparCampos(); // <--- Chame aqui
+      limparCampos();
       carregarBanners();
     } else {
-      const err = await res.json();
-      alert(err.error || "Erro ao cadastrar!");
+      alert("Erro ao salvar no banco!");
     }
-  };
+  } catch (err) {
+    console.error(err);
+    alert("Erro no upload: " + err.message);
+  }
+};
 // ... dentro da função GerenciarBanners
 const confirmarAcao = () => {
   if (modalConfirmacao.acao === "cadastrar") cadastrarBanner();
@@ -144,83 +163,68 @@ const limparCampos = () => {
       </header>
 
       <section className="upload-section">
-
-        <div className="card-form">
-          {/* Input oculto que o useRef controla */}
+  <div className="card-form">
+    {/* Input oculto */}
     <input 
         type="file" 
         ref={fileInputRef} 
         onChange={(e) => setImagem(e.target.files[0])} 
         style={{ display: 'none' }} 
+        accept="image/*"
     />
     
-    {/* Botão para disparar o clique */}
+    {/* Botão de seleção */}
     <button 
         className="btn-selecionar-arquivo" 
         onClick={() => fileInputRef.current.click()}
     >
-        {imagem ? imagem.name : "Selecionar Imagem/Vídeo"}
+        {imagem ? imagem.name : "Selecionar Imagem"}
     </button>
 
+    {/* Input de Título */}
     <input 
         type="text" 
-        placeholder="Título" 
+        placeholder="Título do Banner" 
         value={titulo} 
         onChange={(e) => setTitulo(e.target.value)} 
     />
 
-    <label style={{ display: 'block', margin: '10px 0 5px' }}>Tipo de mídia:</label>
-<select 
-    value={tipo} 
-    onChange={(e) => setTipo(e.target.value)}
-    style={{ width: '100%', padding: '10px', marginBottom: '15px' }}
->
-    <option value="imagem">Imagem</option>
-    <option value="video">Vídeo</option>
-</select>
+    {/* Select de Loja */}
+    <label style={{ display: 'block', margin: '10px 0 5px' }}>Loja de Destino:</label>
+    <select 
+        value={lojaSelecionada} 
+        onChange={(e) => setLojaSelecionada(e.target.value)}
+        style={{ width: '100%', padding: '10px', marginBottom: '15px' }}
+    >
+        <option value="">Selecione uma loja</option>
+        {lojasDoFuncionario.map(loja => (
+            <option key={loja.id} value={loja.id}>{loja.nome}</option>
+        ))}
+    </select>
 
-// esse e para selecionar a lojas 
-<label style={{ display: 'block', margin: '10px 0 5px' }}>Loja de Destino:</label>
-<select 
-    value={lojaSelecionada} 
-    onChange={(e) => setLojaSelecionada(e.target.value)}
-    style={{ width: '100%', padding: '10px', marginBottom: '15px' }}
->
-    <option value="">Selecione uma loja</option>
-    {lojasDoFuncionario.map(loja => (
-        <option key={loja.id} value={loja.id}>{loja.nome}</option>
-    ))}
-</select>
-
-
-<button className="save-btn" onClick={() => setModalConfirmacao({ aberto: true, acao: "cadastrar" })}>
-  Publicar Banner
-</button>
-
-        </div>
-      </section>
+    {/* Botão de Envio */}
+    <button className="save-btn" onClick={() => setModalConfirmacao({ aberto: true, acao: "cadastrar" })}>
+        Publicar Banner
+    </button>
+  </div>
+</section>
 
       <section className="banner-grid">
-        {banners.map(b => (
-          <div key={b.id} className="banner-card">
-            {/* RENDERIZAÇÃO CONDICIONAL */}
-            {b.tipo === 'video' ? (
-              <video src={`${API_URL}/uploads/banners/${b.imagem}`} width="100%" />
-            ) : (
-              <img src={`${API_URL}/uploads/banners/${b.imagem}`} alt="Banner" />
-            )}
+    {banners.map(b => (
+        <div key={b.id} className="banner-card">
+            <img src={b.imagem} alt={b.titulo} />
             
             <div className="banner-info">
-              <h4>{b.titulo} ({b.tipo})</h4>
-              <p>Destino: <strong>Loja ID: {b.loja_id}</strong></p>
-<button className="delete-btn" onClick={() => {
-  setIdParaExcluir(b.id);
-  setModalConfirmacao({ aberto: true, acao: "excluir" });
-}}>Excluir</button>
+                <h4>{b.titulo}</h4>
+                <p>Destino: <strong>Loja ID: {b.loja_id}</strong></p>
+                <button className="delete-btn" onClick={() => {
+                    setIdParaExcluir(b.id);
+                    setModalConfirmacao({ aberto: true, acao: "excluir" });
+                }}>Excluir</button>
             </div>
-          </div>
-        ))}
-      </section>
+        </div>
+    ))}
+</section>
     </div>
   );
 }
