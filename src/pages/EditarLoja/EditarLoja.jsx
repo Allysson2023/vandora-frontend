@@ -90,14 +90,29 @@ function EditarLoja() {
 
         {/* Upload da Logo */}
         <div className="form-group">
-          <label>Logo da Loja</label>
-          <img 
-  src={logo ? URL.createObjectURL(logo) : (loja.imagem || "https://via.placeholder.com/150")} 
-  alt="Logo" 
-  style={{ width: '150px', marginBottom: '10px', display: 'block' }}
-/>
-          <input type="file" accept="image/*" onChange={(e) => setLogo(e.target.files[0])} />
-        </div>
+  <label>Logo da Loja</label>
+  <img 
+    src={logo ? URL.createObjectURL(logo) : (loja.imagem || "https://via.placeholder.com/150")} 
+    alt="Logo" 
+    style={{ width: '150px', marginBottom: '10px', display: 'block', borderRadius: '8px' }}
+  />
+  
+  {/* Aqui está o segredo: um input escondido e um botão bonito */}
+  <input 
+    type="file" 
+    id="fileInput" 
+    accept="image/*" 
+    style={{ display: 'none' }} 
+    onChange={(e) => setLogo(e.target.files[0])} 
+  />
+  <button 
+    type="button" 
+    className="btn-select-file" 
+    onClick={() => document.getElementById('fileInput').click()}
+  >
+    Selecionar Nova Logo
+  </button>
+</div>
 
         <div className="form-group">
           <label>Nome da Loja</label>
