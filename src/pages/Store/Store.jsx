@@ -450,14 +450,12 @@ if (erro) {
 
 
 <div className="store-stats">
-   
+
     <div className="store-rating">
     ⭐ {avaliacao.media} (
     {avaliacao.total} {avaliacao.total === 1 ? "avaliação" : "avaliações"}
     )
-</div>
-</span>
-</div>
+</div></div>
     </div>
 )}
 
