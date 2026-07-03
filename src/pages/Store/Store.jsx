@@ -349,12 +349,8 @@ if (erro) {
 
                 <img
                     className="store-banner"
-                    src={
-                        store?.imagem
-                            ? `${API_URL}/uploads/lojas/${store.imagem}`
-                            : "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1200"
-                    }
-                    alt="banner"
+                    src={loja.imagem}
+                        alt={loja.nome}
                 />
 
                 <div className="store-overlay"></div>
@@ -363,12 +359,8 @@ if (erro) {
 
                     <img
                         className="store-logo"
-                        src={
-                            store?.imagem
-                                ? `${API_URL}/uploads/lojas/${store.imagem}`
-                                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRl55ZXLSARGsTv4qgCQBC_UD8wwSrV-3I-qg&s"
-                        }
-                        alt="logo"
+                        src={loja.imagem}
+                        alt={loja.nome}
                     />
 
                     <div className="store-info">
