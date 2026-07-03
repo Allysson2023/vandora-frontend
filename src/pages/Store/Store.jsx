@@ -450,11 +450,7 @@ if (erro) {
 
 
 <div className="store-stats">
-    <span>{produtos.length} Produtos</span>
-    <span
-    className="link-comentarios"
-    onClick={() => navigate(`/store/${id}/comentarios`)}
->
+   
     <div className="store-rating">
     ⭐ {avaliacao.media} (
     {avaliacao.total} {avaliacao.total === 1 ? "avaliação" : "avaliações"}

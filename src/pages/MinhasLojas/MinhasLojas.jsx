@@ -79,7 +79,7 @@ function MinhasLojas() {
                 </div>
 
                 <div className="ml-box">
-                    <span>🛒 Pedidos</span>
+                    <span>🛒 Pedidos Finalizados</span>
                     <strong>{loja.total_pedidos}</strong>
                 </div>
 

@@ -82,7 +82,7 @@ function DashboardAnaliseLoja() {
                 </div>
 
                 <div className="adl-kpiCard">
-                    <span>🛒 Pedidos</span>
+                    <span>🛒 Pedidos Finalizado</span>
                     <strong>{analytics.total_pedidos}</strong>
                 </div>
 
