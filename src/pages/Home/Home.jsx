@@ -473,17 +473,16 @@ if (usuarioLogado?.tipo === "admin") {
   onClick={() => {
     const banner = imagensBanner[bannerIndex];
     
-    // COMO NÃO TEM 'loja_slug' NO BANCO (você me mostrou), 
-    // nós vamos buscar o slug na lista de lojas que você já tem baixada!
+    // O seu ID de loja está na posição correta (loja_id)
+    const idLoja = banner.loja_id; 
     
-    const lojaEncontrada = lojas.find(l => l.id === banner.loja_id);
+    // Busca na lista de lojas a que tem o ID igual ao do banner
+    const lojaEncontrada = lojas.find(l => String(l.id) === String(idLoja));
 
-    if (lojaEncontrada && lojaEncontrada.slug) {
+    if (lojaEncontrada) {
       navigate(`/store/slug/${lojaEncontrada.slug}`);
     } else {
-      alert("Erro: Não encontrei o slug desta loja.");
-      console.log("Banner clicado:", banner);
-      console.log("Lista de lojas disponíveis:", lojas);
+      alert("Loja não encontrada para este banner.");
     }
   }}
   style={{ cursor: 'pointer' }}
