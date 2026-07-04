@@ -497,7 +497,7 @@ if (usuarioLogado?.tipo === "admin") {
     onError={(e) => { e.target.src = "https://dummyimage.com/1200x300"; }}
   />
 </div>
-</div>
+
 
       {/* LOJAS */}
 
