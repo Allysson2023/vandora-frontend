@@ -474,7 +474,7 @@ if (usuarioLogado?.tipo === "admin") {
     onClick={() => {
       // Verifica se o banner tem um loja_id e redireciona
       const banner = imagensBanner[bannerIndex];
-      if (banner && banner.loja_id) {
+      if (banner && banner.loja_slug) {
         navigate(`/store/slug/${banner.loja_slug}`);
       }
     }}
