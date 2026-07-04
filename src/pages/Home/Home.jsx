@@ -473,12 +473,17 @@ if (usuarioLogado?.tipo === "admin") {
   onClick={() => {
     const banner = imagensBanner[bannerIndex];
     
-    // Agora o campo 'loja_slug' vai existir graças ao JOIN no backend!
-    if (banner && banner.loja_slug) {
-      navigate(`/store/slug/${banner.loja_slug}`);
+    // COMO NÃO TEM 'loja_slug' NO BANCO (você me mostrou), 
+    // nós vamos buscar o slug na lista de lojas que você já tem baixada!
+    
+    const lojaEncontrada = lojas.find(l => l.id === banner.loja_id);
+
+    if (lojaEncontrada && lojaEncontrada.slug) {
+      navigate(`/store/slug/${lojaEncontrada.slug}`);
     } else {
-      console.log("Banner clicado sem slug:", banner);
-      alert("Este banner não tem uma loja vinculada.");
+      alert("Erro: Não encontrei o slug desta loja.");
+      console.log("Banner clicado:", banner);
+      console.log("Lista de lojas disponíveis:", lojas);
     }
   }}
   style={{ cursor: 'pointer' }}
