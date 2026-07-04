@@ -472,25 +472,25 @@ if (usuarioLogado?.tipo === "admin") {
   className="banner-container" 
   onClick={() => {
     const banner = imagensBanner[bannerIndex];
-    console.log("DADOS DO BANNER:", banner); // ISSO VAI MOSTRAR O QUE TEM DENTRO NO CONSOLE
     
-    // AQUI ESTÁ O SEGREDO: 
-    // Se o banner não tem 'slug', vamos ver o que ele tem.
-    if (banner && banner.slug) {
-        navigate(`/store/slug/${banner.slug}`);
+    // Verificamos se o banner existe e se ele tem a propriedade que o backend agora envia (loja_slug)
+    if (banner && banner.loja_slug) {
+        console.log("Navegando para:", banner.loja_slug);
+        navigate(`/store/slug/${banner.loja_slug}`);
     } else {
-        alert("O banner não tem um 'slug'. Olhe o console (F12) para ver os dados dele.");
+        console.error("Banner sem slug:", banner);
+        alert("Erro: Este banner não está vinculado a um slug de loja.");
     }
   }}
   style={{ cursor: 'pointer' }}
 >
-    <img 
-  src={imagensBanner[bannerIndex]?.imagem} 
-  alt="Banner"
-  className="banner-ativo"
-  onError={(e) => { e.target.src = "https://dummyimage.com/1200x300"; }}
-/>
-  </div>
+  <img 
+    src={imagensBanner[bannerIndex]?.imagem} 
+    alt="Banner"
+    className="banner-ativo"
+    onError={(e) => { e.target.src = "https://dummyimage.com/1200x300"; }}
+  />
+</div>
 </div>
 
       {/* LOJAS */}
