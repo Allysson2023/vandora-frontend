@@ -496,7 +496,7 @@ if (usuarioLogado?.tipo === "admin") {
           <div
             key={loja.id}
             className="card-loja"
-            onClick={() => navigate(`/store/${loja.id}`)}
+            onClick={() => navigate(`/store/${loja.slug}`)}
           >
             <img
               src={loja.imagem || "https://dummyimage.com/300x300"}
