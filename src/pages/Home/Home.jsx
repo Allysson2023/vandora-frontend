@@ -472,12 +472,15 @@ if (usuarioLogado?.tipo === "admin") {
   className="banner-container" 
   onClick={() => {
     const banner = imagensBanner[bannerIndex];
+    if (!banner) return;
     
-    // O seu ID de loja está na posição correta (loja_id)
-    const idLoja = banner.loja_id; 
+    // Adicione esta verificação de segurança
+    if (lojas.length === 0) {
+        alert("Aguarde, carregando dados das lojas...");
+        return;
+    }
     
-    // Busca na lista de lojas a que tem o ID igual ao do banner
-    const lojaEncontrada = lojas.find(l => String(l.id) === String(idLoja));
+    const lojaEncontrada = lojas.find(l => String(l.id) === String(banner.loja_id));
 
     if (lojaEncontrada) {
       navigate(`/store/slug/${lojaEncontrada.slug}`);
