@@ -40,6 +40,10 @@ function Store() {
 }
 
     const carregarDadosDaLoja = async () => {
+        if (!slug || slug === 'undefined') {
+        console.log("Slug ainda não disponível, aguardando...");
+        return;
+    }
     setLoading(true);
     setErro(false);
     try {
