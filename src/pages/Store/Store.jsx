@@ -11,14 +11,13 @@ function Store() {
 
     const [loading, setLoading] = useState(true);
     const [erro, setErro] = useState(false);
-    const { id } = useParams();
+    const { slug } = useParams();
     const navigate = useNavigate();
 
     let user = null;
 
     const isLogged = !!user;
     const isLojista = user?.tipo === "lojista";
-    const isDonoDaLoja = isLojista && user?.loja_id === Number(id);
     const [produtos, setProdutos] = useState([]);
     const [pagina, setPagina] = useState(1);
     const [temMaisProdutos, setTemMaisProdutos] = useState(true);
@@ -30,6 +29,7 @@ function Store() {
     const [avaliacao, setAvaliacao] = useState({media: 0, total: 0});
     const menuRef = useRef(null);
     const [copiado, setCopiado] = useState(false);
+    const isDonoDaLoja = isLojista && store && user?.loja_id === Number(store.id);
 
     try {
   const storedUser = localStorage.getItem("user");
@@ -43,24 +43,27 @@ function Store() {
     setLoading(true);
     setErro(false);
     try {
-        const [lojaRes, prodRes, favRes, totalFavRes, avalRes] = await Promise.all([
-            fetch(`${API_URL}/api/stores/${id}/public`).then(r => r.json()),
-            fetch(`${API_URL}/api/stores/${id}/products?pagina=${pagina}`).then(r => r.json()),
-            fetch(`${API_URL}/api/stores/${id}/favorito`, {
+        const resLoja = await fetch(`${API_URL}/api/stores/slug/${slug}`);
+        if (!resLoja.ok) throw new Error("Loja não encontrada");
+        const lojaData = await resLoja.json();
+        setStore(lojaData);
+
+        const [prodRes, favRes, totalFavRes, avalRes] = await Promise.all([
+            fetch(`${API_URL}/api/stores/${lojaData.id}/products?pagina=${pagina}`).then(r => r.json()),
+            fetch(`${API_URL}/api/stores/${lojaData.id}/favorito`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
             }).then(r => r.json()).catch(() => ({ favorito: false })),
-            fetch(`${API_URL}/api/stores/${id}/total-favoritos`).then(r => r.json()),
-            fetch(`${API_URL}/api/stores/${id}/avaliacoes`).then(r => r.json())
+            fetch(`${API_URL}/api/stores/${lojaData.id}/total-favoritos`).then(r => r.json()),
+            fetch(`${API_URL}/api/stores/${lojaData.id}/avaliacoes`).then(r => r.json())
         ]);
 
-        setStore(lojaRes);
         setProdutos(prodRes);
         setTemMaisProdutos(prodRes.length >= 20);
         setFavorito(favRes.favorito);
         setTotalFavoritos(totalFavRes.total);
         setAvaliacao(avalRes);
     } catch (err) {
-        console.error("Erro ao carregar loja:", err);
+        console.error("Erro:", err);
         setErro(true);
     } finally {
         setLoading(false);
@@ -69,7 +72,7 @@ function Store() {
 
 useEffect(() => {
     carregarDadosDaLoja();
-}, [id, pagina]);
+}, [slug, pagina]);
 
 
    const handleCompartilhar = async () => {
@@ -96,76 +99,6 @@ useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
-
-    // =========================
-    // CARREGAR PRODUTOS
-    // =========================
-    useEffect(() => {
-        fetch(`${API_URL}/api/stores/${id}/products?pagina=${pagina}`)
-            .then(res => res.json())
-            .then(data => {
-                if (!Array.isArray(data)) return;
-
-                if (pagina === 1) {
-                    setProdutos(data);
-                } else {
-                    setProdutos(prev => [...prev, ...data]);
-                }
-                setTemMaisProdutos(data.length >= 20);
-            });
-    }, [id, pagina]);
-
-    useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-    fetch(
-        `${API_URL}/api/stores/${id}/favorito`,
-        {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }
-    )
-        .then(res => res.json())
-        .then(data => {
-            setFavorito(data.favorito);
-        });
-
-}, [id]);
-
-
-useEffect(() => {
-
-    fetch(
-        `${API_URL}/api/stores/${id}/total-favoritos`
-    )
-        .then(res => res.json())
-        .then(data => {
-            setTotalFavoritos(data.total);
-        });
-
-}, [id]);
-
-
-    // =========================
-    // CARREGAR LOJA
-    // =========================
-    useEffect(() => {
-    fetch(`${API_URL}/api/stores/${id}/public`)
-        .then(res => res.json())
-        .then(data => setStore(data))
-        .catch(err => console.log(err));
-}, [id]);
-
-useEffect(() => {
-    fetch(`${API_URL}/api/stores/${id}/avaliacoes`)
-        .then(res => res.json())
-        .then(data => {
-            setAvaliacao(data);
-        })
-        .catch(err => console.log(err));
-
-}, [id]);
 
     // =========================
     // FILTRO PRODUTOS
@@ -208,12 +141,12 @@ useEffect(() => {
     return;
   }
 
-  if (user.loja_id !== Number(id)) {
+  if (user.loja_id !== Number(store.id)) {
     alert("Você não é dono desta loja");
     return;
   }
 
-  navigate(`/store/${id}/dashboard`);
+  navigate(`/store/${store.id}/dashboard`);
 };
 
 
@@ -229,7 +162,7 @@ const handleFavoritar = async () => {
     try {
 
         const response = await fetch(
-            `${API_URL}/api/stores/${id}/favoritar`,
+            `${API_URL}/api/stores/${store.id}/favoritar`,
             {
                 method: "POST",
                 headers: {
@@ -274,7 +207,7 @@ const abrirChatLoja = async () => {
                     Authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    loja_id: Number(id)
+                    loja_id: Number(store.id)
                 })
             }
         );
