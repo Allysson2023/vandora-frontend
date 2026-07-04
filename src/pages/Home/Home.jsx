@@ -473,13 +473,12 @@ if (usuarioLogado?.tipo === "admin") {
   onClick={() => {
     const banner = imagensBanner[bannerIndex];
     
-    // Verificamos se o banner existe e se ele tem a propriedade que o backend agora envia (loja_slug)
+    // Agora o campo 'loja_slug' vai existir graças ao JOIN no backend!
     if (banner && banner.loja_slug) {
-        console.log("Navegando para:", banner.loja_slug);
-        navigate(`/store/slug/${banner.loja_slug}`);
+      navigate(`/store/slug/${banner.loja_slug}`);
     } else {
-        console.error("Banner sem slug:", banner);
-        alert("Erro: Este banner não está vinculado a um slug de loja.");
+      console.log("Banner clicado sem slug:", banner);
+      alert("Este banner não tem uma loja vinculada.");
     }
   }}
   style={{ cursor: 'pointer' }}
