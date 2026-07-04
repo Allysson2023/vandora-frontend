@@ -468,18 +468,20 @@ if (usuarioLogado?.tipo === "admin") {
   </div>
 )}
 
-<div className="home-destaques">
-  <div 
-    className="banner-container" 
-    onClick={() => {
-      // Verifica se o banner tem um loja_id e redireciona
-      const banner = imagensBanner[bannerIndex];
-      if (banner && banner.loja_id) {
-        navigate(`/store/slug/${loja_slug}`);
-      }
-    }}
-    style={{ cursor: 'pointer' }} // Adiciona o cursor de mãozinha para indicar que é clicável
-  >
+<div 
+  className="banner-container" 
+  onClick={() => {
+    const banner = imagensBanner[bannerIndex];
+    console.log("DADOS DO BANNER CLICADO:", banner); // VAI APARECER NO CONSOLE
+    
+    if (banner && banner.loja_slug) {
+      navigate(`/store/slug/${banner.loja_slug}`);
+    } else {
+      alert("Erro: Este banner não tem um slug configurado.");
+    }
+  }}
+  style={{ cursor: 'pointer' }}
+>
     <img 
   src={imagensBanner[bannerIndex]?.imagem} 
   alt="Banner"
