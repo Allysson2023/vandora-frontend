@@ -475,7 +475,7 @@ if (usuarioLogado?.tipo === "admin") {
       // Verifica se o banner tem um loja_id e redireciona
       const banner = imagensBanner[bannerIndex];
       if (banner && banner.loja_id) {
-        navigate(`/store/${banner.loja_id}`);
+        navigate(`/store/slug/${banner.loja_slug}`);
       }
     }}
     style={{ cursor: 'pointer' }} // Adiciona o cursor de mãozinha para indicar que é clicável
@@ -735,15 +735,13 @@ if (usuarioLogado?.tipo === "admin") {
 
       <p className="welcome-text">
         Seu acesso foi realizado com sucesso.
-        Aproveite todos os recursos da plataforma
-        e tenha uma excelente experiência.
       </p>
 
       <button
         className="welcome-button"
         onClick={() => setMostrarBoasVindas(false)}
       >
-        Entrar no Sistema
+        Entrar
       </button>
 
     </div>
