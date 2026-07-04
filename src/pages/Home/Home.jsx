@@ -472,18 +472,16 @@ if (usuarioLogado?.tipo === "admin") {
   className="banner-container" 
   onClick={() => {
     const banner = imagensBanner[bannerIndex];
-    console.log("DADOS COMPLETOS DO BANNER:", banner); 
+    console.log("DADOS DO BANNER:", banner); // ISSO VAI MOSTRAR O QUE TEM DENTRO NO CONSOLE
     
-    // Verificamos se existe o ID ou qualquer campo que identifique a loja
-    // Vamos testar o que existe dentro do seu objeto banner:
+    // AQUI ESTÁ O SEGREDO: 
+    // Se o banner não tem 'slug', vamos ver o que ele tem.
     if (banner && banner.slug) {
         navigate(`/store/slug/${banner.slug}`);
-    } else if (banner && banner.loja_slug) {
-        navigate(`/store/slug/${banner.loja_slug}`);
     } else {
-        alert("Erro: O banner não tem slug. Veja o console (F12) para ver o que ele tem.");
+        alert("O banner não tem um 'slug'. Olhe o console (F12) para ver os dados dele.");
     }
-}}
+  }}
   style={{ cursor: 'pointer' }}
 >
     <img 
