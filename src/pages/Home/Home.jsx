@@ -471,15 +471,20 @@ if (usuarioLogado?.tipo === "admin") {
 <div 
   className="banner-container" 
   onClick={() => {
-    const banner = imagensBanner[bannerIndex];
-    console.log("DADOS DO BANNER CLICADO:", banner); // VAI APARECER NO CONSOLE
-    
-    if (banner && banner.loja_slug) {
-      navigate(`/store/slug/${banner.loja_slug}`);
-    } else {
-      alert("Erro: Este banner não tem um slug configurado.");
-    }
-  }}
+  const banner = imagensBanner[bannerIndex];
+  console.log("Conteúdo do banner:", banner); // Isso vai nos mostrar o nome correto da coluna
+  
+  // Verifique se o objeto existe e se ele tem a propriedade de slug
+  // Mude 'banner.loja_slug' para o nome exato da coluna que aparece no console.log acima
+  if (banner && banner.loja_slug) {
+    navigate(`/store/slug/${banner.loja_slug}`);
+  } else if (banner && banner.slug) {
+    // Caso a coluna no banco se chame apenas 'slug'
+    navigate(`/store/slug/${banner.slug}`);
+  } else {
+    console.error("Banner não possui slug ou loja_slug definida:", banner);
+  }
+}}
   style={{ cursor: 'pointer' }}
 >
     <img 
