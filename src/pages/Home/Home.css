@@ -633,7 +633,7 @@ PREÇOS
     border: none;
     border-radius: 50%;
 
-    background: #111;
+    background: #1000f7;
     color: white;
 
     font-size: 28px;
@@ -934,7 +934,7 @@ PAGINAÇÃO
   max-width: 1300px;
   /* Isso mantém a proporção de um banner padrão (ex: 4:1) */
   aspect-ratio: 4 / 1; 
-  height: auto; /* A altura será calculada automaticamente */
+  height: 20px auto; /* A altura será calculada automaticamente */
   margin: 20px auto;
   overflow: hidden;
   border-radius: 15px;
@@ -991,8 +991,7 @@ TABLETS
 @media (max-width: 768px){
 
     .banner-container, .video-container {
-    aspect-ratio: 2.5 / 1; /* Fica um pouco mais alto em telas menores */
-    border-radius: 10px; /* Bordas um pouco menos arredondadas */
+    aspect-ratio: 3 / 1; /* Fica um pouco mais alto */
   }
 
     .topo{
@@ -1064,8 +1063,17 @@ CELULARES
 @media (max-width: 500px){
 
     .banner-container, .video-container {
-    aspect-ratio: 2 / 1; /* Celulares: mais quadrado para caber melhor */
+    aspect-ratio: 16 / 9; /* Formato padrão de vídeo, bem mais amigável para celular */
+    border-radius: 10px;  /* Ajuste leve no border-radius se desejar */
   }
+
+  .banner-ativo, .video-ativo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  object-position: center;
+  animation: fadeIn 3s ease-in-out;
+}
 
     .home{
         padding: 10px;
