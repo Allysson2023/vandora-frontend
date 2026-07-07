@@ -132,7 +132,7 @@ function Carrinho() {
           </div>
         </div>
       )}
-
+ 
       {modalLimpar && (
         <div className="modal-overlay">
           <div className="modal">
