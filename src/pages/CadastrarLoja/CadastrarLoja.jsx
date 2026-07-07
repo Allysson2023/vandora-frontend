@@ -8,18 +8,20 @@ function CadastrarLoja() {
   const [categoria, setCategoria] = useState("");
   const [categorias, setCategorias] = useState([]);
   const [username, setUsername] = useState("");
-const [password, setPassword] = useState("");
+  const [password, setPassword] = useState("");
+  const [categoriaPrincipal, setCategoriaPrincipal] = useState("");
+const [subcategoria, setSubcategoria] = useState("");
 
-const [mostrarModal, setMostrarModal] = useState(false);
+  const [mostrarModal, setMostrarModal] = useState(false);
 
-const [erroModal, setErroModal] = useState(false);
-const [mensagemErro, setMensagemErro] = useState("");
+  const [erroModal, setErroModal] = useState(false);
+  const [mensagemErro, setMensagemErro] = useState("");
 
-const [dadosLojista, setDadosLojista] = useState({
-  loja: "",
-  username: "",
-  password: ""
-});
+  const [dadosLojista, setDadosLojista] = useState({
+    loja: "",
+    username: "",
+    password: ""
+  });
 
   // NOVO
   const [whatsapp, setWhatsapp] = useState("");
@@ -155,26 +157,20 @@ console.log("Formulário Válido?", formularioValido);
 
 
         <select
-          value={categoria}
-          onChange={(e) => setCategoria(e.target.value)}
-        >
-
-          <option value="">
-            Escolha uma categoria
-          </option>
-
-          {categorias.map(cat => (
-
-            <option
-              key={cat.id}
-              value={cat.nome}
-            >
-              {cat.nome}
-            </option>
-
-          ))}
-
-        </select>
+  value={categoria}
+  onChange={(e) => setCategoria(e.target.value)}
+>
+  <option value="">Escolha uma categoria (Departamento)</option>
+  {categorias.map(cat => (
+    // 'cat' agora é o Departamento Principal (ex: Moda, Eletrônicos)
+    <option
+      key={cat.id} 
+      value={cat.nome} // Ou cat.id, se preferir salvar o ID no banco
+    >
+      {cat.nome}
+    </option>
+  ))}
+</select>
 
 
         <input type="text"
