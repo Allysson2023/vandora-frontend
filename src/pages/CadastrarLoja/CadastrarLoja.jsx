@@ -29,12 +29,11 @@ const [subcategoria, setSubcategoria] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-
-    fetch(`${API_URL}/api/categories`)
+    // Mude a URL para buscar apenas os principais
+    fetch(`${API_URL}/api/principais`) 
     .then(res => res.json())
-    .then(data => setCategorias(data));
-
-  }, []);
+    .then(data => setCategorias(data)); // Agora 'categorias' terá apenas os departamentos
+}, []);
 
   function copiarDados() {
 
