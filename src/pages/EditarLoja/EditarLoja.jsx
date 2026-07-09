@@ -12,8 +12,17 @@ function EditarLoja() {
   const [showModal, setShowModal] = useState(false);
   const [showSucesso, setShowSucesso] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [categorias, setCategorias] = useState([]);
 
   useEffect(() => {
+    // 1. Buscar a lista de departamentos para o Select
+    fetch(`${API_URL}/api/principais`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    })
+    .then(res => res.json())
+    .then(data => setCategorias(data));
+
+    // 2. Buscar dados da loja
     const token = localStorage.getItem("token");
     fetch(`${API_URL}/api/stores/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
@@ -21,7 +30,7 @@ function EditarLoja() {
     .then(res => res.ok ? res.json() : Promise.reject())
     .then(data => setLoja(data))
     .catch(err => console.log("Erro ao buscar loja:", err));
-  }, [id]);
+}, [id]);
 
   const tocarSomSucesso = () => {
     const audio = new Audio('/sounds/sucesso.mp3');
@@ -122,6 +131,21 @@ function EditarLoja() {
           <label>Nome da Loja</label>
           <input value={loja.nome || ""} onChange={(e) => setLoja({...loja, nome: e.target.value})} />
         </div>
+
+        <div className="form-group">
+  <label>Departamento (Categoria)</label>
+  <select 
+    value={loja.categoria || ""} 
+    onChange={(e) => setLoja({...loja, categoria: e.target.value})}
+  >
+    <option value="">Escolha um departamento</option>
+    {categorias.map(cat => (
+      <option key={cat.id} value={cat.nome}>
+        {cat.nome}
+      </option>
+    ))}
+  </select>
+</div>
 
         <div className="form-group">
           <label>Endereço</label>
