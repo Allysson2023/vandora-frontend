@@ -6,7 +6,6 @@ import { API_URL } from "../../apiConfig";
 function CadastrarProduto() {
 
   const navigate = useNavigate();
- 
   const [nome, setNome] = useState("");
   const [preco, setPreco] = useState("");
   const [categoryId, setCategoryId] = useState("");
@@ -19,6 +18,8 @@ function CadastrarProduto() {
   const [imagem2, setImagem2] = useState(null);
   const [imagem3, setImagem3] = useState(null);
   const [modalSucesso, setModalSucesso] = useState(false);
+  const [subcategoriasDisponiveis, setSubcategoriasDisponiveis] = useState([]);
+
   useEffect(() => {
 
     fetch(`${API_URL}/api/categories`)
@@ -34,13 +35,9 @@ function CadastrarProduto() {
     const formData = new FormData();
     formData.append("image", file);
 
-    const res = await fetch(`${API_URL}/api/upload-image`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`
-      },
-      body: formData
-    });
+    const res = await fetch(`${API_URL}/api/upload-image`, { method: "POST",
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}`
+      }, body: formData });
 
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Falha no upload");
@@ -107,117 +104,107 @@ async function cadastrarProduto(e) {
       {modalSucesso && (
 
   <div className="modal-overlay">
-
     <div className="modal-sucesso">
 
-      <div className="icone-sucesso">
-        ✓
-      </div>
+      <div className="icone-sucesso"> ✓ </div>
 
       <h2>Produto cadastrado!</h2>
 
-      <p>
-        Seu produto foi cadastrado com sucesso.
-      </p>
+      <p>Seu produto foi cadastrado com sucesso. </p>
 
-      <button
-        onClick={() => setModalSucesso(false)}
-      >
-        Fechar
-      </button>
+      <button onClick={() => setModalSucesso(false)}> Fechar </button>
 
-    </div>
-
-  </div>
-
-)}
+  </div> </div>)}
 
       <form onSubmit={cadastrarProduto} className="form-produto">
 
         <h2>Cadastrar Produto</h2>
 
         {mensagem && (
-          <div className="mensagem-sucesso">
-            {mensagem}
-          </div>
-        )}
-
+          <div className="mensagem-sucesso"> {mensagem} </div> )}
 
       <p>Imagens do produto</p>
 <div className="upload-container">
+  
   <label className="input-file-custom">
     {imagem ? imagem.name : "Capa"}
     <input type="file" onChange={(e) => setImagem(e.target.files[0])} />
   </label>
+  
   <label className="input-file-custom">
     {imagem2 ? imagem2.name : "Extra 1"}
     <input type="file" onChange={(e) => setImagem2(e.target.files[0])} />
   </label>
+  
   <label className="input-file-custom">
     {imagem3 ? imagem3.name : "Extra 2"}
     <input type="file" onChange={(e) => setImagem3(e.target.files[0])} />
   </label>
+
 </div>
 
-        <input
-          type="text"
-          placeholder="Nome do produto"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-        />
+        <input type="text"
+          placeholder="Nome do produto" value={nome}
+          onChange={(e) => setNome(e.target.value)} />
 
         <textarea
-    placeholder="Descrição do produto"
-    value={descricao}
-    onChange={(e) => setDescricao(e.target.value)}
-/>
+          placeholder="Descrição do produto"
+          value={descricao}
+          onChange={(e) => setDescricao(e.target.value)}/>
 
-<input
-    type="number"
-    placeholder="Preço antigo"
-    value={precoAntigo}
-    onChange={(e) => setPrecoAntigo(e.target.value)}
-/>
+        <input type="number"
+          placeholder="Preço antigo"
+          value={precoAntigo}
+          onChange={(e) => setPrecoAntigo(e.target.value)}/>
 
-        <input
-          type="number"
-          placeholder="Preço"
-          value={preco}
-          onChange={(e) => setPreco(e.target.value)}
-        />
+        <input type="number"
+          placeholder="Preço" value={preco}
+          onChange={(e) => setPreco(e.target.value)} />
 
-<input
-    type="number"
-    placeholder="Quantidade em estoque"
-    value={estoque}
-    onChange={(e) => setEstoque(e.target.value)}
-/>
+        <input type="number"
+          placeholder="Quantidade em estoque"
+          value={estoque}
+          onChange={(e) => setEstoque(e.target.value)}/>
 
-        <select
-  value={categoryId} 
-  onChange={(e) => setCategoryId(e.target.value)} // Corrigido para setCategoryId
->
+        <select value={categoryId} 
+          onChange={(e) => setCategoryId(e.target.value)} >
   <option value="">
     Escolha uma categoria
   </option>
-
-  {categorias.map(cat => (
-    <option
-      key={cat.id}
-      value={cat.id} // Corrigido para cat.id
-    >
-      {cat.nome}
-    </option>
-  ))}
+  
 </select>
+{/* Select 1: Departamento */}
+<select onChange={(e) => {
+    const depSelecionado = categorias.find(c => c.nome === e.target.value);
+    setSubcategoriasDisponiveis(depSelecionado ? depSelecionado.subcategorias : []);
+    setCategoryId(""); // Reseta a subcategoria ao trocar de departamento
+}}>
+    <option value="">Selecione um Departamento</option>
+    {categorias.map(cat => (
+        <option key={cat.id} value={cat.nome}>{cat.nome}</option>
+    ))}
+</select>
+
+{/* Select 2: Subcategoria */}
+<select 
+    value={categoryId} 
+    onChange={(e) => setCategoryId(e.target.value)}
+    disabled={subcategoriasDisponiveis.length === 0}
+>
+    <option value="">Selecione uma Subcategoria</option>
+    {subcategoriasDisponiveis.map(sub => (
+        <option key={sub.id} value={sub.id}>
+            {sub.nome}
+        </option>
+    ))}
+</select>
+
 
         <div className="botoes-form">
 
-          <button
-            type="button"
+          <button type="button"
             className="btn-voltar"
-            onClick={() => navigate(-1)}
-          >
+            onClick={() => navigate(-1)} >
             Voltar
           </button>
 
