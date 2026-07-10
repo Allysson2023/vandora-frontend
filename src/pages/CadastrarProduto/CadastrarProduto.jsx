@@ -169,29 +169,31 @@ async function cadastrarProduto(e) {
           onChange={(e) => setEstoque(e.target.value)}/>
 
         {/* Select 1: Departamento */}
-<select onChange={(e) => {
-    const depSelecionado = categorias.find(c => c.nome === e.target.value);
-    setSubcategoriasDisponiveis(depSelecionado ? depSelecionado.subcategorias : []);
-    setCategoryId(""); // Reseta a subcategoria ao trocar de departamento
-}}>
-    <option value="">Selecione um Departamento</option>
-    {categorias.map(cat => (
-        <option key={cat.id} value={cat.nome}>{cat.nome}</option>
-    ))}
+<select 
+  onChange={(e) => {
+    const depSelecionado = categorias?.find(c => c.nome === e.target.value);
+    setSubcategoriasDisponiveis(depSelecionado?.subcategorias || []);
+    setCategoryId(""); 
+  }}
+>
+  <option value="">Selecione um Departamento</option>
+  {categorias?.map(cat => (
+    <option key={cat.id} value={cat.nome}>{cat.nome}</option>
+  ))}
 </select>
 
 {/* Select 2: Subcategoria */}
 <select 
-    value={categoryId} 
-    onChange={(e) => setCategoryId(e.target.value)}
-    disabled={subcategoriasDisponiveis.length === 0}
+  value={categoryId} 
+  onChange={(e) => setCategoryId(e.target.value)}
+  disabled={!subcategoriasDisponiveis || subcategoriasDisponiveis.length === 0}
 >
-    <option value="">Selecione uma Subcategoria</option>
-    {subcategoriasDisponiveis.map(sub => (
-        <option key={sub.id} value={sub.id}>
-            {sub.nome}
-        </option>
-    ))}
+  <option value="">Selecione uma Subcategoria</option>
+  {subcategoriasDisponiveis?.map(sub => (
+    <option key={sub.id} value={sub.id}>
+      {sub.nome}
+    </option>
+  ))}
 </select>
 
 
