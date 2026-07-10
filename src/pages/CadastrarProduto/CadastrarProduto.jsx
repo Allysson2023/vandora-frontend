@@ -21,12 +21,14 @@ function CadastrarProduto() {
   const [subcategoriasDisponiveis, setSubcategoriasDisponiveis] = useState([]);
 
   useEffect(() => {
-
     fetch(`${API_URL}/api/categories`)
     .then(res => res.json())
-    .then(data => setCategorias(data));
-
-  }, []);
+    .then(data => {
+        // Garante que é um array, mesmo que venha vazio
+        setCategorias(Array.isArray(data) ? data : []);
+    })
+    .catch(err => console.error("Erro ao carregar categorias:", err));
+}, []);
 
   const uploadImagemSeguro = async (file) => {
     if (!file) return null; // Se não tem imagem, retorna null
@@ -166,14 +168,7 @@ async function cadastrarProduto(e) {
           value={estoque}
           onChange={(e) => setEstoque(e.target.value)}/>
 
-        <select value={categoryId} 
-          onChange={(e) => setCategoryId(e.target.value)} >
-  <option value="">
-    Escolha uma categoria
-  </option>
-  
-</select>
-{/* Select 1: Departamento */}
+        {/* Select 1: Departamento */}
 <select onChange={(e) => {
     const depSelecionado = categorias.find(c => c.nome === e.target.value);
     setSubcategoriasDisponiveis(depSelecionado ? depSelecionado.subcategorias : []);
@@ -198,6 +193,7 @@ async function cadastrarProduto(e) {
         </option>
     ))}
 </select>
+
 
 
         <div className="botoes-form">
