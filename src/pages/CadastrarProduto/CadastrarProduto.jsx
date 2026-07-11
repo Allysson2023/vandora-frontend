@@ -50,21 +50,26 @@ async function cadastrarProduto(e) {
   e.preventDefault();
   
   try {
-    // Agora o upload passa pelo seu backend, escondendo a chave
+    // 1. Upload das imagens
     const url1 = await uploadImagemSeguro(imagem);
     const url2 = await uploadImagemSeguro(imagem2);
     const url3 = await uploadImagemSeguro(imagem3);
 
+    // 2. Construção do objeto de dados
+    // Certifique-se de que 'categoryId' (do useState) está populado
     const dadosDoProduto = {
-      nome, descricao, preco, 
+      nome: nome, 
+      descricao: descricao, 
+      preco: preco, 
       preco_antigo: precoAntigo,
-      estoque,
-      category_id: categoryId,
+      estoque: estoque,
+      category_id: categoryId, // <--- Aqui usamos o estado que você definiu no useState
       imagem: url1,
       imagem2: url2,
       imagem3: url3
     };
 
+    // 3. Envio para o backend
     const resposta = await fetch(`${API_URL}/api/products`, {
       method: "POST",
       headers: {
@@ -73,30 +78,28 @@ async function cadastrarProduto(e) {
       },
       body: JSON.stringify(dadosDoProduto)
     });
+    
     const result = await resposta.json();
 
     if (resposta.ok) {
-
       setModalSucesso(true);
-
+      // Limpeza dos campos
       setNome("");
       setDescricao("");
       setPreco("");
       setPrecoAntigo("");
       setEstoque("");
-      setCategoryId("");
-
+      setCategoryId(""); // Limpa o estado
+      setSubcategoriasDisponiveis([]); // Limpa as subcategorias
       setImagem(null);
       setImagem2(null);
       setImagem3(null);
-
     } else {
       setMensagem(result.message || "Erro ao cadastrar produto");
     }
-
   } catch (erro) {
     setMensagem("Erro ao cadastrar produto");
-    console.log(erro)
+    console.error("Erro completo:", erro);
   }
 }
 
