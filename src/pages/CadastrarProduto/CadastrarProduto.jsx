@@ -63,7 +63,7 @@ async function cadastrarProduto(e) {
       preco: preco, 
       preco_antigo: precoAntigo,
       estoque: estoque,
-      category_id: categoryId, // <--- Aqui usamos o estado que você definiu no useState
+      category_id: categoryId ? parseInt(categoryId) : null,// <--- Aqui usamos o estado que você definiu no useState
       imagem: url1,
       imagem2: url2,
       imagem3: url3
