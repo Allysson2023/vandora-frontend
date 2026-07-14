@@ -48,6 +48,12 @@ function CadastrarProduto() {
 
 async function cadastrarProduto(e) {
   e.preventDefault();
+
+  const idNumerico = parseInt(categoryId);
+  if (!categoryId || isNaN(idNumerico)) {
+    setMensagem("Por favor, selecione uma subcategoria válida antes de cadastrar.");
+    return; // Interrompe a execução
+  }
   
   try {
     // 1. Upload das imagens
@@ -63,7 +69,7 @@ async function cadastrarProduto(e) {
       preco: preco, 
       preco_antigo: precoAntigo,
       estoque: estoque,
-      category_id: categoryId ? parseInt(categoryId) : null,// <--- Aqui usamos o estado que você definiu no useState
+      category_id: idNumerico,
       imagem: url1,
       imagem2: url2,
       imagem3: url3
