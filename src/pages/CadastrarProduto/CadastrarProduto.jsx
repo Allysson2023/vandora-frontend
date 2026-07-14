@@ -215,9 +215,9 @@ async function cadastrarProduto(e) {
             Voltar
           </button>
 
-          <button type="submit">
-            Cadastrar
-          </button>
+          <button type="submit" disabled={!categoryId}>
+  Cadastrar
+</button>
 
         </div>
 
