@@ -127,6 +127,16 @@ function EditarLoja() {
   </button>
 </div>
 
+        div className="form-group">
+          <label>ID do Telegram</label>
+          <input 
+  type="text" 
+  value={dadosLoja.telegram_chat_id || ""} 
+  onChange={(e) => setDadosLoja({...dadosLoja, telegram_chat_id: e.target.value})}
+  placeholder="Cole o seu ID do Telegram aqui"
+/>
+        </div>
+
         <div className="form-group">
           <label>Nome da Loja</label>
           <input value={loja.nome || ""} onChange={(e) => setLoja({...loja, nome: e.target.value})} />
