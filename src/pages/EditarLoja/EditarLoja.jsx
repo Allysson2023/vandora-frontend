@@ -13,7 +13,7 @@ function EditarLoja() {
   const [showSucesso, setShowSucesso] = useState(false);
   const [loading, setLoading] = useState(false);
   const [categorias, setCategorias] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showModalTelegram, setShowModalTelegram] = useState(false);
 
   useEffect(() => {
     // 1. Buscar a lista de departamentos para o Select
@@ -133,7 +133,7 @@ function EditarLoja() {
     ID do Telegram 
     <button 
       type="button" 
-      onClick={() => setShowModal(true)}
+      onClick={() => setShowModalTelegram(true)}
       style={{ marginLeft: '10px', cursor: 'pointer', background: '#0088cc', color: 'white', border: 'none', borderRadius: '4px' }}
     >
       ?
@@ -265,7 +265,7 @@ function EditarLoja() {
 
 
 {/* Modal de Explicação */}
-{showModal && (
+{showModalTelegram && (
   <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
     <div style={{ background: 'white', padding: '20px', borderRadius: '8px', maxWidth: '400px' }}>
       <h3>Como pegar seu ID? 🤖</h3>
@@ -281,7 +281,7 @@ function EditarLoja() {
       <p>
         Se você não conseguir, não tem problema! Peça para um adulto ou fale com o pessoal da Vandora que eles te ajudam rapidinho.
       </p>
-      <button onClick={() => setShowModal(false)} style={{ width: '100%', padding: '10px', background: '#28a745', color: 'white', border: 'none', borderRadius: '4px' }}>
+      <button onClick={() => setShowModalTelegram(false)} style={{ width: '100%', padding: '10px', background: '#28a745', color: 'white', border: 'none', borderRadius: '4px' }}>
         OK, entendi!
       </button>
     </div>
