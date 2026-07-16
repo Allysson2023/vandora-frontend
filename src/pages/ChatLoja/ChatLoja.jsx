@@ -228,9 +228,7 @@ useEffect(() => {
                 </button>
 
                 <h2>
-  💬 Conversando com: {chatInfo?.cliente?.nome || "Carregando..."}
-  {" - "}
-  Pedido #{chatInfo?.pedido_id}
+  💬 Conversando com: {cliente?.nome || "Carregando..."}
 </h2>
             </div>
 
