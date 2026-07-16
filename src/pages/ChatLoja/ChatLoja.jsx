@@ -49,28 +49,7 @@ function ChatLoja() {
 
     }, [chatId, lojaId, token]);
 
-    // ===============================
-    // BUSCAR DADOS DO CLIENTE
-    // ===============================
-    useEffect(() => {
-
-        const clienteId = chatInfo?.cliente_id;
-
-        if (!clienteId) return;
-
-        fetch(`${API_URL}/api/users/${clienteId}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            setCliente(data);
-        })
-        .catch(err => console.log("Erro cliente:", err));
-
-    }, [chatInfo?.cliente_id, token]);
-
+    
     // ===============================
     // SOCKET ENTRAR NO CHAT
     // ===============================
@@ -228,7 +207,7 @@ useEffect(() => {
                 </button>
 
                 <h2>
-  💬 Conversando com: {cliente?.nome || "Carregando..."}
+  💬 Conversando com: {chatInfo?.cliente_nome || "Carregando..."}
 </h2>
             </div>
 
