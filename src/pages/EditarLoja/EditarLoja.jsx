@@ -134,7 +134,6 @@ function EditarLoja() {
     <button 
       type="button" 
       onClick={() => setShowModalTelegram(true)}
-      style={{ marginLeft: '10px', cursor: 'pointer', background: '#0088cc', color: 'white', border: 'none', borderRadius: '4px' }}
     >
       ?
     </button>
@@ -279,7 +278,7 @@ function EditarLoja() {
         <li>4. É só copiar esse número e colar ali na caixinha.</li>
       </ul>
       <p>
-        Se você não conseguir, não tem problema! Peça para um adulto ou fale com o pessoal da Vandora que eles te ajudam rapidinho.
+        Se você não conseguir, não tem problema! fale com o pessoal da Vandora que eles te ajudam rapidinho.
       </p>
       <button onClick={() => setShowModalTelegram(false)} style={{ width: '100%', padding: '10px', background: '#28a745', color: 'white', border: 'none', borderRadius: '4px' }}>
         OK, entendi!
