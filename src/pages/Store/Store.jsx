@@ -276,7 +276,7 @@ if (erro) {
       📊 Painel da Loja
     </button>
   </div>
-)}
+)} 
 
                 </div>
             </div>
