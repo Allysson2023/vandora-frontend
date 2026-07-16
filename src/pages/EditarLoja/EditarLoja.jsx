@@ -127,7 +127,7 @@ function EditarLoja() {
   </button>
 </div>
 
-        div className="form-group">
+        <div className="form-group">
           <label>ID do Telegram</label>
           <input 
   type="text" 
