@@ -22,7 +22,6 @@ function ChatLoja() {
     const abriuChatRef = useRef(false);
 
     const [chatInfo, setChatInfo] = useState(null);
-    const [cliente, setCliente] = useState(null);
 
     const lojaId = user?.loja_id;
 
