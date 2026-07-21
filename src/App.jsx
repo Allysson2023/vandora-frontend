@@ -43,6 +43,7 @@ import CookieConsent from "./pages/CookieConsent/CookieConsent";
 import GerenciarBanners from "./pages/GerenciarBanners/GerenciarBanners";
 import Checkout from "./pages/Checkout/Checkout";
 import ToastNotificacao from "./components/ToastNotificacao/ToastNotificacao";
+import ConfigurarFretes from "./pages/ConfigurarFretes/ConfigurarFretes";
 
 const RotaFuncionario = ({ children }) => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -197,6 +198,8 @@ function App() {
 } />
 
 <Route path="/checkout" element={<Checkout />} />
+
+<Route path="/loja/configurar-fretes" element={<ConfigurarFretes />} />
 
       </Routes>
 
