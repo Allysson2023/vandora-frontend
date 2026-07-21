@@ -312,17 +312,21 @@ function Checkout() {
         </div>
       )}
 
-      {/* MODAL DE EXPLICAÇÃO DE TAXAS */}
+      {/* MODAL DE EXPLICAÇÃO DO CÁLCULO */}
       {modalExplicacao && (
         <div className="modal-overlay">
           <div className="modal-conteudo">
-            <h2>ℹ️ Como funcionam as taxas?</h2>
-            <p>Para garantir a melhor experiência na entrega do seu pedido, aplicamos:</p>
+            <h2>📦 Como o total é calculado?</h2>
+            <p>O valor final do seu pedido é composto de forma transparente:</p>
             <ul>
-              <li><strong>Taxa de Serviço (3%):</strong> Utilizada para manter a plataforma segura e funcionando em tempo real.</li>
-              <li><strong>Frete por Bairro:</strong> O valor da entrega é calculado de acordo com o bairro selecionado em Fortaleza.</li>
+              <li><strong>Subtotal dos Produtos:</strong> A soma dos itens que você escolheu no carrinho.</li>
+              <li><strong>Taxa de Serviço (3%):</strong> Um pequeno percentual aplicado sobre os produtos para manutenção e funcionamento da plataforma.</li>
+              <li><strong>Frete:</strong> Definido automaticamente conforme o bairro de Fortaleza que você selecionar para a entrega.</li>
+              <li><strong>Descontos:</strong> Caso a loja ofereça alguma promoção ou desconto por valor mínimo, ele é subtraído do total.</li>
             </ul>
-            <p>Selecione seu bairro no endereço de entrega para visualizar o valor exato do frete.</p>
+            <p style={{ fontSize: "13px", color: "#777", marginBottom: "20px" }}>
+              Você pode conferir todos esses valores detalhados no resumo ao lado antes de confirmar o pedido.
+            </p>
             <button 
               className="btn-fechar-modal" 
               onClick={() => setModalExplicacao(false)}
