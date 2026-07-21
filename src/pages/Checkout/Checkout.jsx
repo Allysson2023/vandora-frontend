@@ -13,6 +13,8 @@ function Checkout() {
   const [lojaId, setLojaId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [lojaConfig, setLojaConfig] = useState({ aceitaEntrega: true, aceitaRetirada: true });
+
+  const [modalExplicacao, setModalExplicacao] = useState(true);
   
   const [form, setForm] = useState({
     nome: "", endereco: "", numero: "", bairro: "", pagamento: "", cpf: "", observacao: ""
@@ -208,7 +210,7 @@ function Checkout() {
                 </select>
 
               <input placeholder="Rua / Logradouro" value={form.endereco} onChange={e => setForm({...form, endereco: e.target.value})} />
-              
+
                     <input placeholder="Nº" value={form.numero} onChange={e => setForm({...form, numero: e.target.value})} />
               </div>
 
@@ -306,6 +308,27 @@ function Checkout() {
                 {loading ? "Enviando..." : "Sim, enviar"}
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL DE EXPLICAÇÃO DE TAXAS */}
+      {modalExplicacao && (
+        <div className="modal-overlay">
+          <div className="modal-conteudo">
+            <h2>ℹ️ Como funcionam as taxas?</h2>
+            <p>Para garantir a melhor experiência na entrega do seu pedido, aplicamos:</p>
+            <ul>
+              <li><strong>Taxa de Serviço (3%):</strong> Utilizada para manter a plataforma segura e funcionando em tempo real.</li>
+              <li><strong>Frete por Bairro:</strong> O valor da entrega é calculado de acordo com o bairro selecionado em Fortaleza.</li>
+            </ul>
+            <p>Selecione seu bairro no endereço de entrega para visualizar o valor exato do frete.</p>
+            <button 
+              className="btn-fechar-modal" 
+              onClick={() => setModalExplicacao(false)}
+            >
+              Entendido, continuar
+            </button>
           </div>
         </div>
       )}

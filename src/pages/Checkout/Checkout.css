@@ -105,6 +105,56 @@
   align-items: center;
   z-index: 1000;
 }
+.modal-conteudo {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-align: left;
+}
+
+.modal-conteudo h2 {
+  margin-top: 0;
+  color: #333;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.modal-conteudo p {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.modal-conteudo ul {
+  padding-left: 20px;
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.modal-conteudo li {
+  margin-bottom: 6px;
+}
+
+.btn-fechar-modal {
+  width: 100%;
+  padding: 12px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.btn-fechar-modal:hover {
+  background-color: #218838;
+}
 
 .modal-confirmacao {
   background: white;
