@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { obterItensCarrinho } from './CartServiceCheckout';
 import "./Checkout.css";
 import { API_URL } from "../../apiConfig";
+
 function Checkout() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -12,24 +13,26 @@ function Checkout() {
   const [lojaId, setLojaId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [lojaConfig, setLojaConfig] = useState({ aceitaEntrega: true, aceitaRetirada: true });
+  
   const [form, setForm] = useState({
     nome: "", endereco: "", numero: "", bairro: "", pagamento: "", cpf: "", observacao: ""
   });
+  
   const [modalConfirmacao, setModalConfirmacao] = useState(false);
   const [descontoConfig, setDescontoConfig] = useState(null);
+  
+  // Novos estados para o frete por bairro
+  const [bairrosDisponiveis, setBairrosDisponiveis] = useState([]);
+  const [valorFrete, setValorFrete] = useState(0);
 
   // --- CÁLCULOS AUTOMÁTICOS ---
- const { totalProdutos, taxaServico, valorDesconto, totalFinal } = useMemo(() => {
+  const { totalProdutos, taxaServico, valorDesconto, totalFinal } = useMemo(() => {
     const subtotal = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
     const taxa = subtotal * 0.03;
     
     let desconto = 0;
     
-    // VAMOS VER O QUE TEMOS AQUI (F12 > Console)
-    console.log("Calculando... Subtotal:", subtotal, "Config:", descontoConfig);
-
     if (descontoConfig && descontoConfig.desconto_ativo) {
-        // Converte valores para número com segurança
         const minCompra = Number(descontoConfig.valor_minimo_compra || 0);
         const valorDesc = Number(descontoConfig.valor_desconto || 0);
 
@@ -39,14 +42,17 @@ function Checkout() {
                 : valorDesc;
         } 
     }
+
+    // Se for retirada na loja, o frete é 0. Se for entrega, soma o valorFrete selecionado.
+    const freteAtual = tipoPedido === "retirada" ? 0 : Number(valorFrete);
     
     return {
         totalProdutos: subtotal,
         taxaServico: taxa,
         valorDesconto: desconto,
-        totalFinal: (subtotal - desconto) + taxa
+        totalFinal: (subtotal - desconto) + taxa + freteAtual
     };
-}, [carrinho, descontoConfig]);
+  }, [carrinho, descontoConfig, valorFrete, tipoPedido]);
 
   useEffect(() => {
     const carregarDados = async () => {
@@ -57,29 +63,53 @@ function Checkout() {
       const loja = data[0];
       const idL = loja.store_id || loja.loja_id || loja.id;
       
-      setLojaId(idL); // Define o ID aqui
+      setLojaId(idL);
       setLojaConfig({
         aceitaEntrega: !!loja.aceita_entrega,
         aceitaRetirada: !!loja.aceita_retirada
       });
 
-      // Busca desconto usando o idL (ID local)
+      // 1. Busca configuração de desconto
       fetch(`${API_URL}/api/stores/${idL}/public/desconto-config`, {
-    headers: { Authorization: `Bearer ${token}` }
-})
-.then(res => res.json())
-.then(data => {
-    // Agora, como não tem mais o erro 403, o 'data' virá com o objeto corretamente
-    if (data && data.desconto_ativo !== undefined) {
-        setDescontoConfig(data);
-    }
-});
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.desconto_ativo !== undefined) {
+            setDescontoConfig(data);
+        }
+      });
+
+      // 2. Busca a lista de bairros e fretes configurados por essa loja
+      fetch(`${API_URL}/api/stores/${idL}/public/bairros-frete`)
+      .then(res => res.json())
+      .then(bairrosData => {
+        if (Array.isArray(bairrosData)) {
+            setBairrosDisponiveis(bairrosData);
+        }
+      })
+      .catch(err => console.error("Erro ao carregar bairros de entrega:", err));
     };
+
     carregarDados();
   }, [token]);
-useEffect(() => {
-    console.log("Configuração de desconto carregada:", descontoConfig);
-}, [descontoConfig]);
+
+  // Função chamada quando o cliente seleciona um bairro no <select>
+  const handleBairroChange = (e) => {
+    const nomeBairroSelecionado = e.target.value;
+    setForm({ ...form, bairro: nomeBairroSelecionado });
+
+    // Encontra o bairro selecionado na lista para pegar o valor da entrega
+    const bairroEncontrado = bairrosDisponiveis.find(b => b.bairro_nome === nomeBairroSelecionado);
+    
+    if (bairroEncontrado && bairroEncontrado.valor_entrega !== null) {
+        setValorFrete(Number(bairroEncontrado.valor_entrega));
+    } else {
+        // Se a loja não cadastrou preço para este bairro, assume frete 0 ou avisa
+        setValorFrete(0);
+    }
+  };
+
   const confirmarEnvioDoPedido = () => setModalConfirmacao(true);
 
   const isFormValid = () => {
@@ -95,7 +125,10 @@ useEffect(() => {
         loja_id: Number(lojaId),
         produtos: carrinho.map(item => ({ produto_id: item.product_id, quantidade: item.quantidade, preco: item.preco })),
         tipoPedido,
-        dadosEntrega: form,
+        dadosEntrega: {
+            ...form,
+            valor_frete: tipoPedido === "entrega" ? valorFrete : 0
+        },
         valor_desconto: valorDesconto,
         total_final: totalFinal
     };
@@ -122,10 +155,9 @@ useEffect(() => {
 
   return (
     <div className="pagina-checkout">
-
-<button className="btn-sim" onClick={() => navigate('/')}>
-    ← Voltar Inicial
-</button>
+      <button className="btn-sim" onClick={() => navigate('/')}>
+        ← Voltar Inicial
+      </button>
 
       <h1>Finalizar Pedido</h1>
       
@@ -157,20 +189,28 @@ useEffect(() => {
               <h3>Endereço de Entrega</h3>
               
               <input placeholder="Rua / Logradouro" value={form.endereco} onChange={e => setForm({...form, endereco: e.target.value})} />
+              
               <div className="numero-bairro">
                 <input placeholder="Nº" value={form.numero} onChange={e => setForm({...form, numero: e.target.value})} />
-                <input placeholder="Bairro" value={form.bairro} onChange={e => setForm({...form, bairro: e.target.value})} />
+                
+                {/* SELECT DOS BAIRROS DE FORTALEZA */}
+                <select value={form.bairro} onChange={handleBairroChange}>
+                    <option value="">Selecione o Bairro...</option>
+                    {bairrosDisponiveis.map(b => (
+                        <option key={b.bairro_id} value={b.bairro_nome}>
+                            {b.bairro_nome} {b.valor_entrega !== null ? `(Frete: R$ ${Number(b.valor_entrega).toFixed(2)})` : "(Não entrega)"}
+                        </option>
+                    ))}
+                </select>
               </div>
 
-<h3>Observações</h3>
-  <textarea 
-    placeholder="Ex: Sem cebola, portão verde..." 
-    value={form.observacao} 
-    onChange={e => setForm({...form, observacao: e.target.value})} 
-  />
-
+              <h3>Observações</h3>
+              <textarea 
+                placeholder="Ex: Sem cebola, portão verde..." 
+                value={form.observacao} 
+                onChange={e => setForm({...form, observacao: e.target.value})} 
+              />
             </section>
-            
           )}
 
           <section className="sessao-checkout">
@@ -186,77 +226,81 @@ useEffect(() => {
 
         {/* Lado Direito: Resumo */}
         <div className="checkout-col-resumo">
+          <div className="card-resumo">
+            <h3>Resumo do Pedido</h3>
+            
+            {carrinho.map(item => (
+                <div key={item.product_id} className="item-resumo">
+                    <span>{item.quantidade}x {item.nome}</span>
+                    <span>R$ {(item.preco * item.quantidade).toFixed(2)}</span>
+                </div>
+            ))}
 
- <div className="card-resumo">
-    <h3>Resumo do Pedido</h3>
-    
-    {carrinho.map(item => (
-        <div key={item.product_id} className="item-resumo">
-            <span>{item.quantidade}x {item.nome}</span>
-            <span>R$ {(item.preco * item.quantidade).toFixed(2)}</span>
-        </div>
-    ))}
+            <hr />
 
-    <hr />
+            <div className="linha-total">
+                <span>Subtotal:</span>
+                <span>R$ {totalProdutos.toFixed(2)}</span>
+            </div>
+            <div className="linha-total">
+                <span>Taxa de Serviço (3%):</span>
+                <span>R$ {taxaServico.toFixed(2)}</span>
+            </div>
+            
+            {tipoPedido === "entrega" && (
+                <div className="linha-total">
+                    <span>Frete:</span>
+                    <span>{valorFrete > 0 ? `R$ ${valorFrete.toFixed(2)}` : "Grátis / Não definido"}</span>
+                </div>
+            )}
 
-    <div className="linha-total">
-        <span>Subtotal:</span>
-        <span>R$ {totalProdutos.toFixed(2)}</span>
-    </div>
-    <div className="linha-total">
-        <span>Taxa de Serviço (3%):</span>
-        <span>R$ {taxaServico.toFixed(2)}</span>
-    </div>
-    <div className="linha-total">
-        <span>Frete:</span>
-        <span>Grátis</span>
-    </div>
+            {valorDesconto > 0 && (
+                <div className="linha-total">
+                    <span>Desconto da Loja:</span>
+                    <span style={{ color: '#22c55e', fontWeight: 'bold' }}>
+                        - R$ {valorDesconto.toFixed(2)}
+                    </span>
+                </div>
+            )}
 
-<div className="linha-total">
-    <span>Desconto da Loja:</span>
-    <span style={{ color: '#22c55e', fontWeight: 'bold' }}>
-        - R$ {valorDesconto.toFixed(2)}
-    </span>
-</div>
+            <div className="linha-total total-destaque">
+                <span>Total a Pagar:</span>
+                <span>R$ {totalFinal.toFixed(2)}</span>
+            </div>
 
-    <div className="linha-total total-destaque">
-        <span>Total a Pagar:</span>
-        <span>R$ {totalFinal.toFixed(2)}</span>
-    </div>
-
-    <button 
-        className="btn-confirmar-final" 
-        disabled={loading || !isFormValid()} 
-        onClick={confirmarEnvioDoPedido}
-    >
-        {loading ? "Processando..." : "Confirmar Pedido"}
-    </button>
-</div>
+            <button 
+                className="btn-confirmar-final" 
+                disabled={loading || !isFormValid()} 
+                onClick={confirmarEnvioDoPedido}
+            >
+                {loading ? "Processando..." : "Confirmar Pedido"}
+            </button>
+          </div>
         </div>
       </div>
 
       {/* O MODAL DE CONFIRMAÇÃO */}
-{modalConfirmacao && (
-  <div className="modal-overlay">
-    <div className="modal-confirmacao">
-      <h2>Confirmar Pedido</h2>
-      <p>Deseja enviar seu pedido para a loja?</p>
-      <div className="btn-modal-group">
-        <button onClick={() => setModalConfirmacao(false)}>Cancelar</button>
-        <button 
-          className="btn-sim" 
-          disabled={loading} 
-          onClick={() => {
-              setModalConfirmacao(false);
-              finalizarCompra(); // Chama a função que já existia
-          }}
-        >
-          {loading ? "Enviando..." : "Sim, enviar"}
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+      {modalConfirmacao && (
+        <div className="modal-overlay">
+          <div className="modal-confirmacao">
+            <h2>Confirmar Pedido</h2>
+            <p>Deseja enviar seu pedido para a loja?</p>
+            <div className="btn-modal-group">
+              <button onClick={() => setModalConfirmacao(false)}>Cancelar</button>
+              <button 
+                className="btn-sim" 
+                disabled={loading} 
+                onClick={() => {
+                    setModalConfirmacao(false);
+                    finalizarCompra();
+                }}
+              >
+                {loading ? "Enviando..." : "Sim, enviar"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
