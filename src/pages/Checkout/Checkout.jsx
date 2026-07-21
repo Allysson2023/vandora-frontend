@@ -85,6 +85,10 @@ function Checkout() {
       .then(res => res.json())
       .then(bairrosData => {
         if (Array.isArray(bairrosData)) {
+          const bairrosFormatados = bairrosData.map(b => ({
+                ...b,
+                valor_entrega: b.valor_entrega !== null && b.valor_entrega !== undefined ? Number(b.valor_entrega) : 0
+            }));
             setBairrosDisponiveis(bairrosData);
         }
       })
@@ -102,10 +106,12 @@ function Checkout() {
     // Encontra o bairro selecionado na lista para pegar o valor da entrega
     const bairroEncontrado = bairrosDisponiveis.find(b => b.bairro_nome === nomeBairroSelecionado);
     
-    if (bairroEncontrado && bairroEncontrado.valor_entrega !== null) {
-        setValorFrete(Number(bairroEncontrado.valor_entrega));
+    if (bairroEncontrado) {
+        // Pega o valor já tratado como número
+        const precoFrete = Number(bairroEncontrado.valor_entrega) || 0;
+        console.log("Definindo frete para:", nomeBairroSelecionado, "Valor:", precoFrete);
+        setValorFrete(precoFrete);
     } else {
-        // Se a loja não cadastrou preço para este bairro, assume frete 0 ou avisa
         setValorFrete(0);
     }
   };
