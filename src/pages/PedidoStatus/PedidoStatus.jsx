@@ -274,7 +274,7 @@ const podeAbrirChat = ["aceito", "separação", "em Rota"].includes(pedido?.stat
             <div className="footer-pedido">
     <p>Subtotal: R$ {pedido.total}</p>
     <p>Taxa de Serviço: R$ {pedido.taxa_servico}</p>
-    <p>Taxa de frete: R$ {pedido.valorFrete}</p>
+    <p>Taxa de frete: R$ {pedido.frete}</p>
     
     {/* ADICIONE ESTA LINHA PARA MOSTRAR O DESCONTO */}
     {pedido.desconto > 0 && (
