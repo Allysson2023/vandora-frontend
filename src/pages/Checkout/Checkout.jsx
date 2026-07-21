@@ -216,7 +216,7 @@ function Checkout() {
 
               <h3>Observações</h3>
               <textarea 
-                placeholder="Ex: Sem cebola, portão verde..." 
+                placeholder="Ex: Observaçoes..." 
                 value={form.observacao} 
                 onChange={e => setForm({...form, observacao: e.target.value})} 
               />
@@ -228,8 +228,8 @@ function Checkout() {
             <select value={form.pagamento} onChange={e => setForm({...form, pagamento: e.target.value})}>
               <option value="">Selecione...</option>
               <option value="pix">Pix</option>
-              <option value="cartao">Cartão Debito/Credito</option>
-              <option value="dinheiro">Dinheiro</option>
+              {/* <option value="cartao">Cartão Debito/Credito</option>
+              <option value="dinheiro">Dinheiro</option> */}
             </select>
           </section>
         </div>
