@@ -393,12 +393,12 @@ useEffect(() => {
         </div>
 
 <div
-          className="quick-card"
-          onClick={() => navigate("/loja/configurar-fretes")}
-        >
-          <span>🚚</span>
-          <h3>Taxas de Entrega</h3>
-        </div>
+  className="quick-card"
+  onClick={() => navigate(`/store/${id}/configurar-fretes`)}
+>
+  <span>🚚</span>
+  <h3>Taxas de Entrega</h3>
+</div>
 
 <div
   className="quick-card"

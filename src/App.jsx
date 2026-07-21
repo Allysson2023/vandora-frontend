@@ -199,7 +199,7 @@ function App() {
 
 <Route path="/checkout" element={<Checkout />} />
 
-<Route path="/loja/configurar-fretes" element={<ConfigurarFretes />} />
+<Route path="/store/:id/configurar-fretes" element={<ConfigurarFretes />} />
 
       </Routes>
 

@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { API_URL } from "../../apiConfig"; // Ajuste o caminho do seu apiConfig se precisar
-import "./ConfigurarFretes.css"; // Se quiser estilizar depois
+import { useParams, useNavigate } from "react-router-dom";
+import { API_URL } from "../../apiConfig";
 
 function ConfigurarFretes() {
+    const { id } = useParams(); // Pega o ID da loja que está na URL
+    const navigate = useNavigate();
+    
     const [bairros, setBairros] = useState([]);
     const [carregando, setCarregando] = useState(true);
     const [salvando, setSalvando] = useState(false);
@@ -10,9 +13,9 @@ function ConfigurarFretes() {
 
     const token = localStorage.getItem("token");
 
-    // 1. Buscar os bairros e preços da loja ao carregar a página
+    // 1. Buscar os bairros e preços da loja usando o ID da URL
     useEffect(() => {
-        fetch(`${API_URL}/api/loja/bairros-frete`, {
+        fetch(`${API_URL}/api/loja/${id}/bairros-frete`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -28,9 +31,8 @@ function ConfigurarFretes() {
             console.error("Erro ao carregar bairros:", err);
             setCarregando(false);
         });
-    }, [token]);
+    }, [id, token]);
 
-    // 2. Atualizar o valor do input quando o lojista digitar
     const handleValorChange = (bairroId, novoValor) => {
         setBairros(prev =>
             prev.map(item =>
@@ -39,19 +41,18 @@ function ConfigurarFretes() {
         );
     };
 
-    // 3. Salvar os fretes no backend
+    // 2. Salvar os fretes enviando para a rota com o ID da loja
     const salvarFretes = async () => {
         setSalvando(true);
         setMensagem("");
 
-        // Prepara os dados para enviar (somente o nome do bairro e o valor numérico)
         const fretesParaSalvar = bairros.map(item => ({
             bairro: item.bairro_nome,
             valor_entrega: parseFloat(item.valor_entrega) || 0
         }));
 
         try {
-            const response = await fetch(`${API_URL}/api/loja/bairros-frete`, {
+            const response = await fetch(`${API_URL}/api/loja/${id}/bairros-frete`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -82,7 +83,7 @@ function ConfigurarFretes() {
     return (
         <div style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}>
             <h2>Configurar Taxas de Entrega por Bairro</h2>
-            <p>Defina o valor do frete para cada bairro que sua loja atende em Fortaleza. Deixe R$ 0,00 ou vazio caso não entregue no bairro.</p>
+            <p>Defina o valor do frete para cada bairro que sua loja atende em Fortaleza.</p>
 
             {mensagem && (
                 <div style={{ padding: "10px", margin: "10px 0", backgroundColor: "#d4edda", color: "#155724", borderRadius: "5px" }}>
@@ -90,7 +91,13 @@ function ConfigurarFretes() {
                 </div>
             )}
 
-            <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "15px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "15px" }}>
+                <button 
+                    onClick={() => navigate(-1)}
+                    style={{ padding: "10px 15px", backgroundColor: "#6c757d", color: "#fff", border: "none", borderRadius: "5px", cursor: "pointer" }}
+                >
+                    Voltar
+                </button>
                 <button 
                     onClick={salvarFretes}
                     disabled={salvando}
@@ -126,16 +133,6 @@ function ConfigurarFretes() {
                         ))}
                     </tbody>
                 </table>
-            </div>
-
-            <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "15px" }}>
-                <button 
-                    onClick={salvarFretes}
-                    disabled={salvando}
-                    style={{ padding: "10px 20px", backgroundColor: "#28a745", color: "#fff", border: "none", borderRadius: "5px", cursor: "pointer", fontWeight: "bold" }}
-                >
-                    {salvando ? "Salvando..." : "Salvar Alterações"}
-                </button>
             </div>
         </div>
     );
