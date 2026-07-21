@@ -209,7 +209,7 @@ function Checkout() {
                     ))}
                 </select>
 
-              <input placeholder="Rua / Logradouro" value={form.endereco} onChange={e => setForm({...form, endereco: e.target.value})} />
+              <input placeholder="Rua / Av." value={form.endereco} onChange={e => setForm({...form, endereco: e.target.value})} />
 
                     <input placeholder="Nº" value={form.numero} onChange={e => setForm({...form, numero: e.target.value})} />
               </div>
