@@ -194,10 +194,8 @@ function Checkout() {
             <section className="sessao-checkout">
               <h3>Endereço de Entrega</h3>
               
-              <input placeholder="Rua / Logradouro" value={form.endereco} onChange={e => setForm({...form, endereco: e.target.value})} />
               
               <div className="numero-bairro">
-                <input placeholder="Nº" value={form.numero} onChange={e => setForm({...form, numero: e.target.value})} />
                 
                 {/* SELECT DOS BAIRROS DE FORTALEZA */}
                 <select value={form.bairro} onChange={handleBairroChange}>
@@ -208,6 +206,10 @@ function Checkout() {
                         </option>
                     ))}
                 </select>
+
+              <input placeholder="Rua / Logradouro" value={form.endereco} onChange={e => setForm({...form, endereco: e.target.value})} />
+              
+                    <input placeholder="Nº" value={form.numero} onChange={e => setForm({...form, numero: e.target.value})} />
               </div>
 
               <h3>Observações</h3>
