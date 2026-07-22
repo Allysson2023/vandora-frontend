@@ -135,27 +135,8 @@ console.log("Formulário Válido?", formularioValido);
   </p>
 </div>
 
-        <input
-          type="text"
-          placeholder="Nome da loja"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-        />
 
-
-
-        {/* NOVO CAMPO */}
-        <input
-          type="text"
-          placeholder="WhatsApp da loja"
-          value={whatsapp}
-          onChange={(e) => setWhatsapp(e.target.value)}
-        />
-
-
-
-
-        <select
+ <select
   value={categoria}
   onChange={(e) => setCategoria(e.target.value)}
 >
@@ -172,6 +153,19 @@ console.log("Formulário Válido?", formularioValido);
 </select>
 
 
+        <input
+          type="text"
+          placeholder="Nome da loja"
+          value={nome}
+          onChange={(e) => setNome(e.target.value)}
+        />
+
+
+
+        
+
+
+
         <input type="text"
           placeholder="Usuário do lojista"
           value={username}
@@ -184,6 +178,14 @@ console.log("Formulário Válido?", formularioValido);
           onChange={(e) => setPassword(e.target.value)}
         />
 
+{/* NOVO CAMPO */}
+        <input
+          type="text"
+          placeholder="WhatsApp da loja"
+          value={whatsapp}
+          onChange={(e) => setWhatsapp(e.target.value)}
+        />
+        
         <button type="submit"
         disabled={!formularioValido}
         >
