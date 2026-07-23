@@ -57,19 +57,20 @@ function EditarLoja() {
         
         const dataUpload = await resUpload.json();
         if (!resUpload.ok) {
-    // Adicione esse console.error para ver o erro exato do backend no seu console do navegador
-    console.error("Erro do Backend no Upload:", dataUpload); 
-    throw new Error(dataUpload.message || "Erro ao subir a logo");
-}
+          console.error("Erro do Backend no Upload:", dataUpload); 
+          throw new Error(dataUpload.message || "Erro ao subir a logo");
+        }
         logoUrlFinal = dataUpload.url; // URL recebida do ImgBB
       }
 
-      // 2. Atualizar dados no banco de dados
+      // 2. Atualizar dados no banco de dados (Incluindo os campos Pix)
       const payload = {
         ...loja,
         imagem: logoUrlFinal,
         aceita_entrega: loja.aceita_entrega ? 1 : 0,
-        aceita_retirada: loja.aceita_retirada ? 1 : 0
+        aceita_retirada: loja.aceita_retirada ? 1 : 0,
+        chave_pix: loja.chave_pix || "",
+        tipo_chave_pix: loja.tipo_chave_pix || ""
       };
 
       const res = await fetch(`${API_URL}/api/stores/${id}`, {
@@ -104,47 +105,40 @@ function EditarLoja() {
 
         {/* Upload da Logo */}
         <div className="form-group">
-  <label>Logo da Loja</label>
-  <img 
-    src={logo ? URL.createObjectURL(logo) : (loja.imagem || "https://via.placeholder.com/150")} 
-    alt="Logo" 
-    style={{ width: '150px', marginBottom: '10px', display: 'block', borderRadius: '8px' }}
-  />
-  
-  {/* Aqui está o segredo: um input escondido e um botão bonito */}
-  <input 
-    type="file" 
-    id="fileInput" 
-    accept="image/*" 
-    style={{ display: 'none' }} 
-    onChange={(e) => setLogo(e.target.files[0])} 
-  />
-  <button 
-    type="button" 
-    className="btn-select-file" 
-    onClick={() => document.getElementById('fileInput').click()}
-  >
-    Selecionar Nova Logo
-  </button>
-</div>
+          <label>Logo da Loja</label>
+          <img 
+            src={logo ? URL.createObjectURL(logo) : (loja.imagem || "https://via.placeholder.com/150")} 
+            alt="Logo" 
+            style={{ width: '150px', marginBottom: '10px', display: 'block', borderRadius: '8px' }}
+          />
+          <input 
+            type="file" 
+            id="fileInput" 
+            accept="image/*" 
+            style={{ display: 'none' }} 
+            onChange={(e) => setLogo(e.target.files[0])} 
+          />
+          <button 
+            type="button" 
+            className="btn-select-file" 
+            onClick={() => document.getElementById('fileInput').click()}
+          >
+            Selecionar Nova Logo
+          </button>
+        </div>
 
-       <div className="form-group">
-  <label>
-    ID do Telegram 
-    <button 
-      type="button" 
-      onClick={() => setShowModalTelegram(true)}
-    >
-      ?
-    </button>
-  </label>
-  <input 
-    type="text" 
-    value={loja.telegram_chat_id || ""} 
-    onChange={(e) => setLoja({...loja, telegram_chat_id: e.target.value})}
-    placeholder="Ex: 8263023605"
-  />
-</div>
+        <div className="form-group">
+          <label>
+            ID do Telegram 
+            <button type="button" onClick={() => setShowModalTelegram(true)}>?</button>
+          </label>
+          <input 
+            type="text" 
+            value={loja.telegram_chat_id || ""} 
+            onChange={(e) => setLoja({...loja, telegram_chat_id: e.target.value})}
+            placeholder="Ex: 8263023605"
+          />
+        </div>
 
         <div className="form-group">
           <label>Nome da Loja</label>
@@ -152,19 +146,46 @@ function EditarLoja() {
         </div>
 
         <div className="form-group">
-  <label>Departamento (Categoria)</label>
-  <select 
-    value={loja.categoria || ""} 
-    onChange={(e) => setLoja({...loja, categoria: e.target.value})}
-  >
-    <option value="">Escolha um departamento</option>
-    {categorias.map(cat => (
-      <option key={cat.id} value={cat.nome}>
-        {cat.nome}
-      </option>
-    ))}
-  </select>
-</div>
+          <label>Departamento (Categoria)</label>
+          <select 
+            value={loja.categoria || ""} 
+            onChange={(e) => setLoja({...loja, categoria: e.target.value})}
+          >
+            <option value="">Escolha um departamento</option>
+            {categorias.map(cat => (
+              <option key={cat.id} value={cat.nome}>{cat.nome}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* ==================================================== */}
+        {/* NOVOS CAMPOS: DADOS DO PIX PARA O RECEBIMENTO MANUAL */}
+        {/* ==================================================== */}
+        <div className="form-group">
+          <label>Tipo da Chave Pix</label>
+          <select 
+            value={loja.tipo_chave_pix || ""} 
+            onChange={(e) => setLoja({...loja, tipo_chave_pix: e.target.value})}
+          >
+            <option value="">Selecione o tipo de chave</option>
+            <option value="CPF">CPF</option>
+            <option value="CNPJ">CNPJ</option>
+            <option value="E-mail">E-mail</option>
+            <option value="Telefone">Telefone</option>
+            <option value="Chave Aleatória">Chave Aleatória</option>
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label>Chave Pix</label>
+          <input 
+            type="text" 
+            value={loja.chave_pix || ""} 
+            onChange={(e) => setLoja({...loja, chave_pix: e.target.value})} 
+            placeholder="Digite sua chave Pix (ex: seu e-mail, celular ou CNPJ)"
+          />
+        </div>
+        {/* ==================================================== */}
 
         <div className="form-group">
           <label>Endereço</label>
@@ -261,31 +282,24 @@ function EditarLoja() {
         </div>
       )}
 
-
-
-{/* Modal de Explicação */}
-{showModalTelegram && (
-  <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-    <div style={{ background: 'white', padding: '20px', borderRadius: '8px', maxWidth: '400px' }}>
-      <h3>Como pegar seu ID? 🤖</h3>
-      <p>
-        Oi! Sabe o nosso robô do Vandora? Ele funciona assim:
-      </p>
-      <ul>
-        <li>1. Procure pelo <b>@vandora_AC_bot</b> no seu Telegram.</li>
-        <li>2. Clique no botão que diz <b>"Iniciar"</b>.</li>
-        <li>3. Ele vai te mandar um número secreto. Esse é o seu ID!</li>
-        <li>4. É só copiar esse número e colar ali na caixinha.</li>
-      </ul>
-      <p>
-        Se você não conseguir, não tem problema! fale com o pessoal da Vandora que eles te ajudam rapidinho.
-      </p>
-      <button onClick={() => setShowModalTelegram(false)} style={{ width: '100%', padding: '10px', background: '#28a745', color: 'white', border: 'none', borderRadius: '4px' }}>
-        OK, entendi!
-      </button>
-    </div>
-  </div>
-)}
+      {/* Modal de Explicação */}
+      {showModalTelegram && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ background: 'white', padding: '20px', borderRadius: '8px', maxWidth: '400px' }}>
+            <h3>Como pegar seu ID? 🤖</h3>
+            <p>Oi! Sabe o nosso robô do Vandora? Ele funciona assim:</p>
+            <ul>
+              <li>1. Procure pelo <b>@vandora_AC_bot</b> no seu Telegram.</li>
+              <li>2. Clique no botão que diz <b>"Iniciar"</b>.</li>
+              <li>3. Ele vai te mandar um número secreto. Esse é o seu ID!</li>
+              <li>4. É só copiar esse número e colar ali na caixinha.</li>
+            </ul>
+            <button onClick={() => setShowModalTelegram(false)} style={{ width: '100%', padding: '10px', background: '#28a745', color: 'white', border: 'none', borderRadius: '4px' }}>
+              OK, entendi!
+            </button>
+          </div>
+        </div>
+      )}
 
     </div>
   );
