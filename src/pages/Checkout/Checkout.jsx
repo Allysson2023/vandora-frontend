@@ -170,6 +170,13 @@ function Checkout() {
     }
   };
 
+  // Abre o modal do Pix de forma segura sempre que a forma de pagamento for "pix"
+  useEffect(() => {
+    if (form.pagamento === "pix") {
+      setShowModalPix(true);
+    }
+  }, [form.pagamento]);
+
   return (
     <div className="pagina-checkout">
       <button className="btn-sim" onClick={() => navigate('/')}>
@@ -230,21 +237,14 @@ function Checkout() {
           <section className="sessao-checkout">
             <h3>Pagamento</h3>
             <select 
-              value={form.pagamento} 
-              onChange={e => {
-                const valor = e.target.value;
-                setForm({...form, pagamento: valor});
-                
-                if (valor === "pix") {
-                  setShowModalPix(true);
-                }
-              }}
-            >
-              <option value="">Selecione...</option>
-              <option value="pix">Pix</option>
-              <option value="cartao">Cartão Debito/Credito</option>
-              <option value="dinheiro">Dinheiro</option>
-            </select>
+  value={form.pagamento} 
+  onChange={e => setForm({...form, pagamento: e.target.value})}
+>
+  <option value="">Selecione...</option>
+  <option value="pix">Pix</option>
+  <option value="cartao">Cartão Debito/Credito</option>
+  <option value="dinheiro">Dinheiro</option>
+</select>
           </section>
         </div>
 
