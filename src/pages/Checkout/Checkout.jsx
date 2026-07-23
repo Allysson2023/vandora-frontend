@@ -13,6 +13,7 @@ function Checkout() {
   const [lojaId, setLojaId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [lojaConfig, setLojaConfig] = useState({ aceitaEntrega: true, aceitaRetirada: true });
+  const [lojaDadosPix, setLojaDadosPix] = useState(null); // Guarda os dados completos da loja (Pix, banco, etc)
 
   const [modalExplicacao, setModalExplicacao] = useState(true);
   
@@ -26,6 +27,20 @@ function Checkout() {
   // Novos estados para o frete por bairro
   const [bairrosDisponiveis, setBairrosDisponiveis] = useState([]);
   const [valorFrete, setValorFrete] = useState(0);
+
+  const [showModalPix, setShowModalPix] = useState(false);
+  const [copiado, setCopiado] = useState(false);
+
+  // --- FUNÇÃO DE COPIAR CHAVE PIX (Movida para o lugar correto) ---
+  const copiarChavePix = (chave) => {
+    if (!chave) {
+      alert("A loja não cadastrou uma chave Pix.");
+      return;
+    }
+    navigator.clipboard.writeText(chave);
+    setCopiado(true);
+    setTimeout(() => setCopiado(false), 3000); // Some o aviso de copiado após 3 segundos
+  };
 
   // --- CÁLCULOS AUTOMÁTICOS ---
   const { totalProdutos, taxaServico, valorDesconto, totalFinal } = useMemo(() => {
@@ -45,7 +60,6 @@ function Checkout() {
         } 
     }
 
-    // Se for retirada na loja, o frete é 0. Se for entrega, soma o valorFrete selecionado.
     const freteAtual = tipoPedido === "retirada" ? 0 : Number(valorFrete);
     
     return {
@@ -71,6 +85,9 @@ function Checkout() {
         aceitaRetirada: !!loja.aceita_retirada
       });
 
+      // Salva os dados da loja para exibir no modal do Pix (caso venham no item do carrinho ou precisamos buscar)
+      setLojaDadosPix(loja);
+
       // 1. Busca configuração de desconto
       fetch(`${API_URL}/api/stores/${idL}/public/desconto-config`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -87,10 +104,6 @@ function Checkout() {
       .then(res => res.json())
       .then(bairrosData => {
         if (Array.isArray(bairrosData)) {
-          const bairrosFormatados = bairrosData.map(b => ({
-                ...b,
-                valor_entrega: b.valor_entrega !== null && b.valor_entrega !== undefined ? Number(b.valor_entrega) : 0
-            }));
             setBairrosDisponiveis(bairrosData);
         }
       })
@@ -100,18 +113,14 @@ function Checkout() {
     carregarDados();
   }, [token]);
 
-  // Função chamada quando o cliente seleciona um bairro no <select>
   const handleBairroChange = (e) => {
     const nomeBairroSelecionado = e.target.value;
     setForm({ ...form, bairro: nomeBairroSelecionado });
 
-    // Encontra o bairro selecionado na lista para pegar o valor da entrega
     const bairroEncontrado = bairrosDisponiveis.find(b => b.bairro_nome === nomeBairroSelecionado);
     
     if (bairroEncontrado) {
-        // Pega o valor já tratado como número
         const precoFrete = Number(bairroEncontrado.valor_entrega) || 0;
-        console.log("Definindo frete para:", nomeBairroSelecionado, "Valor:", precoFrete);
         setValorFrete(precoFrete);
     } else {
         setValorFrete(0);
@@ -195,11 +204,7 @@ function Checkout() {
           {tipoPedido === "entrega" && (
             <section className="sessao-checkout">
               <h3>Endereço de Entrega</h3>
-              
-              
               <div className="numero-bairro">
-                
-                {/* SELECT DOS BAIRROS DE FORTALEZA */}
                 <select value={form.bairro} onChange={handleBairroChange}>
                     <option value="">Selecione o Bairro...</option>
                     {bairrosDisponiveis.map(b => (
@@ -209,9 +214,8 @@ function Checkout() {
                     ))}
                 </select>
 
-              <input placeholder="Rua / Av." value={form.endereco} onChange={e => setForm({...form, endereco: e.target.value})} />
-
-                    <input placeholder="Nº" value={form.numero} onChange={e => setForm({...form, numero: e.target.value})} />
+                <input placeholder="Rua / Av." value={form.endereco} onChange={e => setForm({...form, endereco: e.target.value})} />
+                <input placeholder="Nº" value={form.numero} onChange={e => setForm({...form, numero: e.target.value})} />
               </div>
 
               <h3>Observações</h3>
@@ -225,7 +229,17 @@ function Checkout() {
 
           <section className="sessao-checkout">
             <h3>Pagamento</h3>
-            <select value={form.pagamento} onChange={e => setForm({...form, pagamento: e.target.value})}>
+            <select 
+              value={form.pagamento} 
+              onChange={e => {
+                const valor = e.target.value;
+                setForm({...form, pagamento: valor});
+                
+                if (valor === "pix") {
+                  setShowModalPix(true);
+                }
+              }}
+            >
               <option value="">Selecione...</option>
               <option value="pix">Pix</option>
               <option value="cartao">Cartão Debito/Credito</option>
@@ -336,6 +350,64 @@ function Checkout() {
           </div>
         </div>
       )}
+
+      {/* MODAL DO PIX */}
+      {showModalPix && (
+        <div className="modal-overlay">
+          <div className="modal-box" style={{ maxWidth: '450px', textAlign: 'left', background: 'white', padding: '20px', borderRadius: '8px' }}>
+            
+            <div style={{ background: '#fff3cd', border: '1px solid #ffeeba', padding: '12px', borderRadius: '6px', marginBottom: '15px' }}>
+              <p style={{ margin: 0, fontSize: '13px', color: '#856404', lineHeight: '1.4' }}>
+                ⚠️ <b>Atenção:</b> Antes de efetuar o pagamento, verifique se os dados do Pix (Titular e Banco) conferem com a loja e se o <b>valor está correto</b>.
+              </p>
+            </div>
+
+            <h2 style={{ fontSize: '20px', marginBottom: '10px', textAlign: 'center' }}>Pagamento via Pix</h2>
+            
+            <div style={{ textAlign: 'center', background: '#f8f9fa', padding: '10px', borderRadius: '6px', marginBottom: '15px' }}>
+              <span style={{ fontSize: '14px', color: '#666' }}>Valor a pagar:</span>
+              <h3 style={{ margin: '5px 0 0 0', color: '#28a745', fontSize: '22px' }}>
+                R$ {totalFinal.toFixed(2)}
+              </h3>
+            </div>
+
+            <div style={{ fontSize: '14px', lineHeight: '1.6', marginBottom: '20px' }}>
+              <p><b>Banco:</b> {lojaDadosPix?.pix_banco || "Não informado"}</p>
+              <p><b>Titular:</b> {lojaDadosPix?.pix_nome || "Não informado"}</p>
+              <p><b>Tipo de Chave:</b> {lojaDadosPix?.tipo_chave_pix || "Chave"}</p>
+              <p style={{ wordBreak: 'break-all' }}><b>Chave Pix:</b> {lojaDadosPix?.chave_pix || "Chave não cadastrada"}</p>
+            </div>
+
+            <p style={{ fontSize: '12px', color: '#666', marginBottom: '20px' }}>
+              💡 <i>Após efetuar o pagamento, envie o comprovante no chat da loja para darmos continuidade ao seu pedido.</i>
+            </p>
+
+            <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+              <button 
+                type="button"
+                className="btn-cancel" 
+                onClick={() => {
+                  setShowModalPix(false);
+                  setForm({...form, pagamento: ""}); // Reseta o select se ele desistir
+                }}
+                style={{ padding: '10px 15px', background: '#ccc', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+              >
+                Sair
+              </button>
+
+              <button 
+                type="button"
+                onClick={() => copiarChavePix(lojaDadosPix?.chave_pix)}
+                style={{ padding: '10px 15px', background: '#28a745', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
+              >
+                {copiado ? "Copiado! ✓" : "📋 Copiar Chave Pix"}
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
