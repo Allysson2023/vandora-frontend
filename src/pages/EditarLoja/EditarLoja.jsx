@@ -70,7 +70,9 @@ function EditarLoja() {
         aceita_entrega: loja.aceita_entrega ? 1 : 0,
         aceita_retirada: loja.aceita_retirada ? 1 : 0,
         chave_pix: loja.chave_pix || "",
-        tipo_chave_pix: loja.tipo_chave_pix || ""
+        tipo_chave_pix: loja.tipo_chave_pix || "",
+        pix_nome: loja.pix_nome || "",       // <--- ADICIONADO
+        pix_banco: loja.pix_banco || ""
       };
 
       const res = await fetch(`${API_URL}/api/stores/${id}`, {
@@ -183,6 +185,25 @@ function EditarLoja() {
             value={loja.chave_pix || ""} 
             onChange={(e) => setLoja({...loja, chave_pix: e.target.value})} 
             placeholder="Digite sua chave Pix (ex: seu e-mail, celular ou CNPJ)"
+          />
+        </div>
+        <div className="form-group">
+          <label>Nome do Titular (Beneficiário)</label>
+          <input 
+            type="text" 
+            value={loja.pix_nome || ""} 
+            onChange={(e) => setLoja({...loja, pix_nome: e.target.value})} 
+            placeholder="Ex: Nome da Empresa ou do Lojista"
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Nome do Banco</label>
+          <input 
+            type="text" 
+            value={loja.pix_banco || ""} 
+            onChange={(e) => setLoja({...loja, pix_banco: e.target.value})} 
+            placeholder="Ex: Nubank, Itaú, Caixa, Mercado Pago..."
           />
         </div>
         {/* ==================================================== */}

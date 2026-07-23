@@ -228,8 +228,8 @@ function Checkout() {
             <select value={form.pagamento} onChange={e => setForm({...form, pagamento: e.target.value})}>
               <option value="">Selecione...</option>
               <option value="pix">Pix</option>
-              {/* <option value="cartao">Cartão Debito/Credito</option>
-              <option value="dinheiro">Dinheiro</option> */}
+              <option value="cartao">Cartão Debito/Credito</option>
+              <option value="dinheiro">Dinheiro</option>
             </select>
           </section>
         </div>
@@ -320,7 +320,7 @@ function Checkout() {
             <p>O valor final do seu pedido é composto de forma transparente:</p>
             <ul>
               <li><strong>Subtotal dos Produtos:</strong> A soma dos itens que você escolheu no carrinho.</li>
-              <li><strong>Taxa de Serviço (3%):</strong> Um pequeno percentual aplicado sobre os produtos para manutenção e funcionamento da plataforma.</li>
+              <li><strong>Taxa de Serviço (3%):</strong> Um pequeno percentual aplicado sobre os produtos.</li>
               <li><strong>Frete:</strong> Definido automaticamente conforme o bairro de Fortaleza que você selecionar para a entrega.</li>
               <li><strong>Descontos:</strong> Caso a loja ofereça alguma promoção ou desconto por valor mínimo, ele é subtraído do total.</li>
             </ul>
