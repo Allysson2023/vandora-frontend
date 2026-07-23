@@ -85,8 +85,12 @@ function Checkout() {
         aceitaRetirada: !!loja.aceita_retirada
       });
 
-      // Salva os dados da loja para exibir no modal do Pix (caso venham no item do carrinho ou precisamos buscar)
-      setLojaDadosPix(loja);
+      fetch(`${API_URL}/api/stores/${idL}/public`)
+        .then(res => res.json())
+        .then(storeData => {
+          setLojaDadosPix(storeData);
+        })
+        .catch(err => console.error("Erro ao buscar dados do Pix da loja:", err));
 
       // 1. Busca configuração de desconto
       fetch(`${API_URL}/api/stores/${idL}/public/desconto-config`, {
