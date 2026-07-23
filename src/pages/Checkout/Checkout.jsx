@@ -174,12 +174,7 @@ function Checkout() {
     }
   };
 
-  // Abre o modal do Pix de forma segura sempre que a forma de pagamento for "pix"
-  useEffect(() => {
-    if (form.pagamento === "pix") {
-      setShowModalPix(true);
-    }
-  }, [form.pagamento]);
+
 
   return (
     <div className="pagina-checkout">
@@ -242,7 +237,13 @@ function Checkout() {
             <h3>Pagamento</h3>
             <select 
   value={form.pagamento} 
-  onChange={e => setForm({...form, pagamento: e.target.value})}
+  onChange={e => {
+    const valor = e.target.value;
+    setForm({...form, pagamento: valor});
+    if (valor === "pix") {
+      setShowModalPix(true);
+    }
+  }}
 >
   <option value="">Selecione...</option>
   <option value="pix">Pix</option>
@@ -392,7 +393,6 @@ function Checkout() {
                 className="btn-cancel" 
                 onClick={() => {
                   setShowModalPix(false);
-                  setForm({...form, pagamento: ""}); // Reseta o select se ele desistir
                 }}
                 style={{ padding: '10px 15px', background: '#ccc', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
               >
