@@ -185,16 +185,30 @@ const podeAbrirChat = ["aceito", "separação", "em Rota"].includes(pedido?.stat
 
             <div className="status-pedido">
 
-                <h2>⏳ {pedido.status}</h2>
+                <h2>⏳ Status: {pedido.status}</h2>
 
-                <div className="botoes-contato">
-
-   
-
-</div>
-
-                
-
+                <div className="botoes-contato" style={{ marginTop: '15px' }}>
+                    {/* Botão para ir direto ao chat da loja */}
+                    <button 
+                        onClick={abrirChat}
+                        style={{
+                            background: '#25d366', // Cor estilo WhatsApp ou verde padrão
+                            color: 'white',
+                            border: 'none',
+                            padding: '10px 20px',
+                            borderRadius: '6px',
+                            cursor: 'pointer',
+                            fontWeight: 'bold',
+                            fontSize: '14px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            margin: '0 auto'
+                        }}
+                    >
+                        💬 Conversar com a Loja no Chat
+                    </button>
+                </div>
             </div>
 
 
