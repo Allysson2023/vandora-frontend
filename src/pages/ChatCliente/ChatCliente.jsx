@@ -289,41 +289,41 @@ function ChatCliente() {
             </div>
 
             {/* INPUT */}
-            <div className="chat-input-area">
+<div className="chat-input-area">
 
-                {/* Input de arquivo escondido */}
-                <input 
-                    type="file" 
-                    id="inputComprovante" 
-                    style={{ display: "none" }} 
-                    accept="image/*"
-                    onChange={handleEnviarImagem} 
-                />
+    {/* Input de arquivo escondido */}
+    <input 
+        type="file" 
+        id="inputComprovante" 
+        style={{ display: "none" }} 
+        accept="image/*"
+        onChange={handleEnviarImagem} 
+    />
 
-                {/* Botão de Clipe para anexar */}
-                <button 
-                    type="button" 
-                    onClick={() => document.getElementById("inputComprovante").click()}
-                    style={{ background: "none", border: "none", cursor: "pointer", fontSize: "20px", marginRight: "8px" }}
-                    title="Enviar comprovante"
-                >
-                    + FOTOS
-                </button>
+    {/* Botão de Clipe para anexar */}
+    <button 
+        type="button" 
+        className="btn-anexo"
+        onClick={() => document.getElementById("inputComprovante").click()}
+        title="Enviar comprovante"
+    >
+        📎
+    </button>
 
-                <input
-                    value={mensagem}
-                    onChange={(e) => setMensagem(e.target.value)}
-                    placeholder="Digite sua mensagem ou envie o comprovante..."
-                    onKeyDown={(e) =>
-                        e.key === "Enter" && enviarMensagem()
-                    }
-                />
+    <input
+        value={mensagem}
+        onChange={(e) => setMensagem(e.target.value)}
+        placeholder="Digite sua mensagem ou envie o comprovante..."
+        onKeyDown={(e) =>
+            e.key === "Enter" && enviarMensagem()
+        }
+    />
 
-                <button onClick={enviarMensagem}>
-                    Enviar
-                </button>
+    <button onClick={enviarMensagem}>
+        Enviar
+    </button>
 
-            </div>
+</div>
 
         </div>
     );
