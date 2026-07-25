@@ -166,14 +166,13 @@ function ChatCliente() {
         formData.append("chat_id", Number(chatId));
         formData.append("remetente_tipo", "cliente");
         formData.append("tipo", "imagem");
-        formData.append("imagem", arquivo); // O multer no backend vai capturar isso
+        formData.append("imagem", arquivo);
 
         try {
             const res = await fetch(`${API_URL}/api/chat/mensagem`, {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${token}`
-                    // ⚠️ Nota: Não adicione Content-Type aqui, o navegador define automático para FormData
                 },
                 body: formData
             });
@@ -185,11 +184,10 @@ function ChatCliente() {
                 return;
             }
 
-            // Adiciona otimisticamente na tela se quiser, ou aguarda o socket/resposta
             const tempMsg = {
                 id: data.id || Date.now(),
                 chat_id: Number(chatId),
-                mensagem: data.url, // A URL segura devolvida pelo ImgBB no backend
+                mensagem: data.url,
                 tipo: "imagem",
                 remetente_tipo: "cliente",
                 remetente_id: user?.id,
@@ -197,7 +195,7 @@ function ChatCliente() {
             };
 
             setMensagens(prev => [...prev, tempMsg]);
-            e.target.value = ""; // Limpa o input file
+            e.target.value = "";
         } catch (err) {
             console.error("Erro ao enviar imagem:", err);
             alert("Erro de conexão ao enviar imagem.");
@@ -289,44 +287,41 @@ function ChatCliente() {
             </div>
 
             {/* INPUT */}
-<div className="chat-input-area">
+            <div className="chat-input-area">
+                <input 
+                    type="file" 
+                    id="inputComprovante" 
+                    style={{ display: "none" }} 
+                    accept="image/*"
+                    onChange={handleEnviarImagem} 
+                />
 
-    {/* Input de arquivo escondido */}
-    <input 
-        type="file" 
-        id="inputComprovante" 
-        style={{ display: "none" }} 
-        accept="image/*"
-        onChange={handleEnviarImagem} 
-    />
+                <button 
+                    type="button" 
+                    className="btn-anexo"
+                    onClick={() => document.getElementById("inputComprovante").click()}
+                    title="Enviar comprovante"
+                >
+                    📎
+                </button>
 
-    {/* Botão de Clipe para anexar */}
-    <button 
-        type="button" 
-        className="btn-anexo"
-        onClick={() => document.getElementById("inputComprovante").click()}
-        title="Enviar comprovante"
-    >
-        📎
-    </button>
+                <input
+                    type="text"
+                    value={mensagem}
+                    onChange={(e) => setMensagem(e.target.value)}
+                    placeholder="Digite sua mensagem ou envie o comprovante..."
+                    onKeyDown={(e) =>
+                        e.key === "Enter" && enviarMensagem()
+                    }
+                />
 
-    <input
-        value={mensagem}
-        onChange={(e) => setMensagem(e.target.value)}
-        placeholder="Digite sua mensagem ou envie o comprovante..."
-        onKeyDown={(e) =>
-            e.key === "Enter" && enviarMensagem()
-        }
-    />
-
-    <button onClick={enviarMensagem}>
-        Enviar
-    </button>
-
-</div>
+                <button className="btn-enviar" onClick={enviarMensagem}>
+                    Enviar
+                </button>
+            </div>
 
         </div>
     );
 }
 
-export data ChatCliente;
+export default ChatCliente;

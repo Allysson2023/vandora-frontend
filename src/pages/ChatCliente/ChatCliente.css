@@ -68,23 +68,27 @@
     margin-top: 4px;
 }
 
-/* INPUT */
+/* INPUT AREA */
 .chat-input-area {
     display: flex;
+    align-items: center;
     padding: 10px;
     background: #f0f0f0;
     gap: 10px;
 }
 
-.chat-input-area input {
+/* Altera apenas o input de texto do chat (evita afetar o input type="file") */
+.chat-input-area input[type="text"] {
     flex: 1;
     padding: 10px;
     border-radius: 20px;
     border: none;
     outline: none;
+    background: white;
 }
 
-.chat-input-area button {
+/* Botão principal de Enviar */
+.chat-input-area .btn-enviar {
     background: #075e54;
     color: white;
     border: none;
