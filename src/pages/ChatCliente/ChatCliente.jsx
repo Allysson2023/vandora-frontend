@@ -307,7 +307,7 @@ function ChatCliente() {
                     style={{ background: "none", border: "none", cursor: "pointer", fontSize: "20px", marginRight: "8px" }}
                     title="Enviar comprovante"
                 >
-                    📎
+                    + FOTOS
                 </button>
 
                 <input
