@@ -36,6 +36,12 @@
     gap: 10px;
 }
 
+.chat-mensagens > div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
 /* BOLHAS */
 .mensagem {
     max-width: 70%;
