@@ -191,6 +191,30 @@ useEffect(() => {
     }
 }
 
+function formatarDataWhatsApp(dataString) {
+    if (!dataString) return "";
+    
+    const dataMsg = new Date(dataString);
+    const hoje = new Date();
+    
+    // Zera as horas para comparar apenas os dias
+    const dMsg = new Date(dataMsg.getFullYear(), dataMsg.getMonth(), dataMsg.getDate());
+    const dHoje = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+    
+    const diffTime = dHoje - dMsg;
+    const diffDays = diffTime / (1000 * 60 * 60 * 24);
+
+    if (diffDays === 0) {
+        return "Hoje";
+    } else if (diffDays === 1) {
+        return "Ontem";
+    } else {
+        // Exibe no formato DD/MM/YYYY
+        return dataMsg.toLocaleDateString("pt-BR");
+    }
+}
+
+
     return (
 
         <div className="chat-loja-container">
@@ -213,43 +237,56 @@ useEffect(() => {
             {/* MENSAGENS */}
             <div className="chat-loja-mensagens" ref={mensagensRef}>
 
-                {mensagens.map(m => {
-    const hora = new Date(m.criado_em || Date.now())
-        .toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit"
-        });
+    {mensagens.map((m, index) => {
+        // Pega a data da mensagem atual formatada
+        const dataFormatada = formatarDataWhatsApp(m.criado_em);
+        
+        // Pega a data da mensagem anterior para saber se exibe o separador
+        const dataAnterior = index > 0 ? formatarDataWhatsApp(mensagens[index - 1].criado_em) : null;
+        const mostrarSeparador = dataFormatada !== dataAnterior;
 
-    // Identifica se a mensagem é uma imagem (pelo tipo do banco ou se começa com link de imagem)
-    const ehImagem = m.tipo === "imagem" || (typeof m.mensagem === "string" && (m.mensagem.startsWith("http://") || m.mensagem.startsWith("https://")) && (m.mensagem.includes("ibb.co") || m.mensagem.match(/\.(jpeg|jpg|gif|png)$/i)));
+        const hora = new Date(m.criado_em || Date.now())
+            .toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit"
+            });
 
-    return (
-        <div
-            key={m.id}
-            className={`msg ${m.remetente_tipo}`}
-        >
-            {ehImagem ? (
-                <div className="msg-imagem-container">
-                    <a href={m.mensagem} target="_blank" rel="noopener noreferrer">
-                        <img 
-                            src={m.mensagem} 
-                            alt="Comprovante/Anexo" 
-                            style={{ maxWidth: "200px", borderRadius: "8px", display: "block", cursor: "pointer" }} 
-                        />
-                    </a>
+        // Identifica se a mensagem é uma imagem
+        const ehImagem = m.tipo === "imagem" || (typeof m.mensagem === "string" && (m.mensagem.startsWith("http://") || m.mensagem.startsWith("https://")) && (m.mensagem.includes("ibb.co") || m.mensagem.match(/\.(jpeg|jpg|gif|png)$/i)));
+
+        return (
+            <div key={m.id || index}>
+                {/* Exibe o separador de data estilo WhatsApp se mudou o dia */}
+                {mostrarSeparador && (
+                    <div className="separador-data">
+                        <span>{dataFormatada}</span>
+                    </div>
+                )}
+
+                <div className={`msg ${m.remetente_tipo}`}>
+                    {ehImagem ? (
+                        <div className="msg-imagem-container">
+                            <a href={m.mensagem} target="_blank" rel="noopener noreferrer">
+                                <img 
+                                    src={m.mensagem} 
+                                    alt="Comprovante/Anexo" 
+                                    style={{ maxWidth: "200px", borderRadius: "8px", display: "block", cursor: "pointer" }} 
+                                />
+                            </a>
+                        </div>
+                    ) : (
+                        <div>{m.mensagem}</div>
+                    )}
+
+                    <div className="msg-hora">
+                        {hora}
+                    </div>
                 </div>
-            ) : (
-                <div>{m.mensagem}</div>
-            )}
-
-            <div className="msg-hora">
-                {hora}
             </div>
-        </div>
-    );
-})}
+        );
+    })}
 
-            </div>
+</div>
 
             {/* INPUT */}
             <div className="chat-loja-input">

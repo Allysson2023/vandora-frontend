@@ -243,6 +243,30 @@ function ChatCliente() {
         enviarInicial();
     }, [mensagemInicial, chatId, token]);
 
+    function formatarDataWhatsApp(dataString) {
+    if (!dataString) return "";
+    
+    const dataMsg = new Date(dataString);
+    const hoje = new Date();
+    
+    // Zera as horas para comparar apenas os dias
+    const dMsg = new Date(dataMsg.getFullYear(), dataMsg.getMonth(), dataMsg.getDate());
+    const dHoje = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+    
+    const diffTime = dHoje - dMsg;
+    const diffDays = diffTime / (1000 * 60 * 60 * 24);
+
+    if (diffDays === 0) {
+        return "Hoje";
+    } else if (diffDays === 1) {
+        return "Ontem";
+    } else {
+        // Exibe no formato DD/MM/YYYY
+        return dataMsg.toLocaleDateString("pt-BR");
+    }
+}
+
+
     return (
         <div className="chat-container">
 
@@ -257,34 +281,53 @@ function ChatCliente() {
 
             {/* MENSAGENS */}
             <div ref={mensagensRef} className="chat-mensagens">
-                {mensagens.map((msg) => {
-                    const hora = new Date(msg.criado_em).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit"
-                    });
+    {mensagens.map((msg, index) => {
+        // Pega a data da mensagem atual formatada
+        const dataFormatada = formatarDataWhatsApp(msg.criado_em);
+        
+        // Pega a data da mensagem anterior (se houver) para saber se exibe o separador
+        const dataAnterior = index > 0 ? formatarDataWhatsApp(mensagens[index - 1].criado_em) : null;
+        const mostrarSeparador = dataFormatada !== dataAnterior;
 
-                    return (
-                        <div key={msg.id} className={`mensagem ${msg.remetente_tipo}`}>
-                            <div className="texto-mensagem">
-                                {msg.tipo === "imagem" ? (
-                                    <a href={msg.mensagem} target="_blank" rel="noopener noreferrer">
-                                        <img 
-                                            src={msg.mensagem} 
-                                            alt="Comprovante" 
-                                            style={{ maxWidth: "200px", borderRadius: "8px", cursor: "pointer", display: "block" }} 
-                                        />
-                                    </a>
-                                ) : (
-                                    msg.mensagem
-                                )}
-                            </div>
-                            <div className="msg-hora">
-                                {hora}
-                            </div>
-                        </div>
-                    );
-                })}
+        const hora = new Date(msg.criado_em || Date.now()).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+
+        // Verificação se é imagem (seja do cliente ou da loja)
+        const ehImagem = msg.tipo === "imagem" || (typeof msg.mensagem === "string" && (msg.mensagem.startsWith("http://") || msg.mensagem.startsWith("https://")) && (msg.mensagem.includes("ibb.co") || msg.mensagem.match(/\.(jpeg|jpg|gif|png)$/i)));
+
+        return (
+            <div key={msg.id || index}>
+                {/* Exibe o separador de data estilo WhatsApp se mudou o dia */}
+                {mostrarSeparador && (
+                    <div className="separador-data">
+                        <span>{dataFormatada}</span>
+                    </div>
+                )}
+
+                <div className={`mensagem ${msg.remetente_tipo}`}>
+                    <div className="texto-mensagem">
+                        {ehImagem ? (
+                            <a href={msg.mensagem} target="_blank" rel="noopener noreferrer">
+                                <img 
+                                    src={msg.mensagem} 
+                                    alt="Anexo" 
+                                    style={{ maxWidth: "200px", borderRadius: "8px", display: "block", cursor: "pointer" }} 
+                                />
+                            </a>
+                        ) : (
+                            <div>{msg.mensagem}</div>
+                        )}
+                    </div>
+                    <div className="msg-hora">
+                        {hora}
+                    </div>
+                </div>
             </div>
+        );
+    })}
+</div>
 
             {/* INPUT */}
             <div className="chat-input-area">
@@ -302,7 +345,7 @@ function ChatCliente() {
                     onClick={() => document.getElementById("inputComprovante").click()}
                     title="Enviar comprovante"
                 >
-                    📎
+                    +
                 </button>
 
                 <input
