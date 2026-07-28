@@ -214,19 +214,33 @@ useEffect(() => {
             <div className="chat-loja-mensagens" ref={mensagensRef}>
 
                 {mensagens.map(m => {
-
     const hora = new Date(m.criado_em || Date.now())
         .toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit"
         });
 
+    // Identifica se a mensagem é uma imagem (pelo tipo do banco ou se começa com link de imagem)
+    const ehImagem = m.tipo === "imagem" || (typeof m.mensagem === "string" && (m.mensagem.startsWith("http://") || m.mensagem.startsWith("https://")) && (m.mensagem.includes("ibb.co") || m.mensagem.match(/\.(jpeg|jpg|gif|png)$/i)));
+
     return (
         <div
             key={m.id}
             className={`msg ${m.remetente_tipo}`}
         >
-            <div>{m.mensagem}</div>
+            {ehImagem ? (
+                <div className="msg-imagem-container">
+                    <a href={m.mensagem} target="_blank" rel="noopener noreferrer">
+                        <img 
+                            src={m.mensagem} 
+                            alt="Comprovante/Anexo" 
+                            style={{ maxWidth: "200px", borderRadius: "8px", display: "block", cursor: "pointer" }} 
+                        />
+                    </a>
+                </div>
+            ) : (
+                <div>{m.mensagem}</div>
+            )}
 
             <div className="msg-hora">
                 {hora}
