@@ -125,3 +125,21 @@
     opacity: 0.6;
     text-align: right;
 }
+
+
+/* Separador de Data Estilo WhatsApp */
+.separador-data {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0 10px 0;
+}
+
+.separador-data span {
+    background-color: #e1f3fb; /* Tom clarinho estilo WhatsApp */
+    color: #555;
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 8px;
+    box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.13);
+    font-weight: 500;
+}
