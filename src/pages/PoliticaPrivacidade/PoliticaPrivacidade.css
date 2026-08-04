@@ -1,0 +1,67 @@
+.politica-container {
+    display: flex;
+    justify-content: center;
+    padding: 30px 15px;
+    background-color: #f4f6f9;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+}
+
+.politica-card {
+    max-width: 850px;
+    width: 100%;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.btn-voltar-politica {
+    background: #075e54;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn-voltar-politica:hover {
+    background: #054c43;
+}
+
+.politica-card h1 {
+    font-size: 26px;
+    color: #075e54;
+    margin-bottom: 5px;
+}
+
+.ultima-atualizacao {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 12px;
+}
+
+.politica-card h2 {
+    font-size: 17px;
+    color: #333;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.politica-card p, .politica-card li {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.politica-card ul {
+    padding-left: 20px;
+    margin-bottom: 15px;
+}

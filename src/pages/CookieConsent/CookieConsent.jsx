@@ -25,7 +25,15 @@ function CookieConsent() {
   return (
     <div className="cookie-banner">
       <p>
-        Utilizamos cookies para melhorar sua experiência. Ao continuar, você concorda com nossa política de privacidade.
+        Utilizamos cookies para melhorar sua experiência. Ao continuar, você concorda com nossa{" "}
+        <a 
+          href="/politica-privacidade" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          style={{ color: "#4da3ff", textDecoration: "underline" }}
+        >
+          política de privacidade
+        </a>.
       </p>
       <button onClick={aceitar}>Aceitar</button>
     </div>

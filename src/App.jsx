@@ -44,6 +44,7 @@ import GerenciarBanners from "./pages/GerenciarBanners/GerenciarBanners";
 import Checkout from "./pages/Checkout/Checkout";
 import ToastNotificacao from "./components/ToastNotificacao/ToastNotificacao";
 import ConfigurarFretes from "./pages/ConfigurarFretes/ConfigurarFretes";
+import PoliticaPrivacidade from './pages/PoliticaPrivacidade/PoliticaPrivacidade';
 
 const RotaFuncionario = ({ children }) => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -200,6 +201,8 @@ function App() {
 <Route path="/checkout" element={<Checkout />} />
 
 <Route path="/store/:id/configurar-fretes" element={<ConfigurarFretes />} />
+
+<Route path="/politica-privacidade" element={<PoliticaPrivacidade />} />
 
       </Routes>
 
