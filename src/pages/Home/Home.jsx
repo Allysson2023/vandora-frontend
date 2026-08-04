@@ -308,9 +308,20 @@ if (usuarioLogado?.tipo === "admin") {
 // --- TELA DE CARREGANDO ---
   if (loading) {
     return (
-      <div className="status-container">
-        <div className="spinner"></div>
-        <p>Carregando Vandora - AC...</p>
+      <div className="vandora-splash">
+        <div className="splash-content">
+          <div className="splash-logo-box">
+            <span className="splash-logo-text">V</span>
+          </div>
+          <h1 className="splash-title">Vandora - AC</h1>
+          <p className="splash-subtitle">Seja bem-vindo ao seu marketplace...</p>
+          
+          <div className="splash-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
       </div>
     );
   }

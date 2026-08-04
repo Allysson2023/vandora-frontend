@@ -982,6 +982,96 @@ PAGINAÇÃO
   font-size: 50px;
 }
 
+/* Tela de Splash / Carregamento do Vandora - AC */
+.vandora-splash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #075e54 0%, #0b3d37 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+.splash-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Caixa com a letra V estilizada e pulsando */
+.splash-logo-box {
+    width: 70px;
+    height: 70px;
+    background: #25d366;
+    border-radius: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 38px;
+    font-weight: bold;
+    color: #ffffff;
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+    margin-bottom: 20px;
+    animation: pulseLogo 1.8s infinite ease-in-out;
+}
+
+/* Nome do Marketplace */
+.splash-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin: 0 0 8px 0;
+}
+
+/* Frase de boas-vindas */
+.splash-subtitle {
+    font-size: 14px;
+    color: #b2dfdb;
+    margin: 0 0 25px 0;
+    font-weight: 400;
+}
+
+/* Pontinhos animados de carregamento */
+.splash-dots {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.splash-dots span {
+    width: 8px;
+    height: 8px;
+    background: #25d366;
+    border-radius: 50%;
+    animation: bounceDot 1.4s infinite ease-in-out both;
+}
+
+.splash-dots span:nth-child(1) { animation-delay: -0.32s; }
+.splash-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+/* Animações CSS */
+@keyframes pulseLogo {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+    50% { transform: scale(1.08); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+}
+
+@keyframes bounceDot {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1.0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
 
 /* =========================
