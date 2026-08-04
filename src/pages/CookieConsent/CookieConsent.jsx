@@ -27,8 +27,7 @@ function CookieConsent() {
       <p>
         Utilizamos cookies para melhorar sua experiência. Ao continuar, você concorda com nossa{" "}
         <a 
-          href="/politica-privacidade" 
-          target="_blank" 
+          href="/politica-privacidade"
           rel="noopener noreferrer" 
           style={{ color: "#4da3ff", textDecoration: "underline" }}
         >
