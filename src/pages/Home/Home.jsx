@@ -79,7 +79,18 @@ const [videoIndex, setVideoIndex] = useState(0);
     await Promise.all([
       fetch(`${API_URL}/api/banners/imagens`).then(r => r.json()).then(setImagensBanner),
       fetch(`${API_URL}/api/banners/video`).then(r => r.json()).then(setVideos),
-      fetch(`${API_URL}/api/categories`).then(r => r.json()).then(setCategorias),
+      fetch(`${API_URL}/api/categories`)
+  .then(r => r.json())
+  .then(data => {
+    if (Array.isArray(data)) {
+      const unicas = data.filter((cat, index, self) => 
+        index === self.findIndex(c => c.nome.trim().toLowerCase() === cat.nome.trim().toLowerCase())
+      );
+      setCategorias(unicas);
+    } else {
+      setCategorias([]);
+    }
+  }),
       fetch(`${API_URL}/api/stores`).then(r => r.json()).then(setLojas),
       // ... adicione outras chamadas aqui
     ]);
