@@ -487,6 +487,17 @@ if (usuarioLogado?.tipo === "admin") {
       ℹ️ Sobre a Vandora
     </div>
 
+    <div 
+      className="menu-item" 
+      onClick={() => {
+        const numeroWhatsApp = "5585921996610"; // Adicionado 55 do Brasil
+        const mensagem = encodeURIComponent("Olá! Preciso de ajuda no marketplace Vandora.");
+        window.open(`https://wa.me/${numeroWhatsApp}?text=${mensagem}`, "_blank");
+      }}
+    >
+      🎧 Ajuda / Suporte
+    </div>
+
   </div>
 )}
 
