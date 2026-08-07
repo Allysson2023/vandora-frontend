@@ -45,6 +45,8 @@ import Checkout from "./pages/Checkout/Checkout";
 import ToastNotificacao from "./components/ToastNotificacao/ToastNotificacao";
 import ConfigurarFretes from "./pages/ConfigurarFretes/ConfigurarFretes";
 import PoliticaPrivacidade from './pages/PoliticaPrivacidade/PoliticaPrivacidade';
+import Barbearias from "./pages/Barbearias/Barbearias";
+import BarbeariaDetalhes from "./pages/BarbeariaDetalhes/BarbeariaDetalhes"
 
 const RotaFuncionario = ({ children }) => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -203,6 +205,10 @@ function App() {
 <Route path="/store/:id/configurar-fretes" element={<ConfigurarFretes />} />
 
 <Route path="/politica-privacidade" element={<PoliticaPrivacidade />} />
+
+  <Route path="/barbearias" element={<Barbearias />} />
+  <Route path="/barbearia/:slug" element={<BarbeariaDetalhes />} />
+
 
       </Routes>
 

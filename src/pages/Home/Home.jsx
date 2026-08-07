@@ -501,6 +501,9 @@ if (usuarioLogado?.tipo === "admin") {
   </div>
 )}
 
+
+
+
 <div 
   className="banner-container" 
   onClick={() => {
@@ -530,6 +533,8 @@ if (usuarioLogado?.tipo === "admin") {
     onError={(e) => { e.target.src = "https://dummyimage.com/1200x300"; }}
   />
 </div>
+
+
 
 
       {/* LOJAS */}
@@ -588,6 +593,28 @@ if (usuarioLogado?.tipo === "admin") {
     <p>Carregando vídeos...</p>
   )}
 </div> */}
+
+
+{/* Banner de Direcionamento para Barbearias */}
+<div 
+  onClick={() => navigate("/barbearias")}
+  style={{
+    background: "linear-gradient(135deg, #111 0%, #333 100%)",
+    borderRadius: "12px",
+    padding: "30px",
+    color: "#fff",
+    textAlign: "center",
+    cursor: "pointer",
+    margin: "20px 0",
+    boxShadow: "0 4px 15px rgba(0,0,0,0.2)"
+  }}
+>
+  <h2 style={{ margin: "0 0 10px 0", fontSize: "24px" }}>✂️ Espaço Exclusivo para Barbearias</h2>
+  <p style={{ margin: "0 0 15px 0", color: "#ccc", fontSize: "15px" }}>Quer cortar o cabelo ou fazer a barba? Escolha uma barbearia e agende seu horário online!</p>
+  <span style={{ background: "#ffc107", color: "#000", padding: "10px 20px", borderRadius: "6px", fontWeight: "bold", display: "inline-block" }}>
+    Acessar Barbearias 🚀
+  </span>
+</div>
 
       {/* CATEGORIAS */}
 <div className="menu">
